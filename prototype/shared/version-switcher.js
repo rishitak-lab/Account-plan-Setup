@@ -14,6 +14,7 @@
   }
 
   function prototypePrefix() {
+    if (typeof window.APPrototypePrefix === "function") return window.APPrototypePrefix();
     // GitHub Pages: /Account-plan-Setup/prototype/...
     // Local server from prototype/: /create/... or /landing/...
     const match = location.pathname.match(/^(.*?\/prototype)(?:\/|$)/);
@@ -22,12 +23,15 @@
 
   function landingHref(version) {
     const base = (version.base || "").replace(/\/$/, "");
-    const path = (base || "") + "/landing/index.html";
-    const prefix = prototypePrefix();
-    if (!prefix) {
-      return path.charAt(0) === "/" ? path : "/" + path;
+    // Versioned landings live under /versions/vN/landing
+    if (base) {
+      const prefix = prototypePrefix();
+      const path = base + "/landing/index.html";
+      return prefix ? prefix + path : path;
     }
-    return prefix + path;
+    if (typeof window.APAppHref === "function") return window.APAppHref("landing");
+    const prefix = prototypePrefix();
+    return (prefix || "") + "/landing/index.html";
   }
 
   function remember(id) {
@@ -136,4 +140,11 @@
       link.setAttribute("href", window.APSetupHref());
     });
   });
+
+  if (typeof window.APAppHref === "function") {
+    document.querySelectorAll("[data-ap-nav]").forEach(function (link) {
+      var page = link.getAttribute("data-ap-nav");
+      if (page) link.setAttribute("href", window.APAppHref(page));
+    });
+  }
 })();

@@ -2,8 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="refresh" content="0; url=prototype/landing/index.html" />
     <title>Account Plan Setup</title>
+    <script>
+      (function () {
+        var base = location.pathname.replace(/\/index\.html$/, "").replace(/\/$/, "");
+        location.replace(base + "/prototype/landing/index.html");
+      })();
+    </script>
+    <meta http-equiv="refresh" content="0; url=prototype/landing/index.html" />
     <link rel="canonical" href="prototype/landing/index.html" />
   </head>
   <body>
