@@ -1,4 +1,11 @@
 .DS_Store
-**/node_modules/
-.npm/
 *.log
+.npm/
+# Keep vendored SLDS assets for GitHub Pages; ignore other deps if added later
+prototype/node_modules/*
+!prototype/node_modules/@salesforce-ux/
+prototype/node_modules/@salesforce-ux/*
+!prototype/node_modules/@salesforce-ux/design-system/
+prototype/node_modules/@salesforce-ux/design-system/*
+!prototype/node_modules/@salesforce-ux/design-system/assets/
+!prototype/node_modules/@salesforce-ux/design-system/package.json
