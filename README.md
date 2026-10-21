@@ -4,7 +4,9 @@ Living Agentic Account Plan Setup prototype (Technician / Admin).
 
 ## View online
 
-GitHub Pages publishes this repository. Open the landing page from the repository’s Pages URL (`/prototype/landing/index.html`), or use the root redirect.
+- Site: https://rishitak-lab.github.io/Account-plan-Setup/
+- Workflow Setup landing: https://rishitak-lab.github.io/Account-plan-Setup/prototype/landing/index.html
+- Create flow: https://rishitak-lab.github.io/Account-plan-Setup/prototype/create/index.html
 
 ## Local preview
 
