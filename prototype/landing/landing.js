@@ -230,10 +230,15 @@ function cell(content, header) {
   return el;
 }
 
+function appHref(page) {
+  if (typeof window.APAppHref === "function") return window.APAppHref(page);
+  return "../" + page + "/index.html";
+}
+
 function destinationFor(item) {
-  if (item.stage === "Draft") return "../create/index.html";
-  if (item.stage === "Generating") return "../generate/index.html";
-  return "../review/index.html";
+  if (item.stage === "Draft") return appHref("create");
+  if (item.stage === "Generating") return appHref("generate");
+  return appHref("review");
 }
 
 function openWorkflow(item) {

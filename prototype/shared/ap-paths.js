@@ -1,10 +1,17 @@
 /**
  * Resolve Setup app paths under GitHub Pages (/…/prototype/…) and local servers.
+ * Default HTML hrefs may point at the GitHub Pages project path; this rewrites
+ * them to the correct prefix for the current host.
  */
 (function () {
+  var PAGES_PREFIX = "/Account-plan-Setup/prototype";
+
   function prototypePrefix() {
     var match = location.pathname.match(/^(.*?\/prototype)(?:\/|$)/);
-    return match ? match[1] : "";
+    if (match) return match[1];
+    // file:// or unexpected host — prefer Pages prefix so published links still work
+    if (location.hostname.indexOf("github.io") !== -1) return PAGES_PREFIX;
+    return "";
   }
 
   function appHref(page) {
@@ -24,6 +31,8 @@
       link.setAttribute("href", appHref(page));
     });
   }
+
+  window.APRewriteNav = rewriteNav;
 
   if (document.readyState === "loading") {
     document.addEventListener("DOMContentLoaded", rewriteNav);
