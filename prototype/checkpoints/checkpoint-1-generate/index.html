@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Generate Account Plan workflow</title>
+    <link rel="stylesheet" href="../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
+    <link rel="stylesheet" href="../landing/landing.css" />
+    <link rel="stylesheet" href="../create/create.css" />
+    <link rel="stylesheet" href="generate.css" />
+  </head>
+  <body>
+    <div class="ap-app">
+      <header class="slds-global-header_container">
+        <div class="slds-global-header slds-grid slds-grid_align-spread">
+          <div class="slds-global-header__item">
+            <span class="slds-text-heading_small">Salesforce</span>
+          </div>
+          <div class="slds-global-header__item slds-global-header__item_search">
+            <div class="slds-form-element">
+              <label class="slds-form-element__label slds-assistive-text" for="setup-search">Search Setup</label>
+              <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                  <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                </svg>
+                <input id="setup-search" class="slds-input" type="search" placeholder="Search Setup" />
+              </div>
+            </div>
+          </div>
+          <div class="slds-global-header__item">
+            <span class="slds-avatar slds-avatar_circle slds-avatar_medium" title="Salesforce Admin">
+              <abbr class="slds-avatar__initials slds-icon-standard-user" title="Salesforce Admin">SA</abbr>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div class="ap-setup-bar slds-grid slds-grid_vertical-align-center">
+        <span class="slds-text-heading_small slds-p-horizontal_medium">Setup</span>
+        <span class="slds-text-title_bold ap-setup-tab">Home</span>
+        <span class="slds-text-body_regular slds-p-horizontal_small">Object Manager</span>
+      </div>
+
+      <div class="ap-body slds-grid">
+        <nav class="ap-side slds-p-vertical_small" aria-label="Setup">
+          <div class="slds-form-element slds-p-horizontal_small slds-m-bottom_small">
+            <label class="slds-assistive-text" for="quick-find">Quick Find</label>
+            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+              <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+              </svg>
+              <input id="quick-find" class="slds-input" type="search" placeholder="Quick Find" />
+            </div>
+          </div>
+          <ul class="slds-has-block-links_space">
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Administration</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Platform Tools</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_x-small">
+              <span class="slds-text-title_bold">Workflows</span>
+              <ul>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">Workflow Settings</li>
+                <li class="ap-side-current slds-p-left_medium slds-p-vertical_xx-small" aria-current="page">
+                  <a href="../landing/index.html">Workflow Setup</a>
+                </li>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">Workflow Templates</li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+
+        <main class="ap-main" id="main">
+          <div class="ap-create-head slds-p-around_medium">
+            <nav aria-label="Breadcrumbs" class="slds-m-bottom_small">
+              <ol class="slds-breadcrumb slds-list_horizontal">
+                <li class="slds-breadcrumb__item"><a href="../landing/index.html">Workflow Setup</a></li>
+                <li class="slds-breadcrumb__item">New workflow</li>
+              </ol>
+            </nav>
+
+            <div class="slds-page-header">
+              <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                  <div class="slds-media slds-media_center">
+                    <div class="slds-media__figure">
+                      <span class="slds-icon_container slds-icon-standard-account">
+                        <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                          <use href="../node_modules/@salesforce-ux/design-system/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                        </svg>
+                      </span>
+                    </div>
+                    <div class="slds-media__body">
+                      <p class="ap-kicker">Account Plan</p>
+                      <h1 class="ap-page-title" id="gen-title" tabindex="-1">Refresh expiring account plans</h1>
+                    </div>
+                  </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                  <button class="slds-button slds-button_neutral" type="button" id="gen-fail">Simulate a failure</button>
+                  <span class="ap-badge ap-badge_generating" id="gen-badge">Generating</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ap-create-body">
+            <aside class="ap-create-rail" aria-label="Setup stages">
+              <div class="slds-progress slds-progress_vertical">
+                <ol class="slds-progress__list">
+                  <li class="slds-progress__item slds-is-completed">
+                    <div class="slds-progress__marker slds-progress__marker_icon">
+                      <span class="slds-icon_container slds-icon-utility-success">
+                        <svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+                          <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+                        </svg>
+                      </span>
+                      <span class="slds-assistive-text">Complete</span>
+                    </div>
+                    <div class="slds-progress__item_content">Describe</div>
+                  </li>
+                  <li class="slds-progress__item slds-is-active">
+                    <div class="slds-progress__marker">
+                      <span class="slds-assistive-text">Active</span>
+                    </div>
+                    <div class="slds-progress__item_content">Generate</div>
+                  </li>
+                  <li class="slds-progress__item">
+                    <div class="slds-progress__marker">
+                      <span class="slds-assistive-text">Not started</span>
+                    </div>
+                    <div class="slds-progress__item_content">Review</div>
+                  </li>
+                </ol>
+              </div>
+            </aside>
+
+            <div class="ap-create-scroll">
+              <div class="ap-create ap-gen">
+                <div class="ap-gen__status">
+                  <span class="ap-gen__pill" id="gen-pill">
+                    <span class="slds-spinner slds-spinner_xx-small" id="gen-spinner" role="status">
+                      <span class="slds-assistive-text">Generating blueprint</span>
+                      <div class="slds-spinner__dot-a"></div>
+                      <div class="slds-spinner__dot-b"></div>
+                    </span>
+                    <span id="gen-pill-label">Generating blueprint</span>
+                  </span>
+                </div>
+                <p class="ap-gen__now" id="gen-now" aria-live="polite"></p>
+                <p class="ap-gen__meta" id="gen-meta"></p>
+                <ol class="ap-tree" id="blueprint-tree"></ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="ap-create__actions">
+            <a class="slds-button slds-button_neutral" href="../landing/index.html">Cancel</a>
+            <p class="ap-status" id="gen-status" role="status"></p>
+            <div class="ap-create__actions-end">
+              <button class="slds-button slds-button_neutral" type="button" id="gen-stop">Stop generation</button>
+              <button class="slds-button slds-button_neutral slds-hide" type="button" id="gen-retry">Retry failed</button>
+              <button class="slds-button slds-button_neutral" type="button" id="gen-save">Save draft</button>
+              <button class="slds-button slds-button_brand" type="button" id="gen-next" disabled>Next: Review</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="generate.js"></script>
+  </body>
+</html>

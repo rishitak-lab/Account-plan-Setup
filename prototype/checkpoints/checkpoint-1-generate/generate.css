@@ -1,0 +1,249 @@
+/* Layout only. Visual values come from SLDS 2 global styling hooks. */
+
+.ap-gen {
+  max-width: 52rem;
+}
+
+.ap-gen__status {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.ap-gen__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 1.75rem;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+  border-radius: 1rem;
+  background: var(--slds-g-color-neutral-base-100, #ffffff);
+  color: var(--slds-g-color-neutral-base-10, #181818);
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.ap-gen__pill .slds-spinner {
+  position: relative;
+  top: auto;
+  left: auto;
+  transform: none;
+}
+
+.ap-gen__now,
+.ap-gen__meta,
+.ap-gen__context {
+  margin: 0;
+  text-align: center;
+  color: var(--slds-g-color-neutral-base-30, #444);
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.ap-gen__now {
+  color: var(--slds-g-color-neutral-base-10, #181818);
+  font-weight: 700;
+}
+
+.ap-gen__meta {
+  margin: 0.2rem 0 1.25rem;
+}
+
+.ap-create-head .slds-page-header__col-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.ap-task.is-running {
+  background: var(--slds-g-color-brand-base-95, #f3f8ff);
+}
+
+.ap-tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ap-step {
+  border: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+  border-radius: 0.25rem;
+  background: var(--slds-g-color-neutral-base-100, #ffffff);
+}
+
+.ap-step.is-running {
+  border-color: var(--slds-g-color-brand-base-80, #aacbff);
+}
+
+.ap-step.is-failed {
+  border-color: var(--slds-g-color-error-base-80, #feb8ab);
+}
+
+.ap-step__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border: 0;
+  background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ap-step__chevron {
+  flex: 0 0 auto;
+  transition: transform 0.12s ease;
+}
+
+.ap-step.is-open .ap-step__chevron {
+  transform: rotate(90deg);
+}
+
+.ap-step__name {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-weight: 700;
+}
+
+.ap-step__meta {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--slds-g-color-neutral-base-30, #444);
+  font-size: 0.75rem;
+}
+
+.ap-step__tasks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ap-step:not(.is-open) .ap-step__tasks,
+.ap-step:not(.is-open) .ap-step__empty {
+  display: none;
+}
+
+.ap-task {
+  display: grid;
+  grid-template-columns: 1.1rem minmax(0, 1fr) minmax(8rem, 38%);
+  align-items: start;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem 0.85rem 1.75rem;
+  border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+}
+
+.ap-task.is-failed {
+  background: var(--slds-g-color-error-base-95, #fef1ee);
+}
+
+.ap-task__marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1rem;
+  height: 1rem;
+  margin-top: 0.15rem;
+  border: 1px solid var(--slds-g-color-neutral-base-50, #747474);
+  border-radius: 50%;
+  background: var(--slds-g-color-neutral-base-100, #ffffff);
+}
+
+.ap-task__marker_running {
+  border-color: var(--slds-g-color-brand-base-50, #0176d3);
+  box-shadow: 0 0 0 2px var(--slds-g-color-brand-base-90, #d8e6fe);
+}
+
+.ap-task__marker_done,
+.ap-task__marker_failed {
+  border: 0;
+  background: transparent;
+}
+
+.ap-task__body {
+  min-width: 0;
+}
+
+.ap-task__name {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.ap-agent-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.35rem;
+  padding: 0.125rem 0.5rem 0.125rem 0.35rem;
+  border-radius: 1rem;
+  background: var(--slds-g-color-brand-base-95, #eef4ff);
+  color: var(--slds-g-color-brand-base-20, #032d60);
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.35;
+}
+
+.ap-agent-tag .slds-icon {
+  fill: currentColor;
+}
+
+.ap-agent-tag_person {
+  background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+  color: var(--slds-g-color-neutral-base-10, #181818);
+}
+
+.ap-task__state {
+  color: var(--slds-g-color-neutral-base-30, #444);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  text-align: right;
+}
+
+.ap-task__state b {
+  color: var(--slds-g-color-neutral-base-10, #181818);
+  font-weight: 700;
+}
+
+.ap-task__error {
+  margin: 0.35rem 0 0;
+  color: var(--slds-g-color-error-base-40, #ba0517);
+}
+
+.ap-create__actions .ap-status {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--slds-g-color-neutral-base-30, #444);
+}
+
+.ap-create__actions-end {
+  flex-wrap: nowrap;
+}
+
+.ap-create__actions .slds-button {
+  white-space: nowrap;
+}
+
+.ap-step__empty {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.85rem 1rem 0.85rem 1.75rem;
+  border-top: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+  color: var(--slds-g-color-neutral-base-30, #444);
+  font-size: 0.8125rem;
+}
+
+.ap-step__empty .ap-agent-tag {
+  margin-top: 0;
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Account Plan workflows</title>
+    <link rel="stylesheet" href="../../../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
+    <link rel="stylesheet" href="landing.css?v=0.54" />
+    <link rel="stylesheet" href="../../../shared/version-switcher.css?v=0.5" />
+  </head>
+  <body>
+    <div class="ap-app">
+      <header class="slds-global-header_container">
+        <div class="slds-global-header slds-grid slds-grid_align-spread">
+          <div class="slds-global-header__item">
+            <span class="slds-text-heading_small">Salesforce</span>
+          </div>
+          <div class="slds-global-header__item">
+            <span class="slds-avatar slds-avatar_circle slds-avatar_medium" title="Salesforce Admin">
+              <abbr class="slds-avatar__initials slds-icon-standard-user" title="Salesforce Admin">SA</abbr>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div class="ap-setup-bar slds-grid slds-grid_vertical-align-center">
+        <span class="slds-text-heading_small slds-p-horizontal_medium">Setup</span>
+        <span class="slds-text-title_bold ap-setup-tab" aria-current="page">Home</span>
+        <span class="slds-text-body_regular slds-p-horizontal_small">Object Manager</span>
+        <div class="slds-dropdown-trigger slds-dropdown-trigger_click ap-version" data-ap-version>
+          <button type="button" class="ap-version__button" data-ap-version-button aria-haspopup="true" aria-expanded="false" title="UI version">
+            <span class="ap-version__label" data-ap-version-label>Version 0</span>
+            <svg class="slds-icon slds-icon_xx-small slds-icon-text-default ap-version__chevron" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+            </svg>
+          </button>
+          <div class="slds-dropdown slds-dropdown_right ap-version__menu" data-ap-version-menu hidden>
+            <ul class="slds-dropdown__list" role="menu"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="ap-body slds-grid">
+        <nav class="ap-side slds-p-vertical_small" aria-label="Setup">
+          <ul class="slds-has-block-links_space">
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Administration</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Platform Tools</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_x-small">
+              <span class="slds-text-title_bold">Workflows</span>
+              <ul>
+                <li class="ap-side-current slds-p-left_medium slds-p-vertical_xx-small" aria-current="page">Workflow Setup</li>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">
+                  <a href="/agents/index.html">Workflow Agents</a>
+                </li>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">
+                  <a href="/templates/index.html">Workflow Templates</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+
+        <main class="ap-main slds-p-around_medium" id="main">
+          <div class="slds-page-header">
+            <div class="slds-page-header__row">
+              <div class="slds-page-header__col-title">
+                <div class="slds-media slds-media_center">
+                  <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-account">
+                      <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                        <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="slds-media__body">
+                    <p class="ap-kicker">Setup</p>
+                    <h1 class="ap-page-title">Workflow Setup</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="ap-status" id="next-flow" role="status"></p>
+
+          <section class="ap-welcome" aria-labelledby="welcome-heading">
+            <div class="ap-welcome__row">
+              <div class="ap-welcome__main">
+                <div class="ap-welcome__copy">
+                  <p class="ap-kicker ap-welcome__kicker">Account Plan</p>
+                  <h2 id="welcome-heading" class="ap-welcome-title">Create the workflow your relationship teams run.</h2>
+                  <p class="ap-welcome-copy">Describe, draft with agents, then publish when ready.</p>
+                </div>
+                <ol class="ap-timeline" aria-label="Your setup at a glance">
+                  <li class="ap-timeline__step">
+                    <span class="ap-timeline__marker" aria-hidden="true">1</span>
+                    <h3 class="ap-timeline__title">Describe</h3>
+                    <p class="ap-timeline__copy">Process and industry</p>
+                  </li>
+                  <li class="ap-timeline__step">
+                    <span class="ap-timeline__marker" aria-hidden="true">2</span>
+                    <h3 class="ap-timeline__title">Generate</h3>
+                    <p class="ap-timeline__copy">Agents draft the blueprint</p>
+                  </li>
+                  <li class="ap-timeline__step">
+                    <span class="ap-timeline__marker" aria-hidden="true">3</span>
+                    <h3 class="ap-timeline__title">Review</h3>
+                    <p class="ap-timeline__copy">Steps, tasks, and owners</p>
+                  </li>
+                  <li class="ap-timeline__step">
+                    <span class="ap-timeline__marker" aria-hidden="true">4</span>
+                    <h3 class="ap-timeline__title">Publish</h3>
+                    <p class="ap-timeline__copy">You edit. RM runs it.</p>
+                  </li>
+                </ol>
+              </div>
+              <figure class="ap-welcome__art">
+                <img src="assets/welcome-illustration.png" alt="" width="480" height="288" />
+              </figure>
+            </div>
+          </section>
+
+          <section class="slds-card slds-m-top_medium ap-workflows" aria-labelledby="list-heading">
+            <div class="slds-card__header ap-workflows__header">
+              <div class="ap-workflows__intro">
+                <h2 id="list-heading" class="ap-section-title ap-list-title">
+                  <span id="list-title">Workflows</span>
+                </h2>
+                <p class="ap-meta ap-list-subtitle" id="list-subtitle"></p>
+              </div>
+              <a class="slds-button slds-button_brand" href="../create/index.html" id="new-workflow" data-new-workflow>New workflow</a>
+            </div>
+            <div class="slds-tabs_default ap-workflows__tabs">
+              <ul class="slds-tabs_default__nav" role="tablist" aria-label="Workflow list">
+                <li class="slds-tabs_default__item slds-is-active" title="Active" role="presentation">
+                  <a class="slds-tabs_default__link" href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="workflow-panel" id="tab-active">Active</a>
+                </li>
+                <li class="slds-tabs_default__item" title="Archived" role="presentation">
+                  <a class="slds-tabs_default__link" href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="workflow-panel" id="tab-archived">Archived</a>
+                </li>
+              </ul>
+            </div>
+            <div class="slds-tabs_default__content slds-show" id="workflow-panel" role="tabpanel" aria-labelledby="tab-active">
+              <div class="slds-card__body slds-card__body_inner">
+                <div class="ap-empty" id="workflow-empty" hidden>
+                  <p class="ap-empty__title" id="workflow-empty-title"></p>
+                  <p class="ap-empty__copy" id="workflow-empty-copy"></p>
+                  <a class="slds-button slds-button_brand" href="../create/index.html" id="workflow-empty-cta" data-new-workflow hidden>New workflow</a>
+                </div>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered ap-table" id="workflow-table" aria-labelledby="list-heading">
+                  <thead>
+                    <tr class="slds-line-height_reset">
+                      <th scope="col">
+                        <button type="button" class="ap-th-sort" id="sort-name" aria-sort="none">
+                          <span class="slds-truncate" title="Workflow">Workflow</span>
+                          <span class="ap-th-sort__mark" aria-hidden="true"></span>
+                        </button>
+                      </th>
+                      <th scope="col"><div class="slds-truncate" title="Industry">Industry</div></th>
+                      <th scope="col"><div class="slds-truncate" title="Stage">Stage</div></th>
+                      <th scope="col"><div class="slds-truncate" title="Actions">Actions</div></th>
+                    </tr>
+                  </thead>
+                  <tbody id="workflow-rows"></tbody>
+                </table>
+                <p class="ap-meta ap-list-note" id="list-note"></p>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <section class="slds-modal slds-modal_small" role="dialog" aria-modal="true" aria-labelledby="delete-title" aria-describedby="delete-warning" hidden id="delete-dialog">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="delete-close" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 id="delete-title" class="slds-modal__title slds-hyphenate">Delete this workflow?</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium" id="delete-body">
+          <p id="delete-warning">Permanently delete this workflow. This can't be undone.</p>
+          <form id="delete-form">
+            <div class="slds-form-element slds-m-top_medium" id="delete-name-field">
+              <label class="slds-form-element__label" for="delete-name">
+                Type “<strong id="delete-name-target"></strong>” to confirm
+              </label>
+              <div class="slds-form-element__control">
+                <input class="slds-input" type="text" id="delete-name" name="delete-name" autocomplete="off" spellcheck="false" aria-describedby="delete-name-help" />
+              </div>
+              <div class="slds-form-element__help" id="delete-name-help">Type the exact workflow name to Delete.</div>
+            </div>
+          </form>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" type="button" id="delete-cancel">Cancel</button>
+          <button class="slds-button slds-button_destructive" type="button" id="delete-confirm" disabled>Delete</button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop" hidden id="delete-backdrop"></div>
+
+    <div class="slds-notify_container ap-toast-container slds-hide" id="workflow-toast">
+      <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
+        <span class="slds-assistive-text">Success</span>
+        <span class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top">
+          <svg class="slds-icon slds-icon_small" aria-hidden="true">
+            <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+          </svg>
+        </span>
+        <div class="slds-notify__content">
+          <h2 class="slds-text-heading_small" id="workflow-toast-title"></h2>
+          <p id="workflow-toast-body"></p>
+        </div>
+        <div class="slds-notify__close">
+          <button class="slds-button slds-button_icon slds-button_icon-inverse" type="button" id="workflow-toast-close" title="Close">
+            <svg class="slds-button__icon" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="landing.js?v=0.55"></script>
+    <script src="../../../shared/versions.js?v=0.5"></script>
+    <script src="../../../shared/version-switcher.js?v=0.5"></script>
+  </body>
+</html>

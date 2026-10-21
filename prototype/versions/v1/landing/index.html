@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Account Plan workflows</title>
+    <link rel="stylesheet" href="../../../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
+    <link rel="stylesheet" href="landing.css?v=0.52" />
+    <link rel="stylesheet" href="workflow-modal.css?v=0.17" />
+    <link rel="stylesheet" href="../../../shared/version-switcher.css?v=0.5" />
+  </head>
+  <body>
+    <div class="ap-app">
+      <header class="slds-global-header_container">
+        <div class="slds-global-header slds-grid slds-grid_align-spread">
+          <div class="slds-global-header__item">
+            <span class="slds-text-heading_small">Salesforce</span>
+          </div>
+          <div class="slds-global-header__item">
+            <span class="slds-avatar slds-avatar_circle slds-avatar_medium" title="Salesforce Admin">
+              <abbr class="slds-avatar__initials slds-icon-standard-user" title="Salesforce Admin">SA</abbr>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div class="ap-setup-bar slds-grid slds-grid_vertical-align-center">
+        <span class="slds-text-heading_small slds-p-horizontal_medium">Setup</span>
+        <span class="slds-text-title_bold ap-setup-tab" aria-current="page">Home</span>
+        <span class="slds-text-body_regular slds-p-horizontal_small">Object Manager</span>
+        <div class="slds-dropdown-trigger slds-dropdown-trigger_click ap-version" data-ap-version>
+          <button type="button" class="ap-version__button" data-ap-version-button aria-haspopup="true" aria-expanded="false" title="UI version">
+            <span class="ap-version__label" data-ap-version-label>Version 1</span>
+            <svg class="slds-icon slds-icon_xx-small slds-icon-text-default ap-version__chevron" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+            </svg>
+          </button>
+          <div class="slds-dropdown slds-dropdown_right ap-version__menu" data-ap-version-menu hidden>
+            <ul class="slds-dropdown__list" role="menu"></ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="ap-body slds-grid">
+        <nav class="ap-side slds-p-vertical_small" aria-label="Setup">
+          <ul class="slds-has-block-links_space">
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Administration</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Platform Tools</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_x-small">
+              <span class="slds-text-title_bold">Workflows</span>
+              <ul>
+                <li class="ap-side-current slds-p-left_medium slds-p-vertical_xx-small" aria-current="page">Workflow Setup</li>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">
+                  <a href="/agents/index.html">Workflow Agents</a>
+                </li>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">
+                  <a href="/templates/index.html">Workflow Templates</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+
+        <main class="ap-main slds-p-around_medium" id="main">
+          <div class="slds-page-header">
+            <div class="slds-page-header__row">
+              <div class="slds-page-header__col-title">
+                <div class="slds-media slds-media_center">
+                  <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-account">
+                      <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                        <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="slds-media__body">
+                    <p class="ap-kicker">Setup</p>
+                    <h1 class="ap-page-title">Workflow Setup</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="ap-status" id="next-flow" role="status"></p>
+
+          <section class="ap-welcome" aria-labelledby="welcome-heading">
+            <div class="ap-welcome__row">
+              <div class="ap-welcome__main">
+                <div class="ap-welcome__copy">
+                  <p class="ap-kicker ap-welcome__kicker">Account Plan</p>
+                  <h2 id="welcome-heading" class="ap-welcome-title">Create the workflow your relationship teams run.</h2>
+                  <p class="ap-welcome-copy">Describe, draft with agents, then publish when ready.</p>
+                </div>
+                <ol class="ap-timeline" aria-label="Your setup at a glance">
+                  <li class="ap-timeline__step">
+                    <span class="ap-timeline__marker" aria-hidden="true">1</span>
+                    <h3 class="ap-timeline__title">Describe</h3>
+                    <p class="ap-timeline__copy">Process, industry, and context</p>
+                  </li>
+                  <li class="ap-timeline__step">
+                    <span class="ap-timeline__marker" aria-hidden="true">2</span>
+                    <h3 class="ap-timeline__title">Blueprint</h3>
+                    <p class="ap-timeline__copy">Agents draft steps and tasks</p>
+                  </li>
+                  <li class="ap-timeline__step">
+                    <span class="ap-timeline__marker" aria-hidden="true">3</span>
+                    <h3 class="ap-timeline__title">Review &amp; Publish</h3>
+                    <p class="ap-timeline__copy">Confirm, then make it available</p>
+                  </li>
+                </ol>
+              </div>
+              <figure class="ap-welcome__art">
+                <img src="assets/welcome-illustration.png" alt="" width="480" height="288" />
+              </figure>
+            </div>
+          </section>
+
+          <section class="slds-card slds-m-top_medium ap-workflows" aria-labelledby="list-heading">
+            <div class="slds-card__header ap-workflows__header">
+              <div class="ap-workflows__intro">
+                <h2 id="list-heading" class="ap-section-title ap-list-title">
+                  <span id="list-title">Workflows</span>
+                </h2>
+                <p class="ap-meta ap-list-subtitle" id="list-subtitle"></p>
+              </div>
+              <button class="slds-button slds-button_brand" type="button" id="new-workflow" data-new-workflow>New workflow</button>
+            </div>
+            <div class="slds-tabs_default ap-workflows__tabs">
+              <ul class="slds-tabs_default__nav" role="tablist" aria-label="Workflow list">
+                <li class="slds-tabs_default__item slds-is-active" title="Active" role="presentation">
+                  <a class="slds-tabs_default__link" href="#" role="tab" tabindex="0" aria-selected="true" aria-controls="workflow-panel" id="tab-active">Active</a>
+                </li>
+                <li class="slds-tabs_default__item" title="Archived" role="presentation">
+                  <a class="slds-tabs_default__link" href="#" role="tab" tabindex="-1" aria-selected="false" aria-controls="workflow-panel" id="tab-archived">Archived</a>
+                </li>
+              </ul>
+            </div>
+            <div class="slds-tabs_default__content slds-show" id="workflow-panel" role="tabpanel" aria-labelledby="tab-active">
+              <div class="slds-card__body slds-card__body_inner">
+                <div class="ap-empty" id="workflow-empty" hidden>
+                  <p class="ap-empty__title" id="workflow-empty-title"></p>
+                  <p class="ap-empty__copy" id="workflow-empty-copy"></p>
+                  <button class="slds-button slds-button_brand" type="button" id="workflow-empty-cta" data-new-workflow hidden>New workflow</button>
+                </div>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered ap-table" id="workflow-table" aria-labelledby="list-heading">
+                  <thead>
+                    <tr class="slds-line-height_reset">
+                      <th scope="col">
+                        <button type="button" class="ap-th-sort" id="sort-name" aria-sort="none">
+                          <span class="slds-truncate" title="Workflow">Workflow</span>
+                          <span class="ap-th-sort__mark" aria-hidden="true"></span>
+                        </button>
+                      </th>
+                      <th scope="col"><div class="slds-truncate" title="Industry">Industry</div></th>
+                      <th scope="col"><div class="slds-truncate" title="Stage">Stage</div></th>
+                      <th scope="col"><div class="slds-truncate" title="Actions">Actions</div></th>
+                    </tr>
+                  </thead>
+                  <tbody id="workflow-rows"></tbody>
+                </table>
+                <p class="ap-meta ap-list-note" id="list-note"></p>
+              </div>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <section class="slds-modal slds-modal_small" role="dialog" aria-modal="true" aria-labelledby="delete-title" aria-describedby="delete-warning" hidden id="delete-dialog">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="delete-close" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 id="delete-title" class="slds-modal__title slds-hyphenate">Delete this workflow?</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium" id="delete-body">
+          <p id="delete-warning">Permanently delete this workflow. This can't be undone.</p>
+          <form id="delete-form">
+            <div class="slds-form-element slds-m-top_medium">
+              <label class="slds-form-element__label" for="delete-name">Type the workflow name to confirm</label>
+              <div class="slds-form-element__control">
+                <input class="slds-input" type="text" id="delete-name" name="delete-name" autocomplete="off" spellcheck="false" />
+              </div>
+            </div>
+          </form>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" type="button" id="delete-cancel">Cancel</button>
+          <button class="slds-button slds-button_destructive" type="button" id="delete-confirm" disabled>Delete</button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop" hidden id="delete-backdrop"></div>
+
+    <section class="slds-modal slds-modal_large ap-wf-modal" role="dialog" aria-modal="true" aria-labelledby="wf-modal-title" tabindex="-1" hidden id="workflow-modal">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-close" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 id="wf-modal-title" class="slds-modal__title slds-hyphenate">Describe the workflow</h2>
+        </header>
+        <div class="slds-modal__content">
+          <div class="ap-wf-shell">
+            <nav class="ap-wf-steps" aria-label="Setup progress">
+              <ol class="ap-wf-steps__list">
+                <li class="ap-wf-steps__item ap-wf-steps__item_active" id="wf-step-describe" aria-current="step">
+                  <span class="ap-wf-steps__marker" aria-hidden="true"></span>
+                  <span class="ap-wf-steps__label">Describe workflow</span>
+                </li>
+                <li class="ap-wf-steps__item" id="wf-step-blueprint">
+                  <span class="ap-wf-steps__marker" aria-hidden="true"></span>
+                  <span class="ap-wf-steps__label">Workflow blueprint</span>
+                </li>
+              </ol>
+            </nav>
+            <div class="ap-wf-pane" id="wf-pane-describe">
+              <div class="ap-wf-pane__scroll">
+                <form class="ap-wf-form slds-form" id="wf-describe-form" novalidate>
+                  <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="wf-name">Workflow name <abbr class="slds-required" title="required">*</abbr></label>
+                    <div class="slds-form-element__control">
+                      <input class="slds-input" type="text" id="wf-name" required />
+                    </div>
+                    <div class="slds-form-element__help slds-hide" id="wf-name-error">Enter a workflow name.</div>
+                  </div>
+                  <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="wf-industry">Industry <abbr class="slds-required" title="required">*</abbr></label>
+                    <div class="slds-form-element__control">
+                      <div class="slds-select_container">
+                        <select class="slds-select" id="wf-industry" required>
+                          <option value="Commercial banking">Commercial banking</option>
+                          <option value="Technology">Technology</option>
+                          <option value="Manufacturing">Manufacturing</option>
+                          <option value="Healthcare">Healthcare</option>
+                          <option value="Financial services">Financial services</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="wf-process">Process description <abbr class="slds-required" title="required">*</abbr></label>
+                    <div class="slds-form-element__control">
+                      <textarea class="slds-textarea" id="wf-process" rows="8" required></textarea>
+                    </div>
+                    <div class="slds-form-element__help slds-hide" id="wf-process-error">Enter a process description.</div>
+                  </div>
+                  <div class="slds-form-element">
+                    <span class="slds-form-element__label" id="wf-file-label">Upload files</span>
+                    <p class="ap-wf-upload-help">
+                      Add policy docs, prior plans, or examples agents should follow when they draft this blueprint.
+                      Linked files must be ones you can access. Uploads stay with the definition until you remove them.
+                    </p>
+                    <div class="slds-form-element__control">
+                      <div class="slds-file-selector slds-file-selector_files">
+                        <div class="slds-file-selector__dropzone" id="wf-file-dropzone">
+                          <input type="file" class="slds-file-selector__input slds-assistive-text" id="wf-file-input" multiple accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.gif,.webp,.txt,.csv" aria-labelledby="wf-file-label" />
+                          <label class="slds-file-selector__body" for="wf-file-input">
+                            <span class="slds-file-selector__button slds-button slds-button_neutral">Upload files</span>
+                            <span class="slds-file-selector__text">or drop files here</span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="ap-wf-upload-formats">Supported formats: PDF, DOC, DOCX, TXT, XLS, XLSX, CSV, PPT, PPTX, PNG, JPG, GIF, WEBP</p>
+                  </div>
+                  <div class="slds-form-element">
+                    <label class="slds-form-element__label" for="wf-context-link">Share a file link</label>
+                    <div class="slds-form-element__control">
+                      <div class="ap-wf-link-row">
+                        <input class="slds-input" type="url" id="wf-context-link" placeholder="https://" />
+                        <button class="slds-button slds-button_neutral" type="button" id="wf-link-add">Add link</button>
+                      </div>
+                    </div>
+                  </div>
+                  <ul class="ap-wf-thumbs" id="wf-context-list" aria-label="Added files and links" hidden></ul>
+                  <div class="ap-wf-agentic" id="wf-agentic">
+                    <div class="ap-wf-agentic__row">
+                      <div class="ap-wf-agentic__copy">
+                        <p class="ap-wf-agentic__title" id="wf-agentic-label">Build with agent</p>
+                        <p class="ap-wf-agentic__help">Drafts the blueprint from your description (~30–45 min saved). Off starts blank.</p>
+                      </div>
+                      <button type="button" class="ap-switch" id="wf-build-agent" role="switch" aria-checked="false" aria-labelledby="wf-agentic-label" title="Build with agent"></button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div class="ap-wf-pane" id="wf-pane-blueprint" hidden>
+              <div class="ap-wf-pane__scroll">
+                <div class="ap-wf-gen-banner" id="wf-gen-banner" hidden>
+                  <span class="ap-wf-gen-banner__pulse" aria-hidden="true"></span>
+                  <span>Agents are drafting the blueprint from your description…</span>
+                </div>
+                <div class="ap-wf-blueprint-head" id="wf-blueprint-head" hidden>
+                  <div class="ap-wf-blueprint-head__top">
+                    <div class="ap-wf-blueprint-head__main">
+                      <h3 class="ap-wf-blueprint-head__title">Account plan creation steps</h3>
+                      <button class="slds-button slds-button_neutral" type="button" id="wf-reorder">Reorder</button>
+                      <span class="ap-blueprint-status" id="wf-blueprint-status"><span class="ap-blueprint-status__dot" aria-hidden="true"></span> Blueprint status: Ready</span>
+                    </div>
+                    <p class="ap-wf-blueprint-head__legend">
+                      <span class="ap-type ap-type_agent">Agent</span>
+                      <span class="ap-type ap-type_person">Person</span>
+                    </p>
+                  </div>
+                  <p class="ap-wf-blueprint-meta" id="wf-blueprint-count"></p>
+                </div>
+                <div class="ap-wf-empty" id="wf-empty" hidden>
+                  <p class="ap-wf-empty__title">Blank blueprint</p>
+                  <p class="ap-wf-empty__copy">Add workflow steps and tasks yourself. Nothing is generated until you ask an agent to build.</p>
+                  <button class="slds-button slds-button_brand" type="button" id="wf-add-step">Add workflow step</button>
+                </div>
+                <ol class="ap-wf-outline" id="wf-outline" aria-label="Account plan creation steps"></ol>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="slds-modal__footer ap-wf-footer">
+          <button class="slds-button slds-button_neutral" type="button" id="wf-back" hidden>Back</button>
+          <p class="ap-wf-status" id="wf-status" role="status"></p>
+          <div class="ap-wf-footer__actions">
+            <button class="slds-button slds-button_brand" type="button" id="wf-test" hidden>
+              <svg class="slds-button__icon slds-button__icon_left slds-hide" id="wf-test-ok" aria-hidden="true">
+                <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+              </svg>
+              Test run blueprint
+            </button>
+            <button class="slds-button slds-button_neutral" type="button" id="wf-template" hidden aria-disabled="true" aria-describedby="wf-template-gate" title="Test the blueprint before saving as a template">Save as template</button>
+            <button class="slds-button slds-button_neutral" type="button" id="wf-secondary">Save draft</button>
+            <button class="slds-button slds-button_brand" type="button" id="wf-primary" aria-describedby="wf-publish-gate">Continue to blueprint</button>
+            <span class="slds-assistive-text" id="wf-template-gate">Test the blueprint before saving as a template</span>
+            <span class="slds-assistive-text" id="wf-publish-gate">Test the blueprint before publishing</span>
+          </div>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop" hidden id="workflow-modal-backdrop"></div>
+
+    <div class="slds-backdrop ap-wf-nested-back" hidden id="wf-edit-backdrop"></div>
+
+    <section class="slds-modal slds-modal_large ap-wf-nested" role="dialog" aria-modal="true" aria-labelledby="wf-test-title" tabindex="-1" hidden id="wf-test-modal">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-test-close" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-modal__title" id="wf-test-title">Test run</h2>
+          <p class="ap-modal__context">Checks that agents and steps are configured and run correctly. No account data is used.</p>
+        </header>
+        <div class="slds-modal__content ap-wf-test-content">
+          <div class="ap-test">
+            <p class="ap-test__status" id="wf-test-stage"></p>
+            <ol class="ap-testtree" id="wf-test-run-list"></ol>
+          </div>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_brand" type="button" id="wf-test-done" hidden>Done</button>
+        </footer>
+      </div>
+    </section>
+
+    <section class="slds-modal slds-modal_small ap-wf-nested" role="dialog" aria-modal="true" aria-labelledby="wf-reorder-title" tabindex="-1" hidden id="wf-reorder-modal">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-reorder-close" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-modal__title" id="wf-reorder-title">Reorder workflow steps</h2>
+          <p class="ap-modal__context">Drag a step or use the arrows. Save applies the order to the blueprint.</p>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <ol class="ap-wf-reorder-list" id="wf-reorder-list"></ol>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_brand" type="button" id="wf-reorder-save">Save</button>
+        </footer>
+      </div>
+    </section>
+
+    <section class="slds-modal slds-modal_large ap-wf-nested" role="dialog" aria-modal="true" aria-labelledby="wf-step-edit-title" tabindex="-1" hidden id="wf-step-edit">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-step-edit-close" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-modal__title" id="wf-step-edit-title">Edit workflow step</h2>
+          <p class="ap-modal__context" id="wf-step-edit-context"></p>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-step-name">Step / stage name <abbr class="slds-required" title="required">*</abbr></label>
+            <div class="slds-form-element__control"><input class="slds-input" id="wf-step-name" type="text" required /></div>
+          </div>
+          <div class="slds-form-element">
+            <span class="slds-form-element__label">Start rule</span>
+            <div class="slds-form-element__control">
+              <fieldset class="ap-wf-start-rules">
+                <legend class="slds-assistive-text">Start rule</legend>
+                <label class="ap-wf-start-rules__option"><input type="radio" name="wf-step-start" value="workflow" /> Workflow starts</label>
+                <label class="ap-wf-start-rules__option"><input type="radio" name="wf-step-start" value="previous" /> Previous stage completes</label>
+                <label class="ap-wf-start-rules__option"><input type="radio" name="wf-step-start" value="custom" /> Custom rule</label>
+              </fieldset>
+            </div>
+          </div>
+          <div class="slds-form-element" id="wf-step-custom-wrap" hidden>
+            <label class="slds-form-element__label" for="wf-step-custom">Custom rule</label>
+            <div class="slds-form-element__control"><input class="slds-input" id="wf-step-custom" type="text" /></div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-step-depends">Dependencies</label>
+            <div class="slds-form-element__control">
+              <div class="slds-select_container">
+                <select class="slds-select" id="wf-step-depends"></select>
+              </div>
+            </div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-step-desc">Description</label>
+            <div class="slds-form-element__control"><textarea class="slds-textarea" id="wf-step-desc" rows="3"></textarea></div>
+          </div>
+          <div class="ap-wf-contained">
+            <h3 class="ap-wf-contained__title" id="wf-step-task-count">Contained tasks</h3>
+            <div class="ap-wf-contained__wrap" id="wf-step-task-wrap">
+              <table class="ap-wf-contained__table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Task / outline order</th>
+                    <th>Type</th>
+                    <th>Start / dependency</th>
+                    <th>Due / SLA</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="wf-step-task-body"></tbody>
+              </table>
+            </div>
+            <p class="ap-wf-contained__empty slds-hide" id="wf-step-task-empty">No agent tasks. This step is person-owned.</p>
+          </div>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_brand" type="button" id="wf-step-edit-save">Save changes</button>
+        </footer>
+      </div>
+    </section>
+
+    <section class="slds-modal slds-modal_large ap-wf-nested" role="dialog" aria-modal="true" aria-labelledby="wf-task-edit-title" tabindex="-1" hidden id="wf-task-edit">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-task-edit-close" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-modal__title" id="wf-task-edit-title">Edit task</h2>
+          <p class="ap-modal__context" id="wf-task-edit-context"></p>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-task-name">Name <abbr class="slds-required" title="required">*</abbr></label>
+            <div class="slds-form-element__control"><input class="slds-input" id="wf-task-name" type="text" required /></div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-task-start">Start</label>
+            <div class="slds-form-element__control ap-wf-split">
+              <div class="slds-select_container">
+                <select class="slds-select" id="wf-task-start"></select>
+              </div>
+              <div class="slds-select_container">
+                <select class="slds-select" id="wf-task-depends"></select>
+              </div>
+            </div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-task-due">Due / SLA</label>
+            <div class="slds-form-element__control">
+              <div class="slds-select_container">
+                <select class="slds-select" id="wf-task-due">
+                  <option>Instant</option>
+                  <option>1 day</option>
+                  <option>3 days</option>
+                  <option>5 days</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-task-who">Assigned to <abbr class="slds-required" title="required">*</abbr></label>
+            <div class="slds-form-element__control">
+              <div class="slds-select_container">
+                <select class="slds-select" id="wf-task-who"></select>
+              </div>
+            </div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-task-fallback">Fallback</label>
+            <div class="slds-form-element__control">
+              <div class="slds-select_container">
+                <select class="slds-select" id="wf-task-fallback"></select>
+              </div>
+            </div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-task-cc">Cc</label>
+            <div class="slds-form-element__control">
+              <div class="slds-select_container">
+                <select class="slds-select" id="wf-task-cc">
+                  <option>Relationship Manager</option>
+                  <option>None</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-task-esc">Escalations</label>
+            <div class="slds-form-element__control ap-wf-split">
+              <div class="slds-select_container">
+                <select class="slds-select" id="wf-task-esc">
+                  <option>Team lead · escalate after SLA</option>
+                  <option>None</option>
+                </select>
+              </div>
+              <button class="slds-button slds-button_neutral" type="button" id="wf-task-add-esc">Add escalation</button>
+            </div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-task-instructions">Description / instructions</label>
+            <div class="slds-form-element__control"><textarea class="slds-textarea" id="wf-task-instructions" rows="4"></textarea></div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label">Documents / sources</label>
+            <div class="slds-form-element__control ap-wf-split">
+              <button class="slds-button slds-button_neutral" type="button" id="wf-task-attach">Attach</button>
+              <p class="slds-form-element__help" id="wf-task-sources"></p>
+            </div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="wf-task-tags">Tags</label>
+            <div class="slds-form-element__control"><input class="slds-input" id="wf-task-tags" type="text" /></div>
+          </div>
+        </div>
+        <footer class="slds-modal__footer ap-wf-task-footer">
+          <button class="slds-button" type="button" id="wf-task-delete">Delete task</button>
+          <button class="slds-button slds-button_brand" type="button" id="wf-task-edit-save">Save changes</button>
+        </footer>
+      </div>
+    </section>
+
+    <div class="slds-notify_container ap-toast-container slds-hide" id="workflow-toast">
+      <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
+        <span class="slds-assistive-text">Success</span>
+        <span class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top">
+          <svg class="slds-icon slds-icon_small" aria-hidden="true">
+            <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+          </svg>
+        </span>
+        <div class="slds-notify__content">
+          <h2 class="slds-text-heading_small" id="workflow-toast-title"></h2>
+          <p id="workflow-toast-body"></p>
+        </div>
+        <div class="slds-notify__close">
+          <button class="slds-button slds-button_icon slds-button_icon-inverse" type="button" id="workflow-toast-close" title="Close">
+            <svg class="slds-button__icon" aria-hidden="true">
+              <use href="../../../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="landing.js?v=0.50"></script>
+    <script src="workflow-modal.js?v=0.12"></script>
+    <script src="../../../shared/versions.js?v=0.5"></script>
+    <script src="../../../shared/version-switcher.js?v=0.5"></script>
+  </body>
+</html>

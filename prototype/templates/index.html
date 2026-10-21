@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Workflow Templates</title>
+    <link rel="stylesheet" href="../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
+    <link rel="stylesheet" href="../landing/landing.css?v=0.41" />
+    <link rel="stylesheet" href="templates.css?v=0.18" />
+  </head>
+  <body>
+    <div class="ap-app">
+      <header class="slds-global-header_container">
+        <div class="slds-global-header slds-grid slds-grid_align-spread">
+          <div class="slds-global-header__item">
+            <span class="slds-text-heading_small">Salesforce</span>
+          </div>
+          <div class="slds-global-header__item slds-global-header__item_search">
+            <div class="slds-form-element">
+              <label class="slds-form-element__label slds-assistive-text" for="setup-search">Search Setup</label>
+              <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                  <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                </svg>
+                <input id="setup-search" class="slds-input" type="search" placeholder="Search Setup" />
+              </div>
+            </div>
+          </div>
+          <div class="slds-global-header__item">
+            <span class="slds-avatar slds-avatar_circle slds-avatar_medium" title="Priya Mehta">
+              <abbr class="slds-avatar__initials slds-icon-standard-user" title="Priya Mehta">PM</abbr>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div class="ap-setup-bar slds-grid slds-grid_vertical-align-center">
+        <span class="slds-text-heading_small slds-p-horizontal_medium">Setup</span>
+        <span class="slds-text-title_bold ap-setup-tab" aria-current="page">Home</span>
+        <span class="slds-text-body_regular slds-p-horizontal_small">Object Manager</span>
+      </div>
+
+      <div class="ap-body slds-grid">
+        <nav class="ap-side slds-p-vertical_small" aria-label="Setup">
+          <div class="slds-form-element slds-p-horizontal_small slds-m-bottom_small">
+            <label class="slds-assistive-text" for="quick-find">Quick Find</label>
+            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+              <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+              </svg>
+              <input id="quick-find" class="slds-input" type="search" placeholder="Quick Find" />
+            </div>
+          </div>
+          <ul class="slds-has-block-links_space">
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Administration</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Platform Tools</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_x-small">
+              <span class="slds-text-title_bold">Workflows</span>
+              <ul>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">
+                  <a href="/landing/index.html" data-ap-setup-link>Workflow Setup</a>
+                </li>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">
+                  <a href="/agents/index.html">Workflow Agents</a>
+                </li>
+                <li class="ap-side-current slds-p-left_medium slds-p-vertical_xx-small" aria-current="page">Workflow Templates</li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+
+        <main class="ap-main slds-p-around_medium" id="main">
+          <div class="slds-page-header">
+            <div class="slds-page-header__row">
+              <div class="slds-page-header__col-title">
+                <div class="slds-media slds-media_center">
+                  <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-standard-template">
+                      <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                        <use href="../node_modules/@salesforce-ux/design-system/assets/icons/standard-sprite/svg/symbols.svg#template"></use>
+                      </svg>
+                    </span>
+                  </div>
+                  <div class="slds-media__body">
+                    <p class="ap-kicker">Setup</p>
+                    <h1 class="ap-page-title">Workflow Templates</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="ap-status" id="template-status" role="status"></p>
+          <div class="ap-templates-lede-row">
+            <p class="ap-meta ap-templates-lede">Start from a reviewed Account Plan blueprint. Using a template opens a new draft. You still test before you publish.</p>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label slds-assistive-text" for="template-search">Search templates</label>
+              <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                  <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                </svg>
+                <input id="template-search" class="slds-input ap-templates-search" type="search" placeholder="Search templates" />
+              </div>
+            </div>
+          </div>
+
+          <section class="ap-templates-section" aria-labelledby="starter-heading" id="starter-section">
+            <h2 id="starter-heading" class="ap-section-title">Starter templates</h2>
+            <p class="ap-meta ap-list-subtitle">Different Account Plan shapes. Industry selects compliance.</p>
+            <ul class="ap-template-grid" id="starter-grid"></ul>
+          </section>
+
+          <section class="ap-templates-section" aria-labelledby="org-heading" id="org-section">
+            <h2 id="org-heading" class="ap-section-title">Created by you</h2>
+            <p class="ap-meta ap-list-subtitle">Blueprints you saved from Review.</p>
+            <p class="ap-meta" id="org-empty">Save as template on Review to add one here.</p>
+            <ul class="ap-template-grid" id="org-grid"></ul>
+          </section>
+
+          <p class="ap-meta ap-templates-empty slds-hide" id="search-empty">No templates match.</p>
+        </main>
+      </div>
+    </div>
+
+    <section class="slds-modal slds-modal_small" role="dialog" aria-modal="true" aria-labelledby="template-delete-title" aria-describedby="template-delete-warning" hidden id="template-delete-dialog">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="template-delete-close" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 id="template-delete-title" class="slds-modal__title slds-hyphenate">Delete this template?</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <p id="template-delete-warning">Permanently delete this template. This can't be undone.</p>
+          <form id="template-delete-form">
+            <div class="slds-form-element slds-m-top_medium" id="template-delete-name-field">
+              <label class="slds-form-element__label" for="template-delete-name">
+                Type “<strong id="template-delete-name-target"></strong>” to confirm
+              </label>
+              <div class="slds-form-element__control">
+                <input class="slds-input" type="text" id="template-delete-name" name="template-delete-name" autocomplete="off" spellcheck="false" aria-describedby="template-delete-name-help" />
+              </div>
+              <div class="slds-form-element__help" id="template-delete-name-help">Type the exact template name to enable Delete.</div>
+            </div>
+          </form>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" type="button" id="template-delete-cancel">Cancel</button>
+          <button class="slds-button slds-button_destructive" type="button" id="template-delete-confirm" disabled>Delete</button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop" hidden id="template-delete-backdrop"></div>
+
+    <section class="slds-modal slds-modal_small" role="dialog" aria-modal="true" aria-labelledby="template-share-title" hidden id="template-share-dialog">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="template-share-close" title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 id="template-share-title" class="slds-modal__title slds-hyphenate">Share template</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <p class="ap-meta slds-m-bottom_small" id="template-share-lead">Share this blueprint with another Admin on your team.</p>
+          <div class="slds-form-element slds-m-bottom_small">
+            <label class="slds-form-element__label" for="template-share-name">
+              <abbr class="slds-required" title="required">*</abbr> Admin name
+            </label>
+            <div class="slds-form-element__control">
+              <input id="template-share-name" class="slds-input" type="text" autocomplete="off" />
+            </div>
+          </div>
+          <div class="slds-form-element">
+            <label class="slds-form-element__label" for="template-share-message">Message</label>
+            <div class="slds-form-element__control">
+              <textarea id="template-share-message" class="slds-textarea" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" type="button" id="template-share-cancel">Cancel</button>
+          <button class="slds-button slds-button_brand" type="button" id="template-share-send">Send</button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop" hidden id="template-share-backdrop"></div>
+
+    <div class="slds-notify_container ap-toast-container slds-hide" id="template-toast">
+      <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
+        <span class="slds-assistive-text">Success</span>
+        <span class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top">
+          <svg class="slds-icon slds-icon_small" aria-hidden="true">
+            <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+          </svg>
+        </span>
+        <div class="slds-notify__content">
+          <h2 class="slds-text-heading_small" id="template-toast-title"></h2>
+          <p id="template-toast-body"></p>
+        </div>
+        <div class="slds-notify__close">
+          <button class="slds-button slds-button_icon slds-button_icon-inverse" type="button" id="template-toast-close" title="Close">
+            <svg class="slds-button__icon" aria-hidden="true">
+              <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="templates.js?v=0.18"></script>
+    <script src="../shared/versions.js?v=0.5"></script>
+    <script src="../shared/version-switcher.js?v=0.5"></script>
+  </body>
+</html>

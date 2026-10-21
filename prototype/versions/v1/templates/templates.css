@@ -1,0 +1,174 @@
+/* Layout only. Visual values come from SLDS 2 global styling hooks. */
+
+.ap-templates-search {
+  min-width: 14rem;
+}
+
+.ap-templates-lede-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.ap-templates-lede {
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.ap-templates-section {
+  margin-top: 1.5rem;
+}
+
+.ap-template-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 1rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ap-template-grid > li {
+  display: flex;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.ap-template-grid > li:hover,
+.ap-template-grid > li:focus-within {
+  z-index: 3;
+}
+
+.ap-template {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  overflow: visible;
+  background: var(--slds-g-color-neutral-base-100, #ffffff);
+  border: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
+  border-radius: 0.25rem;
+}
+
+.ap-template:hover,
+.ap-template:focus-within {
+  border-color: var(--slds-g-color-brand-base-60, #1b96ff);
+}
+
+.ap-template__kebab {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+  left: auto;
+  width: max-content;
+  z-index: 5;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.ap-template__kebab > .slds-button_icon {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.ap-template__kebab > .slds-button_icon:hover,
+.ap-template__kebab > .slds-button_icon:focus {
+  background: var(--slds-g-color-neutral-base-95, #f3f3f3);
+}
+
+.ap-template__kebab .slds-dropdown {
+  position: absolute;
+  top: calc(100% + 0.25rem);
+  right: 0;
+  left: auto;
+  z-index: 6;
+  min-width: 8.5rem;
+}
+
+.ap-template__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+  padding: 0.65rem 0.7rem 0.7rem;
+}
+
+.ap-template__title {
+  margin: 0;
+  padding-right: 1.5rem;
+  color: var(--slds-g-color-neutral-base-10, #181818);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.25;
+  min-height: 2.5em;
+}
+
+.ap-template__summary {
+  margin: 0.25rem 0 0;
+  color: var(--slds-g-color-neutral-base-30, #444);
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  min-height: 4.05em;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
+}
+
+.ap-template__meta {
+  margin: 0.35rem 0 0;
+  color: var(--slds-g-color-neutral-base-30, #444);
+  font-size: 0.75rem;
+}
+
+.ap-template__foot {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.85rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.ap-template__creator {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  min-width: 0;
+  max-width: 100%;
+  margin: 0;
+}
+
+.ap-template__creator .slds-avatar {
+  flex: 0 0 auto;
+}
+
+.ap-template__who {
+  min-width: 0;
+  color: var(--slds-g-color-neutral-base-30, #444);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ap-templates-empty {
+  margin-top: 1.5rem;
+}
+
+#template-delete-dialog[hidden],
+#template-delete-backdrop[hidden],
+#template-share-dialog[hidden],
+#template-share-backdrop[hidden] {
+  display: none;
+}

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Review blueprint</title>
+    <link rel="stylesheet" href="../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
+    <link rel="stylesheet" href="../landing/landing.css?v=0.31" />
+    <link rel="stylesheet" href="../create/create.css?v=0.30" />
+    <link rel="stylesheet" href="../generate/generate.css?v=0.26" />
+    <link rel="stylesheet" href="review.css?v=0.45" />
+  </head>
+  <body>
+    <div class="ap-app">
+      <header class="slds-global-header_container">
+        <div class="slds-global-header slds-grid slds-grid_align-spread">
+          <div class="slds-global-header__item">
+            <span class="slds-text-heading_small">Salesforce</span>
+          </div>
+          <div class="slds-global-header__item slds-global-header__item_search">
+            <div class="slds-form-element">
+              <label class="slds-form-element__label slds-assistive-text" for="setup-search">Search Setup</label>
+              <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                  <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                </svg>
+                <input id="setup-search" class="slds-input" type="search" placeholder="Search Setup" />
+              </div>
+            </div>
+          </div>
+          <div class="slds-global-header__item">
+            <span class="slds-avatar slds-avatar_circle slds-avatar_medium" title="Salesforce Admin">
+              <abbr class="slds-avatar__initials slds-icon-standard-user" title="Salesforce Admin">SA</abbr>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div class="ap-setup-bar slds-grid slds-grid_vertical-align-center">
+        <span class="slds-text-heading_small slds-p-horizontal_medium">Setup</span>
+        <span class="slds-text-title_bold ap-setup-tab">Home</span>
+        <span class="slds-text-body_regular slds-p-horizontal_small">Object Manager</span>
+      </div>
+
+      <div class="ap-body slds-grid">
+        <nav class="ap-side slds-p-vertical_small" aria-label="Setup">
+          <div class="slds-form-element slds-p-horizontal_small slds-m-bottom_small">
+            <label class="slds-assistive-text" for="quick-find">Quick Find</label>
+            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+              <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+              </svg>
+              <input id="quick-find" class="slds-input" type="search" placeholder="Quick Find" />
+            </div>
+          </div>
+          <ul class="slds-has-block-links_space">
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Administration</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_xx-small">Platform Tools</li>
+            <li class="slds-p-horizontal_small slds-p-vertical_x-small">
+              <span class="slds-text-title_bold">Workflows</span>
+              <ul>
+                <li class="ap-side-current slds-p-left_medium slds-p-vertical_xx-small" aria-current="page">
+                  <a href="/landing/index.html" data-ap-setup-link>Workflow Setup</a>
+                </li>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">
+                  <a href="/agents/index.html">Workflow Agents</a>
+                </li>
+                <li class="slds-p-left_medium slds-p-vertical_xx-small">
+                  <a href="/templates/index.html">Workflow Templates</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+
+        <main class="ap-main" id="main">
+          <div class="ap-create-head slds-p-around_medium">
+            <div class="slds-page-header ap-review-head">
+              <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                  <div class="slds-media slds-media_center">
+                    <div class="slds-media__figure">
+                      <span class="slds-icon_container slds-icon-standard-account">
+                        <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                          <use href="../node_modules/@salesforce-ux/design-system/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+                        </svg>
+                      </span>
+                    </div>
+                    <div class="slds-media__body">
+                      <nav role="navigation" aria-label="Breadcrumbs">
+                        <ol class="slds-breadcrumb slds-list_horizontal slds-wrap">
+                          <li class="slds-breadcrumb__item slds-line-height_reset">
+                            <a href="/landing/index.html" data-ap-setup-link>Workflow Setup</a>
+                          </li>
+                          <li class="slds-breadcrumb__item slds-line-height_reset">
+                            <span aria-current="page">New workflow</span>
+                          </li>
+                        </ol>
+                      </nav>
+                      <h1 class="ap-page-title" id="review-title">Review blueprint</h1>
+                      <p class="ap-page-meta" id="review-count">4 stages · 10 tasks · dependencies and human gates are inspectable</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="ap-create-head__progress">
+                  <nav class="ap-setup-progress" aria-label="Setup stages">
+                    <ol class="ap-setup-progress__list">
+                      <li class="ap-setup-progress__item ap-setup-progress__item_complete">
+                        <span class="ap-setup-progress__marker">
+                          <svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+                            <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+                          </svg>
+                        </span>
+                        <a class="ap-setup-progress__label" href="../create/index.html">Describe</a>
+                        <span class="slds-assistive-text">Complete</span>
+                      </li>
+                      <li class="ap-setup-progress__item ap-setup-progress__item_complete">
+                        <span class="ap-setup-progress__marker">
+                          <svg class="slds-icon slds-icon_xx-small" aria-hidden="true">
+                            <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+                          </svg>
+                        </span>
+                        <a class="ap-setup-progress__label" href="../generate/index.html">Generate</a>
+                        <span class="slds-assistive-text">Complete</span>
+                      </li>
+                      <li class="ap-setup-progress__item ap-setup-progress__item_active" aria-current="step">
+                        <span class="ap-setup-progress__marker"></span>
+                        <span class="ap-setup-progress__label">Review</span>
+                        <span class="slds-assistive-text">Active</span>
+                      </li>
+                    </ol>
+                  </nav>
+                </div>
+                <div class="slds-page-header__col-actions ap-create-head__aside">
+                  <button class="slds-button slds-button_brand" type="button" id="review-test">
+                    <svg class="slds-button__icon slds-button__icon_left slds-hide" id="review-test-ok" aria-hidden="true">
+                      <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+                    </svg>
+                    Test run blueprint
+                  </button>
+                  <button class="slds-button slds-button_neutral" type="button" id="review-template" aria-disabled="true" aria-describedby="template-gate">Save as template</button>
+                  <button class="slds-button slds-button_brand" type="button" id="review-publish" aria-disabled="true" aria-describedby="publish-gate">
+                    <span class="slds-spinner slds-spinner_x-small slds-spinner_inverse slds-hide" id="review-publish-spin" aria-hidden="true">
+                      <div class="slds-spinner__dot-a"></div>
+                      <div class="slds-spinner__dot-b"></div>
+                    </span>
+                    <span id="review-publish-label">Publish</span>
+                  </button>
+                  <span class="slds-assistive-text" id="template-gate">Test the blueprint before saving as a template</span>
+                  <span class="slds-assistive-text" id="publish-gate">Test the blueprint before publishing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ap-create-body">
+            <div class="ap-create-scroll">
+              <div class="ap-create ap-review">
+                <div class="ap-review__intro">
+                  <div class="ap-review__heading">
+                    <div class="ap-review__heading-main">
+                      <h2 class="ap-review__lede">Account plan creation steps</h2>
+                      <button class="slds-button slds-button_neutral" type="button" id="review-reorder">Reorder</button>
+                    </div>
+                    <span class="ap-blueprint-status"><span class="ap-blueprint-status__dot" aria-hidden="true"></span> Blueprint status: Ready</span>
+                  </div>
+                  <p class="ap-review__legend">
+                    <span class="ap-type ap-type_agent">Agent</span>
+                    <span class="ap-type ap-type_person">Person</span>
+                  </p>
+                </div>
+                <ol class="ap-outline" id="outline"></ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="ap-create__actions">
+            <a class="slds-button slds-button_neutral" href="../create/index.html">Back</a>
+            <p class="ap-status" id="review-status" role="status"></p>
+            <div class="ap-create__actions-end">
+              <button class="slds-button slds-button_neutral" type="button" id="review-save">Save draft</button>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <div class="slds-backdrop slds-hide" id="modal-back"></div>
+
+    <section class="slds-modal slds-modal_small slds-hide" id="reorder-modal" role="dialog" aria-modal="true" aria-labelledby="reorder-modal-title">
+      <div class="slds-modal__container ap-reorder-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-modal__title" id="reorder-modal-title">Reorder workflow steps</h2>
+          <p class="ap-modal__context">Drag a step or use the arrows. Save applies the order to the blueprint.</p>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <ol class="ap-reorder-list" id="reorder-list"></ol>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" type="button" data-close-modals>Cancel</button>
+          <button class="slds-button slds-button_brand" type="button" id="reorder-save">Save</button>
+        </footer>
+      </div>
+    </section>
+
+    <section class="slds-modal slds-modal_large slds-hide" id="step-modal" role="dialog" aria-modal="true" aria-labelledby="step-modal-title">
+      <div class="slds-modal__container ap-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-modal__title" id="step-modal-title">Edit workflow step</h2>
+          <p class="ap-modal__context" id="step-modal-context"></p>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <div class="ap-modalform">
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="step-name">Step / stage name <abbr class="slds-required" title="required">*</abbr></label>
+              <div class="slds-form-element__control"><input class="slds-input" id="step-name" type="text" required /></div>
+            </div>
+            <div class="slds-form-element">
+              <span class="slds-form-element__label" id="step-start-label">Start rule</span>
+              <div class="slds-form-element__control">
+                <fieldset class="ap-start-rules">
+                  <legend class="slds-assistive-text">Start rule</legend>
+                  <label class="ap-start-rules__option"><input type="radio" name="step-start" value="workflow" /> Workflow starts</label>
+                  <label class="ap-start-rules__option"><input type="radio" name="step-start" value="previous" /> Previous stage completes</label>
+                  <label class="ap-start-rules__option"><input type="radio" name="step-start" value="custom" /> Custom rule</label>
+                </fieldset>
+              </div>
+            </div>
+            <div class="slds-form-element" id="step-custom-wrap">
+              <label class="slds-form-element__label" for="step-custom">Custom rule</label>
+              <div class="slds-form-element__control"><input class="slds-input" id="step-custom" type="text" /></div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="step-depends">Dependencies</label>
+              <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                  <select class="slds-select" id="step-depends"></select>
+                </div>
+              </div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="step-desc">Description</label>
+              <div class="slds-form-element__control"><textarea class="slds-textarea" id="step-desc" rows="3"></textarea></div>
+            </div>
+          </div>
+          <div class="ap-contained">
+            <div class="ap-contained__head">
+              <h3 class="ap-contained__title" id="step-task-count">Contained tasks</h3>
+            </div>
+            <div class="ap-outline__table-wrap" id="step-task-wrap">
+              <table class="ap-outline__table ap-contained__table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Task / outline order</th>
+                    <th>Type</th>
+                    <th>Start / dependency</th>
+                    <th>Due / SLA</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="step-task-body"></tbody>
+              </table>
+            </div>
+            <p class="ap-contained__empty slds-hide" id="step-task-empty">No agent tasks. This step is person-owned.</p>
+          </div>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" type="button" data-close-modals>Cancel</button>
+          <button class="slds-button slds-button_brand" type="button" id="step-save">Save changes</button>
+        </footer>
+      </div>
+    </section>
+
+    <section class="slds-modal slds-modal_large slds-hide" id="task-modal" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+      <div class="slds-modal__container ap-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-modal__title" id="task-modal-title">Edit task</h2>
+          <p class="ap-modal__context" id="task-modal-context"></p>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+          <div class="ap-modalform">
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="task-name">Name <abbr class="slds-required" title="required">*</abbr></label>
+              <div class="slds-form-element__control"><input class="slds-input" id="task-name" type="text" required /></div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="task-start">Start</label>
+              <div class="slds-form-element__control ap-modalform__split">
+                <div class="slds-select_container">
+                  <select class="slds-select" id="task-start"></select>
+                </div>
+                <div class="slds-select_container">
+                  <select class="slds-select" id="task-depends"></select>
+                </div>
+              </div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="task-due">Due / SLA</label>
+              <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                  <select class="slds-select" id="task-due">
+                    <option>Instant</option>
+                    <option>1 day</option>
+                    <option>3 days</option>
+                    <option>5 days</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="task-who">Assigned to <abbr class="slds-required" title="required">*</abbr></label>
+              <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                  <select class="slds-select" id="task-who"></select>
+                </div>
+              </div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="task-fallback">Fallback assignees</label>
+              <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                  <select class="slds-select" id="task-fallback">
+                    <option>Relationship Manager · after 1 retry is exhausted</option>
+                    <option>None</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="task-cc">Cc</label>
+              <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                  <select class="slds-select" id="task-cc">
+                    <option>Relationship Manager</option>
+                    <option>None</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="task-esc">Escalations</label>
+              <div class="slds-form-element__control ap-modalform__split">
+                <div class="slds-select_container">
+                  <select class="slds-select" id="task-esc">
+                    <option>Team lead · escalate after SLA</option>
+                    <option>None</option>
+                  </select>
+                </div>
+                <button class="slds-button slds-button_neutral" type="button" id="task-add-esc">Add escalation</button>
+              </div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="task-instructions">Description / instructions</label>
+              <div class="slds-form-element__control"><textarea class="slds-textarea" id="task-instructions" rows="4"></textarea></div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label">Documents / sources</label>
+              <div class="slds-form-element__control ap-modalform__split">
+                <button class="slds-button slds-button_neutral" type="button" id="task-attach">Attach</button>
+                <p class="slds-form-element__help" id="task-sources"></p>
+              </div>
+            </div>
+            <div class="slds-form-element">
+              <label class="slds-form-element__label" for="task-tags">Tags</label>
+              <div class="slds-form-element__control"><input class="slds-input" id="task-tags" type="text" /></div>
+            </div>
+          </div>
+        </div>
+        <footer class="slds-modal__footer ap-modal__footer">
+          <button class="slds-button" type="button" id="task-delete">Delete task</button>
+          <div>
+            <button class="slds-button slds-button_neutral" type="button" data-close-modals>Cancel</button>
+            <button class="slds-button slds-button_brand" type="button" id="task-save">Save changes</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <section class="slds-modal slds-modal_large slds-hide" id="test-modal" role="dialog" aria-modal="true" aria-labelledby="test-modal-title">
+      <div class="slds-modal__container ap-modal__container">
+        <header class="slds-modal__header">
+          <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
+            <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+              <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+          <h2 class="slds-modal__title" id="test-modal-title">Test run</h2>
+          <p class="ap-modal__context">Checks that agents and steps are configured and run correctly. No account data is used.</p>
+        </header>
+        <div class="slds-modal__content">
+          <div class="ap-test slds-p-around_medium">
+            <p class="ap-test__status" id="test-stage"></p>
+            <ol class="ap-testtree" id="test-run-list"></ol>
+          </div>
+        </div>
+        <footer class="slds-modal__footer">
+          <button class="slds-button slds-button_neutral" type="button" id="test-close" data-close-modals>Cancel</button>
+        </footer>
+      </div>
+    </section>
+
+    <div class="slds-notify_container ap-toast-container slds-hide" id="review-toast">
+      <div class="slds-notify slds-notify_toast slds-theme_success" role="status">
+        <span class="slds-assistive-text">Success</span>
+        <span class="slds-icon_container slds-icon-utility-success slds-m-right_small slds-no-flex slds-align-top">
+          <svg class="slds-icon slds-icon_small" aria-hidden="true">
+            <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+          </svg>
+        </span>
+        <div class="slds-notify__content">
+          <h2 class="slds-text-heading_small" id="review-toast-title"></h2>
+          <p id="review-toast-body"></p>
+        </div>
+        <div class="slds-notify__close">
+          <button class="slds-button slds-button_icon slds-button_icon-inverse" type="button" id="review-toast-close" title="Close">
+            <svg class="slds-button__icon" aria-hidden="true">
+              <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script src="review.js?v=0.44"></script>
+      <script src="../shared/versions.js?v=0.5"></script>
+    <script src="../shared/version-switcher.js?v=0.5"></script>
+  </body>
+</html>
