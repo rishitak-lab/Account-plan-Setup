@@ -645,11 +645,23 @@ if (returnParams.get("published")) {
     if (draft && draft.name) {
       draft.stage = "Live";
       draft.available = true;
+      draft.ready = true;
       upsertFromDraft(draft);
       showToast("Workflow published", draft.name + " is available to Relationship Managers.");
+    } else {
+      announce("Workflow published.");
     }
   } catch (error) {
     announce("Workflow published.");
+  }
+  try {
+    sessionStorage.removeItem("ap-create-draft");
+  } catch (error) {
+    /* ignore */
+  }
+  if (window.history && window.history.replaceState) {
+    const clean = window.location.pathname + window.location.hash;
+    window.history.replaceState({}, "", clean);
   }
 }
 

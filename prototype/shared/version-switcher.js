@@ -13,9 +13,21 @@
     return live ? live.id : versions[versions.length - 1].id;
   }
 
+  function prototypePrefix() {
+    // GitHub Pages: /Account-plan-Setup/prototype/...
+    // Local server from prototype/: /create/... or /landing/...
+    const match = location.pathname.match(/^(.*?\/prototype)(?:\/|$)/);
+    return match ? match[1] : "";
+  }
+
   function landingHref(version) {
     const base = (version.base || "").replace(/\/$/, "");
-    return (base || "") + "/landing/index.html";
+    const path = (base || "") + "/landing/index.html";
+    const prefix = prototypePrefix();
+    if (!prefix) {
+      return path.charAt(0) === "/" ? path : "/" + path;
+    }
+    return prefix + path;
   }
 
   function remember(id) {

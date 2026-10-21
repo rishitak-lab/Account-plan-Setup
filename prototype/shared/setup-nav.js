@@ -5,6 +5,8 @@
 (function () {
   function setupHref() {
     if (typeof window.APSetupHref === "function") return window.APSetupHref();
+    const match = location.pathname.match(/^(.*?\/prototype)(?:\/|$)/);
+    if (match) return match[1] + "/landing/index.html";
     return "/landing/index.html";
   }
 

@@ -1426,14 +1426,10 @@ function saveDraft() {
 
 function finishPublish() {
   const item = persist({ stage: "Live", ready: true, available: true, published: new Date().toISOString().slice(0, 10) });
-  if (window.parent && window.parent.APLanding && typeof window.parent.APLanding.upsertFromDraft === "function") {
+  if (window.parent && window.parent !== window && window.parent.APLanding && typeof window.parent.APLanding.upsertFromDraft === "function") {
     window.parent.APLanding.upsertFromDraft(item);
   }
-  try {
-    sessionStorage.removeItem("ap-create-draft");
-  } catch (error) {
-    /* ignore */
-  }
+  // Keep ap-create-draft so Workflow Setup landing can upsert from ?published=1, then clear it.
   goLanding("?published=1");
 }
 
