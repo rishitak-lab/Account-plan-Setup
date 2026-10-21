@@ -259,7 +259,7 @@ function openWorkflow(item) {
     animate: item.stage === "Generating"
   };
   sessionStorage.setItem("ap-create-draft", JSON.stringify(payload));
-  window.location.href = "../create/index.html";
+  window.location.href = appHref("create");
 }
 
 function formatDate(iso) {
@@ -739,7 +739,7 @@ function startNewWorkflow(event) {
   event.preventDefault();
   event.stopPropagation();
   sessionStorage.removeItem("ap-create-draft");
-  window.location.href = "../create/index.html";
+  window.location.href = appHref("create");
 }
 
 document.querySelectorAll("[data-new-workflow]").forEach((el) => {
