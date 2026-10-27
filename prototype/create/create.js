@@ -2318,21 +2318,22 @@ function renderContainedTasks() {
     tr.draggable = true;
     tr.dataset.taskId = task.id;
     tr.innerHTML =
-      '<td class="ap-drag"><span class="ap-drag__handle" title="Drag to reorder">' +
+      '<td class="ap-drag ap-contained__col-drag"><span class="ap-drag__handle" title="Drag to reorder">' +
       icon("rows") +
-      '</span></td><td><span class="ap-outline__numcell">' +
+      '</span></td><td class="ap-contained__col-task"><div class="ap-contained__task">' +
+      '<span class="ap-outline__numcell">' +
       (stepDraft.number || "") +
       "." +
       (index + 1) +
-      '</span><button class="ap-linkish" type="button" data-open-contained="' +
+      '</span> <button class="ap-linkish" type="button" data-open-contained="' +
       task.id +
       '">' +
       escapeHtml(task.name) +
-      "</button></td><td><span class=\"ap-type ap-type_agent\">Agent</span></td><td>" +
+      "</button></div></td><td class=\"ap-contained__col-type\"><span class=\"ap-type ap-type_agent\">Agent</span></td><td class=\"ap-contained__col-start\">" +
       escapeHtml(displayTaskStart(stepDraft, task)) +
-      "</td><td>" +
+      '</td><td class="ap-contained__col-due">' +
       escapeHtml(task.due || "Instant") +
-      '</td><td><button class="slds-button slds-button_neutral" type="button" data-remove-contained="' +
+      '</td><td class="ap-contained__col-action"><button class="ap-text-cta ap-contained__remove" type="button" data-remove-contained="' +
       task.id +
       '">Remove</button></td>';
     tr.querySelector("[data-remove-contained]").addEventListener("click", (event) => {

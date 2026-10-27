@@ -2726,6 +2726,84 @@ body.ap-wizard-body {
   font-weight: 700;
 }
 
+.ap-contained__table-wrap {
+  overflow: visible;
+}
+
+.ap-contained__table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.ap-contained__table th,
+.ap-contained__table td {
+  padding: 0.55rem 0.45rem;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.ap-contained__table th:nth-child(1),
+.ap-contained__table td:nth-child(1),
+.ap-contained__table th:nth-child(2),
+.ap-contained__table td:nth-child(2),
+.ap-contained__table th:nth-child(3),
+.ap-contained__table td:nth-child(3),
+.ap-contained__table th:nth-child(4),
+.ap-contained__table td:nth-child(4),
+.ap-contained__table th:nth-child(5),
+.ap-contained__table td:nth-child(5) {
+  width: auto;
+  max-width: none;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ap-contained__col-drag {
+  width: 1.75rem;
+  padding-left: 0.15rem !important;
+  padding-right: 0.15rem !important;
+}
+
+.ap-contained__col-task {
+  width: 34%;
+}
+
+.ap-contained__col-type {
+  width: 5.5rem;
+}
+
+.ap-contained__col-start {
+  width: 28%;
+}
+
+.ap-contained__col-due {
+  width: 5.5rem;
+}
+
+.ap-contained__col-action {
+  width: 4.25rem;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.ap-contained__task {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  min-width: 0;
+}
+
+.ap-contained__task .ap-linkish {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ap-contained__remove {
+  font-size: 0.75rem;
+}
+
 .ap-contained__empty {
   margin: 0.75rem 0 0;
   color: var(--slds-g-color-neutral-base-30, #444);

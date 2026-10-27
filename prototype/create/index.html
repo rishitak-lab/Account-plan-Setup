@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>New workflow</title>
     <link rel="stylesheet" href="../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
-    <link rel="stylesheet" href="create.css?v=1.38" />
+    <link rel="stylesheet" href="create.css?v=1.39" />
   </head>
   <body class="ap-wizard-body">
     <div class="ap-wizard" id="wizard">
@@ -411,16 +411,16 @@
                 Add task
               </button>
             </div>
-            <div class="ap-outline__table-wrap" id="step-task-wrap">
+            <div class="ap-contained__table-wrap" id="step-task-wrap">
               <table class="ap-outline__table ap-contained__table">
                 <thead>
                   <tr>
-                    <th></th>
-                    <th>Task / outline order</th>
-                    <th>Type</th>
-                    <th>Start / dependency</th>
-                    <th>Due / SLA</th>
-                    <th></th>
+                    <th class="ap-contained__col-drag"><span class="slds-assistive-text">Reorder</span></th>
+                    <th class="ap-contained__col-task">Task</th>
+                    <th class="ap-contained__col-type">Type</th>
+                    <th class="ap-contained__col-start">Start</th>
+                    <th class="ap-contained__col-due">Due</th>
+                    <th class="ap-contained__col-action"><span class="slds-assistive-text">Actions</span></th>
                   </tr>
                 </thead>
                 <tbody id="step-task-body"></tbody>
@@ -662,6 +662,6 @@
     <script src="../shared/ap-paths.js?v=0.2"></script>
     <script src="../shared/versions.js?v=0.7"></script>
     <script src="../shared/version-switcher.js?v=0.7"></script>
-    <script src="create.js?v=1.37"></script>
+    <script src="create.js?v=1.38"></script>
   </body>
 </html>
