@@ -579,10 +579,10 @@ function findStage(id) {
 }
 
 function displayStart(step) {
-  if (step.startKind === "workflow") return "Starts when the workflow runs";
+  if (step.startKind === "workflow") return "When the workflow runs";
   if (step.startKind === "custom") return step.customRule || "Custom rule";
   const prior = findStage(step.dependsOn);
-  return prior ? "Starts after " + prior.name + " completes" : "Starts after the previous stage completes";
+  return prior ? "After " + prior.name + " completes" : "After the previous stage completes";
 }
 
 function displayReviewStart(step) {
