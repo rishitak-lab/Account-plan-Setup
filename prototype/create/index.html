@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>New workflow</title>
     <link rel="stylesheet" href="../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
-    <link rel="stylesheet" href="create.css?v=1.29" />
+    <link rel="stylesheet" href="create.css?v=1.30" />
   </head>
   <body class="ap-wizard-body">
     <div class="ap-wizard" id="wizard">
@@ -21,12 +21,6 @@
         <h1 class="ap-wizard__title" id="wizard-title">New workflow</h1>
         <div class="ap-wizard__header-actions">
           <button class="slds-button slds-button_neutral" type="button" id="wizard-save">Save</button>
-          <button class="slds-button slds-button_brand" type="button" id="wizard-test" hidden>
-            <svg class="slds-button__icon slds-button__icon_left slds-hide" id="wizard-test-ok" aria-hidden="true">
-              <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
-            </svg>
-            Test run blueprint
-          </button>
           <button class="slds-button slds-button_neutral" type="button" id="wizard-template" hidden aria-disabled="true" aria-describedby="template-gate" title="Test the blueprint before saving as a template">Save as template</button>
           <button class="slds-button slds-button_brand" type="button" id="wizard-publish" hidden aria-disabled="true" aria-describedby="publish-gate" title="Test the blueprint before publishing">
             <span class="ap-publish-spin slds-hide" id="wizard-publish-spin" aria-hidden="true"></span>
@@ -288,7 +282,24 @@
               Back
             </button>
             <p class="ap-wizard__status" id="create-status" role="status"></p>
-            <button class="slds-button slds-button_brand" type="button" id="wizard-next">Next: Generate Workflow blueprint</button>
+            <div class="ap-wizard__forward" id="wizard-forward">
+              <p class="ap-wizard__forward-hint" id="wizard-forward-hint" hidden>Test the blueprint to unlock Review</p>
+              <div class="ap-wizard__forward-actions" role="group" aria-label="Continue">
+                <button class="slds-button slds-button_brand ap-wizard__forward-test" type="button" id="wizard-test" hidden>
+                  <svg class="slds-button__icon slds-button__icon_left slds-hide" id="wizard-test-ok" aria-hidden="true">
+                    <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#success"></use>
+                  </svg>
+                  <span id="wizard-test-label">Test run blueprint</span>
+                </button>
+                <span class="ap-wizard__forward-path" id="wizard-forward-path" hidden aria-hidden="true">
+                  <span class="ap-wizard__forward-node is-active"></span>
+                  <span class="ap-wizard__forward-line"><span class="ap-wizard__forward-line-fill" id="wizard-forward-fill"></span></span>
+                  <span class="ap-wizard__forward-node" id="wizard-forward-node-next"></span>
+                </span>
+                <button class="slds-button slds-button_brand" type="button" id="wizard-next">Next: Generate Workflow blueprint</button>
+              </div>
+              <span class="slds-assistive-text" id="next-gate">Test the blueprint before continuing to Review &amp; Publish</span>
+            </div>
           </footer>
         </main>
       </div>
@@ -654,6 +665,6 @@
     <script src="../shared/ap-paths.js?v=0.2"></script>
     <script src="../shared/versions.js?v=0.7"></script>
     <script src="../shared/version-switcher.js?v=0.7"></script>
-    <script src="create.js?v=1.33"></script>
+    <script src="create.js?v=1.34"></script>
   </body>
 </html>

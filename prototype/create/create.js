@@ -274,6 +274,11 @@ const publishSpin = document.getElementById("wizard-publish-spin");
 const wizardTitle = document.getElementById("wizard-title");
 const testBtn = document.getElementById("wizard-test");
 const testOk = document.getElementById("wizard-test-ok");
+const testLabel = document.getElementById("wizard-test-label");
+const wizardForward = document.getElementById("wizard-forward");
+const wizardForwardHint = document.getElementById("wizard-forward-hint");
+const wizardForwardPath = document.getElementById("wizard-forward-path");
+const wizardForwardNodeNext = document.getElementById("wizard-forward-node-next");
 const templateBtn = document.getElementById("wizard-template");
 const templateModal = document.getElementById("template-modal");
 const templateNameInput = document.getElementById("template-name");
@@ -872,22 +877,52 @@ function setGatedButton(button, enabled, gateId, title) {
 function syncPublishGate() {
   if (publishing) return;
   const passed = isTested();
+  const onDescribe = step === "describe";
   const onBlueprint = step === "blueprint";
   const onReview = step === "review";
   const canAct = onReview && !revealing && stages.length > 0 && passed;
+  const canContinue =
+    onBlueprint && !revealing && stages.length > 0 && passed;
+
+  if (wizardForward) {
+    wizardForward.hidden = onReview;
+    wizardForward.classList.toggle("is-ready", onBlueprint && passed);
+  }
+  if (wizardForwardHint) {
+    wizardForwardHint.hidden = !onBlueprint;
+    wizardForwardHint.textContent = passed
+      ? "Test passed — continue to Review & Publish"
+      : revealing
+        ? "Wait for generation to finish, then test"
+        : stages.length
+          ? "Test the blueprint to unlock Review"
+          : "Add steps, then test the blueprint";
+    wizardForwardHint.classList.toggle("is-ready", passed);
+  }
+  if (wizardForwardPath) wizardForwardPath.hidden = !onBlueprint;
+  if (wizardForwardNodeNext) {
+    wizardForwardNodeNext.classList.toggle("is-ready", onBlueprint && passed);
+    wizardForwardNodeNext.classList.toggle("is-active", false);
+  }
+
   if (testBtn) testBtn.hidden = !onBlueprint;
   if (templateBtn) templateBtn.hidden = !onReview;
   if (publishBtn) publishBtn.hidden = !onReview;
   if (btnNext) btnNext.hidden = onReview;
-  if (testOk) testOk.classList.toggle("slds-hide", !passed);
+  if (testOk) testOk.classList.toggle("slds-hide", !(onBlueprint && passed));
+  if (testLabel) testLabel.textContent = passed ? "Tested" : "Test run blueprint";
   if (testBtn) {
-    testBtn.classList.toggle("slds-button_brand", !passed);
-    testBtn.classList.toggle("slds-button_neutral", passed);
-    testBtn.disabled = false;
-    testBtn.removeAttribute("aria-disabled");
-    testBtn.removeAttribute("aria-describedby");
-    if (revealing) testBtn.title = "Blueprint is still generating";
-    else testBtn.removeAttribute("title");
+    testBtn.classList.toggle("slds-button_brand", onBlueprint && !passed);
+    testBtn.classList.toggle("slds-button_neutral", onBlueprint && passed);
+    testBtn.classList.toggle("is-passed", onBlueprint && passed);
+    testBtn.disabled = Boolean(onBlueprint && revealing);
+    if (onBlueprint && revealing) {
+      testBtn.setAttribute("aria-disabled", "true");
+      testBtn.title = "Blueprint is still generating";
+    } else {
+      testBtn.removeAttribute("aria-disabled");
+      testBtn.removeAttribute("title");
+    }
   }
   setGatedButton(
     templateBtn,
@@ -902,10 +937,20 @@ function syncPublishGate() {
     canAct ? "" : stages.length ? "Test the blueprint before publishing" : "Add a blueprint before publishing"
   );
   if (publishLabel) publishLabel.textContent = "Publish";
-  if (step === "blueprint" && revealing) {
-    setGatedButton(btnNext, false, null, "Blueprint is still generating");
-  } else if (!onReview) {
+
+  if (onDescribe) {
     setGatedButton(btnNext, true);
+    if (btnNext) btnNext.classList.remove("is-locked");
+  } else if (onBlueprint) {
+    const nextTitle = revealing
+      ? "Blueprint is still generating"
+      : !stages.length
+        ? "Add a blueprint before continuing"
+        : passed
+          ? ""
+          : "Test the blueprint before continuing";
+    setGatedButton(btnNext, canContinue, canContinue ? null : "next-gate", nextTitle);
+    if (btnNext) btnNext.classList.toggle("is-locked", !canContinue);
   }
 }
 
@@ -1593,8 +1638,14 @@ document.querySelectorAll(".ap-wizard__step").forEach((btn) => {
     const forward = STEPS.indexOf(target) > STEPS.indexOf(step);
     if (forward && target !== "describe" && !validDescribe()) return;
     if (forward && target === "review" && !stages.length) {
-      announce("Generate or add a blueprint before publishing.");
+      announce("Generate or add a blueprint before continuing.");
       showStep("blueprint", { entering: true, animate: buildWithAgentOn() });
+      return;
+    }
+    if (forward && target === "review" && !isTested()) {
+      announce("Run a successful test before Review & Publish.");
+      showStep("blueprint", { entering: true, animate: false });
+      if (testBtn && !testBtn.hidden) testBtn.focus();
       return;
     }
     showStep(target, {
@@ -1627,7 +1678,12 @@ btnNext.addEventListener("click", () => {
       return;
     }
     if (!stages.length) {
-      announce("Generate or add a blueprint before publishing.");
+      announce("Generate or add a blueprint before continuing.");
+      return;
+    }
+    if (!isTested()) {
+      announce("Run a successful test before Review & Publish.");
+      if (testBtn && !testBtn.hidden) testBtn.focus();
       return;
     }
     showStep("review");
@@ -3035,7 +3091,8 @@ function finishTestRun() {
   persist();
   syncPublishGate();
   renderTestRun();
-  announce("Test run passed. Continue to Review & Publish to save as a template or publish.");
+  announce("Test run passed. Next: Review & Publish is unlocked.");
+  if (btnNext && step === "blueprint" && !btnNext.hidden) btnNext.focus();
 }
 
 function tickTest() {
