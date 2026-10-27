@@ -40,9 +40,6 @@ const DEFAULT_ESCALATION = "Alex Chen";
 
 const ORG_USERS = [
   { name: "Relationship Manager", title: "Account owner", email: "rm@example.com" },
-  { name: "Priya Kapoor", title: "Treasury Specialist", email: "priya.kapoor@example.com" },
-  { name: "Chris Nguyen", title: "Credit Specialist", email: "chris.nguyen@example.com" },
-  { name: "Maya Chen", title: "Industry Specialist", email: "maya.chen@example.com" },
   { name: "Alex Chen", title: "Team lead", email: "alex.chen@example.com" },
   { name: "Jordan Lee", title: "Credit specialist", email: "jordan.lee@example.com" },
   { name: "Sam Rivera", title: "Treasury", email: "sam.rivera@example.com" },
