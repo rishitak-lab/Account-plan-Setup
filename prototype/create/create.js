@@ -104,7 +104,7 @@ const FALLBACK_BLUEPRINT = [
     tasks: [
       {
         id: "o1",
-        name: "Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen)",
+        name: "Gather input from the specialists",
         who: "Outreach Agent",
         kind: "agent",
         startWhen: "When the stage starts"

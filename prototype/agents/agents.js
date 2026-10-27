@@ -201,12 +201,7 @@ const DEFAULTS = [
       { id: "roles", label: "Treasury, Credit, and Industry roles", on: true },
       { id: "plan", label: "Draft plan sections", on: true }
     ],
-    uses: [
-      {
-        workflow: "Account plan",
-        task: "3.1 Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen)"
-      }
-    ]
+    uses: [{ workflow: "Account plan", task: "3.1 Gather input from the specialists" }]
   },
   {
     id: "risk",

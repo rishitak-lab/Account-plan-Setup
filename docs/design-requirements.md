@@ -1,6 +1,6 @@
 # Agentic Account Plan Setup — Design Requirements
 
-**Status:** v0.51 — Version 3 implemented in prototype  
+**Status:** v0.52 — Version 3 implemented in prototype  
 **Persona:** Salesforce Admin  
 **Altitude:** Problem, design principles, and information architecture. Field lists are included only where a decision needed them. This document does not specify controls, copy, or visual layout.  
 **Last updated:** 27 October 2026  
@@ -138,7 +138,7 @@ Setup must be able to define the following tree. The reference screenshots show 
 | | 1.3 Research market context | Market Research Agent |
 | 2. Create Plan | 2.1 Draft relationship strategy | Strategy Agent |
 | | 2.2 Define Objectives & Measures | Objectives Agent |
-| 3. Reach out to Treasury Specialist, Credit Specialist and Industry Specialist | 3.1 Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen) | Outreach Agent. Named specialists are resolved at runtime for the account. |
+| 3. Reach out to Treasury Specialist, Credit Specialist and Industry Specialist | 3.1 Gather input from the specialists | Outreach Agent. Specialist roles are Treasury, Credit, and Industry. Named people are resolved at runtime for the account — not in Admin Setup. |
 | | 3.2 Synthesize specialist feedback and update the account plan | Synthesis Agent |
 | 4. Route account plan for Relationship Manager review | 4.1 Review account plan | Relationship Manager |
 
@@ -330,3 +330,4 @@ Version 3 folds blueprint authoring into **Generate Workflow blueprint** and con
 | 0.49 | 21 October 2026 | V3 Describe: Build with agent row with Einstein icon; Next is Generate Workflow blueprint or Create Workflow. Blueprint step: progressive gen loader, Notion-style hover Reorder/Add task, every step requires ≥1 task, people search for fallback/Cc/escalations, retry attempts or time. Test run stays on blueprint step and gates template/publish. |
 | 0.50 | 21 October 2026 | V3 Review & Publish: two-column layout (connected blueprint chain + facts/readiness ticks); facts are name, industry, context; Save as template confirm modal with prefilled name; Publish loader on CTA then return to Workflow Setup landing. Prototype published at Account-plan-Setup GitHub Pages. |
 | 0.51 | 27 October 2026 | Canonical blueprint content aligned to runtime cases / Start workflow: Gather Inputs 1.1–1.3 only; specialist step title and named specialists; synthesize + update plan; Route account plan (no “the”). Loader and Agents catalog copy updated. |
+| 0.52 | 27 October 2026 | Admin Setup blueprints stay role-level only — no account/RM-specific named people (e.g. Priya Kapoor) in generated or template tasks; names resolve at runtime. |
