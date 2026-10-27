@@ -2057,6 +2057,12 @@ body.ap-wizard-body {
   flex: 0 0 auto;
 }
 
+.ap-wizard__forward-path[hidden],
+.ap-wizard__forward-hint[hidden],
+.ap-wizard__forward-test[hidden] {
+  display: none !important;
+}
+
 .ap-wizard__forward-node {
   width: 0.5rem;
   height: 0.5rem;
