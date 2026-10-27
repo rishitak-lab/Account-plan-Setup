@@ -18,9 +18,21 @@ const AGENTS = [
 ];
 
 const TASK_SEED = {
-  g1: { instructions: "Review client history and cite account records and recent interactions.", sources: "Account documents · Recent interactions", tags: "client-history · evidence" },
-  g2: { instructions: "Pull financial data from permitted financial sources.", sources: "Financial accounts", tags: "financials" },
-  g3: { instructions: "Research market and competitor context from linked sources.", sources: "Linked market sources", tags: "market" },
+  g1: {
+    instructions: "Review client history and cite account records and recent interactions.",
+    sources: "Account documents · Recent interactions",
+    tags: "client-history · evidence"
+  },
+  g2: {
+    instructions: "Pull financial data from permitted financial sources.",
+    sources: "Financial accounts",
+    tags: "financials"
+  },
+  g3: {
+    instructions: "Research market and competitor context from linked sources.",
+    sources: "Linked market sources",
+    tags: "market"
+  },
   p1: { instructions: "Draft relationship strategy from gathered evidence.", sources: "Gather outputs", tags: "strategy" },
   p2: { instructions: "Define objectives and measures from the strategy.", sources: "Relationship strategy", tags: "objectives" },
   o1: {
@@ -30,6 +42,63 @@ const TASK_SEED = {
   },
   o2: { instructions: "Merge specialist feedback into the plan and update the account plan.", sources: "Specialist replies", tags: "synthesis" }
 };
+
+const RING_CIRCUMFERENCE = 2 * Math.PI * 15.5;
+
+function isTaskReady(task) {
+  return Boolean(task && task.setupReady && String(task.instructions || "").trim());
+}
+
+function stepReadyCount(step) {
+  const tasks = (step && step.tasks) || [];
+  let ready = 0;
+  tasks.forEach((task) => {
+    if (isTaskReady(task)) ready += 1;
+  });
+  return { ready: ready, total: tasks.length };
+}
+
+function taskSeedDefaults(taskId) {
+  return TASK_SEED[taskId] || {};
+}
+
+function doubleTickHtml() {
+  return (
+    '<span class="ap-outline__ticks" aria-hidden="true">' +
+    '<svg viewBox="0 0 14 14" focusable="false">' +
+    '<path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M1.5 7.2l2.4 2.4L8.2 4.2"/>' +
+    '<path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M5.2 7.2l2.4 2.4L12.2 4.2"/>' +
+    "</svg></span>"
+  );
+}
+
+function stepRingHtml(step) {
+  const counts = stepReadyCount(step);
+  const ratio = counts.total ? counts.ready / counts.total : 0;
+  const offset = RING_CIRCUMFERENCE * (1 - ratio);
+  const full = counts.total > 0 && counts.ready === counts.total;
+  const empty = counts.ready === 0;
+  const label = counts.ready + " of " + counts.total + " tasks ready";
+  return (
+    '<div class="ap-outline__ring' +
+    (full ? " is-full" : "") +
+    '" aria-label="' +
+    escapeHtml(label) +
+    '">' +
+    '<svg class="ap-outline__ring-svg" viewBox="0 0 36 36" aria-hidden="true" focusable="false">' +
+    '<circle class="ap-outline__ring-track" cx="18" cy="18" r="15.5"></circle>' +
+    '<circle class="ap-outline__ring-prog' +
+    (full ? " is-full" : empty ? " is-empty" : "") +
+    '" cx="18" cy="18" r="15.5" stroke-dasharray="' +
+    RING_CIRCUMFERENCE.toFixed(2) +
+    '" stroke-dashoffset="' +
+    offset.toFixed(2) +
+    '"></circle></svg>' +
+    '<span class="ap-outline__num">' +
+    step.number +
+    "</span></div>"
+  );
+}
 
 const DEFAULT_FALLBACK = "Relationship Manager";
 const DEFAULT_RETRY_MODE = "attempts";
@@ -136,7 +205,6 @@ const FALLBACK_BLUEPRINT = [
 ];
 
 function normalizeTask(task) {
-  const seed = TASK_SEED[task.id] || {};
   const merged = Object.assign(
     {
       startWhen: "When the stage starts",
@@ -150,11 +218,25 @@ function normalizeTask(task) {
       escalation: DEFAULT_ESCALATION,
       instructions: "",
       sources: "",
-      tags: ""
+      tags: "",
+      setupReady: false
     },
-    seed,
-    task
+    task || {}
   );
+  if (merged.summary != null) delete merged.summary;
+  const seed = TASK_SEED[merged.id] || {};
+  if (!merged.setupReady) {
+    if (
+      seed.instructions &&
+      String(merged.instructions || "").trim() === String(seed.instructions).trim()
+    ) {
+      merged.instructions = "";
+    }
+    if (seed.sources && String(merged.sources || "").trim() === String(seed.sources).trim()) {
+      merged.sources = "";
+    }
+  }
+  merged.setupReady = Boolean(merged.setupReady && String(merged.instructions || "").trim());
   migrateLegacyFallback(merged);
   if (merged.escalation === "Team lead · escalate after SLA") merged.escalation = DEFAULT_ESCALATION;
   if (!merged.retryMode) merged.retryMode = DEFAULT_RETRY_MODE;
@@ -547,12 +629,22 @@ function displayFallback(task) {
 
 function renderTask(step, task) {
   const tr = document.createElement("tr");
+  const ready = isTaskReady(task);
+  const statusHtml = ready
+    ? '<p class="ap-outline__task-status ap-outline__task-status_ready">' +
+      doubleTickHtml() +
+      "Ready to run</p>"
+    : '<p class="ap-outline__task-status ap-outline__task-status_need">Needs setup</p>';
   tr.innerHTML =
-    '<td><span class="ap-outline__numcell">' +
+    '<td><div class="ap-outline__task-cell">' +
+    '<div class="ap-outline__task-head">' +
+    '<span class="ap-outline__numcell">' +
     task.number +
     '</span><span class="ap-outline__task">' +
-    task.name +
-    "</span></td><td>" +
+    escapeHtml(task.name) +
+    "</span></div>" +
+    statusHtml +
+    "</div></td><td>" +
     agentTag(task.who, task.kind) +
     "</td><td>" +
     displayTaskStart(step, task) +
@@ -652,6 +744,8 @@ function renderStage(step, options) {
   const li = document.createElement("li");
   li.className = "ap-outline__stage";
   li.dataset.stepId = step.id;
+  const counts = stepReadyCount(step);
+  const readyLabel = counts.ready + " of " + counts.total + " tasks ready";
   li.innerHTML =
     '<div class="ap-outline__side">' +
     '<button class="ap-outline__side-btn ap-outline__side-btn_reorder" type="button" draggable="true" data-stage-grip title="Drag to reorder" aria-label="Reorder step">' +
@@ -661,12 +755,13 @@ function renderStage(step, options) {
     addTaskIconHtml() +
     '<span class="ap-outline__side-label">Add task</span></button>' +
     '</div><article class="ap-outline__card"><header class="ap-outline__head">' +
-    '<span class="ap-outline__num" aria-hidden="true">' +
-    step.number +
-    '</span><div class="ap-outline__head-main"><p class="ap-outline__name">' +
-    step.name +
-    '</p><p class="ap-outline__desc">' +
-    (step.descriptor || "") +
+    stepRingHtml(step) +
+    '<div class="ap-outline__head-main"><div class="ap-outline__name-row"><p class="ap-outline__name">' +
+    escapeHtml(step.name) +
+    '</p><span class="ap-outline__frac">' +
+    (counts.total ? escapeHtml(readyLabel) : "") +
+    '</span></div><p class="ap-outline__desc">' +
+    escapeHtml(step.descriptor || "") +
     '</p></div><div class="ap-outline__controls">' +
     '<dl class="ap-outline__start"><dt>Start rule</dt><dd>' +
     displayStart(step) +
@@ -2433,9 +2528,14 @@ function populateTaskFields(step) {
   if (retryAttempts) retryAttempts.value = String(taskDraft.retryAttempts != null ? taskDraft.retryAttempts : DEFAULT_RETRY_ATTEMPTS);
   if (retryTime) retryTime.value = taskDraft.retryTime || DEFAULT_RETRY_TIME;
   syncRetryFields();
-  document.getElementById("task-instructions").value = taskDraft.instructions || "";
-  document.getElementById("task-sources").textContent = taskDraft.sources || "No files attached";
-  document.getElementById("task-tags").value = taskDraft.tags || "";
+  const seed = taskSeedDefaults(taskDraft.id);
+  const instructions = String(taskDraft.instructions || "").trim();
+  const sources = String(taskDraft.sources || "").trim();
+  const tags = String(taskDraft.tags || "").trim();
+  document.getElementById("task-instructions").value = instructions || seed.instructions || "";
+  document.getElementById("task-sources").textContent =
+    sources || seed.sources || "No files attached";
+  document.getElementById("task-tags").value = tags || seed.tags || "";
 }
 
 function openAddTask(step, options) {
@@ -2522,6 +2622,7 @@ function readTaskForm(target) {
   target.escalation = (document.getElementById("task-esc").value || "").trim() || "None";
   target.instructions = document.getElementById("task-instructions").value.trim();
   target.tags = document.getElementById("task-tags").value.trim();
+  target.setupReady = Boolean(target.instructions);
   return target;
 }
 
