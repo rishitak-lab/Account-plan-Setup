@@ -1360,6 +1360,7 @@ body.ap-wizard-body {
 
 .ap-outline__table {
   width: 100%;
+  table-layout: fixed;
   border-collapse: collapse;
 }
 
@@ -1378,11 +1379,36 @@ body.ap-wizard-body {
   font-weight: 700;
 }
 
+.ap-outline__table th:nth-child(1),
+.ap-outline__table td:nth-child(1) {
+  width: 34%;
+}
+
+.ap-outline__table th:nth-child(2),
+.ap-outline__table td:nth-child(2) {
+  width: 20%;
+}
+
+.ap-outline__table th:nth-child(3),
+.ap-outline__table td:nth-child(3) {
+  width: 18%;
+}
+
+.ap-outline__table th:nth-child(4),
+.ap-outline__table td:nth-child(4) {
+  width: 18%;
+}
+
+.ap-outline__table th:nth-child(5),
+.ap-outline__table td:nth-child(5) {
+  width: 5.75rem;
+}
+
 .ap-outline__task-cell {
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
-  min-width: 12rem;
+  min-width: 0;
 }
 
 .ap-outline__task-head {
@@ -1436,15 +1462,22 @@ body.ap-wizard-body {
   white-space: nowrap;
 }
 
-.ap-outline__table th:nth-child(4),
-.ap-outline__table td:nth-child(4) {
-  min-width: 9.5rem;
-  max-width: 14rem;
-}
-
 .ap-outline__table td:last-child {
   white-space: nowrap;
   text-align: right;
+}
+
+.ap-outline__table td:nth-child(1),
+.ap-outline__table td:nth-child(2),
+.ap-outline__table td:nth-child(3),
+.ap-outline__table td:nth-child(4) {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.ap-outline__table .ap-agent-tag {
+  max-width: 100%;
+  white-space: normal;
 }
 
 .ap-step__empty {
