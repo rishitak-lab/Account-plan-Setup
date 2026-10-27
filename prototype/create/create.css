@@ -1343,6 +1343,8 @@ body.ap-wizard-body {
 
 .ap-outline__start {
   margin: 0;
+  max-width: 12.5rem;
+  min-width: 0;
 }
 
 .ap-outline__start dt {
@@ -1355,6 +1357,12 @@ body.ap-wizard-body {
   margin: 0.1rem 0 0;
   color: var(--slds-g-color-neutral-base-10, #181818);
   font-weight: 400;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
 }
 
 .ap-outline__table-wrap {

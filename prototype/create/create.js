@@ -580,9 +580,29 @@ function findStage(id) {
 
 function displayStart(step) {
   if (step.startKind === "workflow") return "When the workflow runs";
-  if (step.startKind === "custom") return step.customRule || "Custom rule";
+  if (step.startKind === "custom") {
+    const custom = String(step.customRule || "").trim();
+    return custom || "Custom rule";
+  }
   const prior = findStage(step.dependsOn);
-  return prior ? "After " + prior.name + " completes" : "After the previous stage completes";
+  if (!prior) return "After the previous stage completes";
+  const name = String(prior.name || "").trim();
+  if (!name) return "After the previous stage completes";
+  // Keep header compact; full dependency name stays available via title.
+  if (name.length > 28) return "After previous step completes";
+  return "After " + name + " completes";
+}
+
+function displayStartFull(step) {
+  if (step.startKind === "workflow") return "When the workflow runs";
+  if (step.startKind === "custom") {
+    const custom = String(step.customRule || "").trim();
+    return custom || "Custom rule";
+  }
+  const prior = findStage(step.dependsOn);
+  if (!prior) return "After the previous stage completes";
+  const name = String(prior.name || "").trim();
+  return name ? "After " + name + " completes" : "After the previous stage completes";
 }
 
 function displayReviewStart(step) {
@@ -767,8 +787,10 @@ function renderStage(step, options) {
     '</span></div><p class="ap-outline__desc">' +
     escapeHtml(step.descriptor || "") +
     '</p></div><div class="ap-outline__controls">' +
-    '<dl class="ap-outline__start"><dt>Start rule</dt><dd>' +
-    displayStart(step) +
+    '<dl class="ap-outline__start"><dt>Start rule</dt><dd title="' +
+    escapeHtml(displayStartFull(step)) +
+    '">' +
+    escapeHtml(displayStart(step)) +
     "</dd></dl>" +
     '<button class="slds-button slds-button_neutral" type="button" data-edit-step>Edit</button></div></header>' +
     (useTable
