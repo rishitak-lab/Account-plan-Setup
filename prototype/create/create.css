@@ -2061,7 +2061,9 @@ body.ap-wizard-body {
   height: 1.5rem;
   flex: 0 0 auto;
   align-self: center;
-  background: var(--slds-g-color-border-base-4, #c9c9c9);
+  background: #c9c9c9;
+  border: 0;
+  color: transparent;
 }
 
 .ap-wizard__forward-sep[hidden],
