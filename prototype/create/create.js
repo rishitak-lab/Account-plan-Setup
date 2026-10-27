@@ -924,20 +924,28 @@ function syncPublishGate() {
 
   if (onDescribe) {
     setGatedButton(btnNext, true);
-    if (btnNext) btnNext.classList.remove("is-locked");
+    if (btnNext) {
+      btnNext.classList.remove("is-locked");
+      btnNext.removeAttribute("title");
+    }
+    if (wizardNextWrap) wizardNextWrap.removeAttribute("title");
   } else if (onBlueprint) {
     const nextTitle = revealing
       ? "Wait for generation to finish, then test"
       : !stages.length
         ? "Add steps, then test the blueprint"
         : passed
-          ? "Continue to Review & Publish"
+          ? ""
           : "Test the blueprint to unlock Review";
     setGatedButton(btnNext, canContinue, canContinue ? null : "next-gate", nextTitle);
     if (btnNext) {
       btnNext.classList.toggle("is-locked", !canContinue);
-      // Keep a hover tooltip even when the control is enabled after a pass.
-      if (passed) btnNext.title = nextTitle;
+      btnNext.removeAttribute("title");
+    }
+    // Title on the wrap so hover still works while the button is disabled.
+    if (wizardNextWrap) {
+      if (nextTitle) wizardNextWrap.title = nextTitle;
+      else wizardNextWrap.removeAttribute("title");
     }
   }
 }
