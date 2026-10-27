@@ -21,13 +21,14 @@ const TASK_SEED = {
   g1: { instructions: "Review client history and cite account records and recent interactions.", sources: "Account documents · Recent interactions", tags: "client-history · evidence" },
   g2: { instructions: "Pull financial data from permitted financial sources.", sources: "Financial accounts", tags: "financials" },
   g3: { instructions: "Research market and competitor context from linked sources.", sources: "Linked market sources", tags: "market" },
-  g4: { instructions: "Add risk signals from utilisation, covenants, and adverse media.", sources: "Risk and credit signals", tags: "risk" },
-  g5: { instructions: "Map coverage contacts from the account team.", sources: "Account team", tags: "coverage" },
-  g6: { instructions: "Load prior objectives and measures. Do not write new objectives.", sources: "Prior account plan", tags: "history" },
   p1: { instructions: "Draft relationship strategy from gathered evidence.", sources: "Gather outputs", tags: "strategy" },
   p2: { instructions: "Define objectives and measures from the strategy.", sources: "Relationship strategy", tags: "objectives" },
-  o1: { instructions: "Request input from Treasury, Credit, and Industry specialists.", sources: "Specialist roles", tags: "outreach" },
-  o2: { instructions: "Merge specialist feedback into the plan.", sources: "Specialist replies", tags: "synthesis" }
+  o1: {
+    instructions: "Request input from Treasury, Credit, and Industry specialists. Named people are resolved when the workflow runs.",
+    sources: "Specialist roles",
+    tags: "outreach"
+  },
+  o2: { instructions: "Merge specialist feedback into the plan and update the account plan.", sources: "Specialist replies", tags: "synthesis" }
 };
 
 const DEFAULT_FALLBACK = "Relationship Manager";
@@ -39,6 +40,9 @@ const DEFAULT_ESCALATION = "Alex Chen";
 
 const ORG_USERS = [
   { name: "Relationship Manager", title: "Account owner", email: "rm@example.com" },
+  { name: "Priya Kapoor", title: "Treasury Specialist", email: "priya.kapoor@example.com" },
+  { name: "Chris Nguyen", title: "Credit Specialist", email: "chris.nguyen@example.com" },
+  { name: "Maya Chen", title: "Industry Specialist", email: "maya.chen@example.com" },
   { name: "Alex Chen", title: "Team lead", email: "alex.chen@example.com" },
   { name: "Jordan Lee", title: "Credit specialist", email: "jordan.lee@example.com" },
   { name: "Sam Rivera", title: "Treasury", email: "sam.rivera@example.com" },
@@ -75,10 +79,7 @@ const FALLBACK_BLUEPRINT = [
     tasks: [
       { id: "g1", name: "Review client history", who: "History Agent", kind: "agent", startWhen: "When the stage starts" },
       { id: "g2", name: "Pull financial data", who: "Financials Agent", kind: "agent", startWhen: "When the stage starts" },
-      { id: "g3", name: "Research market context", who: "Market Research Agent", kind: "agent", startWhen: "When the stage starts" },
-      { id: "g4", name: "Add risk signals", who: "Risk Intelligence Agent", kind: "agent", startWhen: "When the stage starts" },
-      { id: "g5", name: "Coverage and contacts", who: "Coverage Strategy Agent", kind: "agent", startWhen: "When the stage starts" },
-      { id: "g6", name: "Load prior objectives and measures", who: "History Agent", kind: "agent", startWhen: "After another task", dependsOn: "g1" }
+      { id: "g3", name: "Research market context", who: "Market Research Agent", kind: "agent", startWhen: "When the stage starts" }
     ]
   },
   {
@@ -95,19 +96,32 @@ const FALLBACK_BLUEPRINT = [
   },
   {
     id: "outreach",
-    name: "Reach out to Treasury, Credit, and Industry specialists",
+    name: "Reach out to Treasury Specialist, Credit Specialist and Industry Specialist",
     descriptor: "Request specialist input, then merge it into the plan",
     startKind: "previous",
     dependsOn: "plan",
     parallel: false,
     tasks: [
-      { id: "o1", name: "Gather specialist input", who: "Outreach Agent", kind: "agent", startWhen: "When the stage starts" },
-      { id: "o2", name: "Synthesize specialist feedback", who: "Synthesis Agent", kind: "agent", startWhen: "After another task", dependsOn: "o1" }
+      {
+        id: "o1",
+        name: "Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen)",
+        who: "Outreach Agent",
+        kind: "agent",
+        startWhen: "When the stage starts"
+      },
+      {
+        id: "o2",
+        name: "Synthesize specialist feedback and update the account plan",
+        who: "Synthesis Agent",
+        kind: "agent",
+        startWhen: "After another task",
+        dependsOn: "o1"
+      }
     ]
   },
   {
     id: "rm",
-    name: "Route the account plan for Relationship Manager review",
+    name: "Route account plan for Relationship Manager review",
     descriptor: "Person-owned review of the assembled account plan.",
     startKind: "previous",
     dependsOn: "outreach",
@@ -277,13 +291,19 @@ try {
         contextItems.push({ id: "link-" + index, kind: "link", url: String(url) });
       });
     }
-    if (saved.phase === "blueprint" || saved.ready) step = "blueprint";
+    if (saved.phase === "blueprint" || saved.ready || saved.fromTemplate) step = "blueprint";
     if (saved.phase === "review" || saved.phase === "publish") step = "review";
-    if (saved.stages && saved.stages.length) {
-      const looksLegacy = saved.stages.some(
+    const incoming =
+      saved.stages && saved.stages.length
+        ? saved.stages
+        : saved.blueprint && saved.blueprint.length
+          ? saved.blueprint
+          : null;
+    if (incoming) {
+      const looksLegacy = incoming.some(
         (stage) => !stage.startKind || (stage.tasks || []).some((task) => !task.id)
       );
-      stages = looksLegacy ? cloneBlueprint(FALLBACK_BLUEPRINT) : saved.stages;
+      stages = looksLegacy ? cloneBlueprint(FALLBACK_BLUEPRINT) : cloneBlueprint(incoming);
       generated = true;
     }
     if (saved.testedKey) testedKey = saved.testedKey;
@@ -1036,7 +1056,7 @@ function genLoaderSteps() {
       id: "understand",
       name: "Understand the brief",
       working: "Reading the workflow name, industry, and process description.",
-      done: "Matched the brief to gather, create the plan, specialist outreach, and RM review.",
+      done: "Matched the brief to Gather Inputs, Create Plan, specialist outreach, and RM review.",
       reveal: false
     },
     {
@@ -1059,21 +1079,21 @@ function genLoaderSteps() {
       id: "proposeSteps",
       name: "Propose steps",
       working: "Turning the process description into four workflow steps.",
-      done: "4 steps proposed.",
+      done: "4 steps proposed: Gather Inputs, Create Plan, specialist outreach, RM review.",
       reveal: "stages"
     },
     {
       id: "proposeTasks",
       name: "Propose tasks",
-      working: "Adding the work that belongs in each step.",
-      done: "10 agent tasks added. RM review has none.",
+      working: "Adding gather, plan, specialist, and RM review work to each step.",
+      done: "7 agent tasks · 1 person task on RM review.",
       reveal: "tasks"
     },
     {
       id: "assignAgents",
       name: "Assign agents",
       working: "Choosing which agent or person owns each task.",
-      done: "9 agents · 1 person",
+      done: "7 agents · Relationship Manager",
       reveal: false
     },
     {
@@ -1288,6 +1308,14 @@ function startProgressiveGenerate() {
 }
 
 function ensureBlueprint(animate) {
+  // Keep an existing blueprint (e.g. from Use template) unless regenerating.
+  if (stages.length && !animate) {
+    generated = true;
+    revealing = false;
+    hideGenLoader();
+    renderOutline();
+    return;
+  }
   if (!buildWithAgentOn()) {
     stopProgressiveGenerate();
     stages = [];
@@ -1300,13 +1328,6 @@ function ensureBlueprint(animate) {
     stages = [];
     generated = false;
     startProgressiveGenerate();
-    return;
-  }
-  if (stages.length) {
-    generated = true;
-    revealing = false;
-    hideGenLoader();
-    renderOutline();
     return;
   }
   stopProgressiveGenerate();

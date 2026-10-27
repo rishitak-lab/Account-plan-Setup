@@ -1,6 +1,15 @@
-const REVIEW = "../review/index.html";
 const STORE = "ap-workflow-templates";
 const DRAFT = "ap-create-draft";
+
+function createHref() {
+  if (typeof window.APAppHref === "function") return window.APAppHref("create");
+  const match = location.pathname.match(/^(.*?\/prototype)(?:\/|$)/);
+  if (match) return match[1] + "/create/index.html";
+  if (location.hostname.indexOf("github.io") !== -1) {
+    return "/Account-plan-Setup/prototype/create/index.html";
+  }
+  return "../create/index.html";
+}
 
 const CANONICAL = [
   {
@@ -14,10 +23,7 @@ const CANONICAL = [
     tasks: [
       { id: "g1", name: "Review client history", who: "History Agent", kind: "agent" },
       { id: "g2", name: "Pull financial data", who: "Financials Agent", kind: "agent" },
-      { id: "g3", name: "Research market context", who: "Market Research Agent", kind: "agent" },
-      { id: "g4", name: "Add risk signals", who: "Risk Intelligence Agent", kind: "agent" },
-      { id: "g5", name: "Coverage and contacts", who: "Coverage Strategy Agent", kind: "agent" },
-      { id: "g6", name: "Load prior objectives and measures", who: "History Agent", kind: "agent" }
+      { id: "g3", name: "Research market context", who: "Market Research Agent", kind: "agent" }
     ]
   },
   {
@@ -35,20 +41,30 @@ const CANONICAL = [
   },
   {
     id: "outreach",
-    name: "Reach out to Treasury, Credit, and Industry specialists",
+    name: "Reach out to Treasury Specialist, Credit Specialist and Industry Specialist",
     descriptor: "Request specialist input, then merge it into the plan",
     startKind: "previous",
     dependsOn: "plan",
     customRule: "",
     parallel: false,
     tasks: [
-      { id: "o1", name: "Gather specialist input", who: "Outreach Agent", kind: "agent" },
-      { id: "o2", name: "Synthesize specialist feedback", who: "Synthesis Agent", kind: "agent" }
+      {
+        id: "o1",
+        name: "Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen)",
+        who: "Outreach Agent",
+        kind: "agent"
+      },
+      {
+        id: "o2",
+        name: "Synthesize specialist feedback and update the account plan",
+        who: "Synthesis Agent",
+        kind: "agent"
+      }
     ]
   },
   {
     id: "rm",
-    name: "Route the account plan for Relationship Manager review",
+    name: "Route account plan for Relationship Manager review",
     descriptor: "Person-owned review. No agent writes this step.",
     startKind: "previous",
     dependsOn: "outreach",
@@ -131,7 +147,7 @@ const STARTERS = [
     creator: adminPerson("Salesforce", "SF"),
     summary: "Full refresh when a plan period is nearing its end.",
     process:
-      "Recommended when a plan period is nearing its end.\n\n1. Gather inputs: client history, financials, market context, risk, coverage, and prior objectives.\n2. Create the plan: draft relationship strategy and define objectives and measures.\n3. Reach out to Treasury, Credit, and Industry specialists, then synthesize their feedback.\n4. Route the account plan to the Relationship Manager for review.",
+      "Recommended when a plan period is nearing its end.\n\n1. Gather inputs: client history, financials, and market context.\n2. Create the plan: draft relationship strategy and define objectives and measures.\n3. Reach out to Treasury Specialist, Credit Specialist and Industry Specialist, then synthesize their feedback and update the account plan.\n4. Route account plan for Relationship Manager review.",
     blueprint: cloneTree(CANONICAL)
   },
   {
@@ -142,9 +158,9 @@ const STARTERS = [
     creator: adminPerson("Salesforce", "SF"),
     summary: "First Account Plan after an account is assigned. No prior plan to load.",
     process:
-      "First Account Plan after an account is assigned.\n\n1. Gather inputs: client history, financials, market context, risk, and coverage. There is no prior plan to load.\n2. Create the plan: draft relationship strategy and define objectives and measures.\n3. Reach out to Treasury, Credit, and Industry specialists, then synthesize their feedback.\n4. Route the account plan to the Relationship Manager for review.",
+      "First Account Plan after an account is assigned.\n\n1. Gather inputs: client history, financials, and market context. There is no prior plan to load.\n2. Create the plan: draft relationship strategy and define objectives and measures.\n3. Reach out to Treasury Specialist, Credit Specialist and Industry Specialist, then synthesize their feedback and update the account plan.\n4. Route account plan for Relationship Manager review.",
     blueprint: [
-      gatherStep(["g1", "g2", "g3", "g4", "g5"], "Collect account evidence. There is no prior plan to load."),
+      gatherStep(["g1", "g2", "g3"], "Collect account evidence. There is no prior plan to load."),
       planStep(),
       outreachStep(),
       rmStep("outreach")
@@ -156,11 +172,11 @@ const STARTERS = [
     industry: "Commercial banking",
     origin: "starter",
     creator: adminPerson("Salesforce", "SF"),
-    summary: "Light update during the period. History, financials, and prior objectives only.",
+    summary: "Light update during the period. History and financials only.",
     process:
-      "Use during the plan period when the relationship does not need a full specialist round.\n\n1. Gather inputs: client history, financials, and prior objectives.\n2. Create the plan: update relationship strategy and objectives and measures.\n3. Route the account plan to the Relationship Manager for review.",
+      "Use during the plan period when the relationship does not need a full specialist round.\n\n1. Gather inputs: client history and financials.\n2. Create the plan: update relationship strategy and objectives and measures.\n3. Route account plan for Relationship Manager review.",
     blueprint: [
-      gatherStep(["g1", "g2", "g6"], "Collect current history, financials, and prior objectives."),
+      gatherStep(["g1", "g2"], "Collect current history and financials."),
       planStep("Update relationship strategy and objectives from the mid-year evidence"),
       rmStep("plan")
     ]
@@ -173,9 +189,9 @@ const STARTERS = [
     creator: adminPerson("Salesforce", "SF"),
     summary: "Adds a Credit Specialist gate before Relationship Manager review.",
     process:
-      "For accounts where credit is the main decision.\n\n1. Gather inputs: client history, financials, risk signals, and prior objectives.\n2. Create the plan: draft relationship strategy and objectives and measures.\n3. Route the plan to a Credit Specialist. Named people are resolved when the workflow runs.\n4. Route the account plan to the Relationship Manager for review.",
+      "For accounts where credit is the main decision.\n\n1. Gather inputs: client history and financials.\n2. Create the plan: draft relationship strategy and objectives and measures.\n3. Route the plan to a Credit Specialist. Named people are resolved when the workflow runs.\n4. Route account plan for Relationship Manager review.",
     blueprint: [
-      gatherStep(["g1", "g2", "g4", "g6"], "Collect credit-relevant evidence before the plan is assembled"),
+      gatherStep(["g1", "g2"], "Collect credit-relevant evidence before the plan is assembled"),
       planStep(),
       personStep("credit", "Route to Credit Specialist", "Credit Specialist", "plan", "Person-owned credit review. No agent writes this step."),
       rmStep("credit")
@@ -194,9 +210,9 @@ const YOURS_SEED = [
     creator: CURRENT_ADMIN,
     summary: "Cash-management focus with a Treasury Specialist gate.",
     process:
-      "For relationships where cash management is the priority.\n\n1. Gather inputs: client history, financials, and coverage contacts.\n2. Create the plan: draft relationship strategy and objectives and measures.\n3. Route the plan to a Treasury Specialist. Named people are resolved when the workflow runs.\n4. Route the account plan to the Relationship Manager for review.",
+      "For relationships where cash management is the priority.\n\n1. Gather inputs: client history and financials.\n2. Create the plan: draft relationship strategy and objectives and measures.\n3. Route the plan to a Treasury Specialist. Named people are resolved when the workflow runs.\n4. Route account plan for Relationship Manager review.",
     blueprint: [
-      gatherStep(["g1", "g2", "g5"], "Collect history, financials, and coverage for a cash-management plan"),
+      gatherStep(["g1", "g2"], "Collect history and financials for a cash-management plan"),
       planStep(),
       personStep("treasury", "Route to Treasury Specialist", "Treasury Specialist", "plan", "Person-owned Treasury review. No agent writes this step."),
       rmStep("treasury")
@@ -210,11 +226,11 @@ const YOURS_SEED = [
     creator: CURRENT_ADMIN,
     summary: "Industry input, then a Credit gate, for accounts with risk signals.",
     process:
-      "For accounts with risk signals that still need a relationship plan.\n\n1. Gather inputs: client history, financials, market context, risk, and coverage.\n2. Create the plan: draft relationship strategy and objectives and measures.\n3. Reach out to Industry specialists, then synthesize their feedback.\n4. Route the plan to a Credit Specialist.\n5. Route the account plan to the Relationship Manager for review.",
+      "For accounts with risk signals that still need a relationship plan.\n\n1. Gather inputs: client history, financials, and market context.\n2. Create the plan: draft relationship strategy and objectives and measures.\n3. Reach out to Industry Specialist, then synthesize feedback and update the account plan.\n4. Route the plan to a Credit Specialist.\n5. Route account plan for Relationship Manager review.",
     blueprint: [
-      gatherStep(["g1", "g2", "g3", "g4", "g5"], "Collect evidence with emphasis on risk and coverage"),
+      gatherStep(["g1", "g2", "g3"], "Collect evidence with emphasis on market and relationship context"),
       planStep(),
-      outreachStep("Reach out to Industry specialists", "Request Industry input, then merge it into the plan"),
+      outreachStep("Reach out to Industry Specialist", "Request Industry input, then merge it into the plan"),
       personStep("credit", "Route to Credit Specialist", "Credit Specialist", "outreach", "Person-owned credit review after specialist input."),
       rmStep("credit")
     ]
@@ -459,6 +475,7 @@ function renderCard(template) {
 function openDraft(template, editing) {
   const tree = cloneTree(template.blueprint || CANONICAL);
   const process = template.process || template.summary || "";
+  // V3 create wizard expects stages + phase; keep blueprint for older readers.
   sessionStorage.setItem(
     DRAFT,
     JSON.stringify({
@@ -470,14 +487,16 @@ function openDraft(template, editing) {
       files: [],
       links: [],
       blueprint: tree,
+      stages: tree,
       stage: "Ready",
       ready: true,
+      phase: "blueprint",
       fromTemplate: template.id,
       editingTemplate: editing ? template.id : null,
       templateOrigin: editing ? (template.origin === "org" ? "org" : "starter") : null
     })
   );
-  window.location.href = REVIEW;
+  window.location.href = createHref();
 }
 
 function useTemplate(template) {

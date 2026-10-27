@@ -1,9 +1,10 @@
 # Agentic Account Plan Setup — Design Requirements
 
-**Status:** v0.47 — in progress  
+**Status:** v0.51 — Version 3 implemented in prototype  
 **Persona:** Salesforce Admin  
 **Altitude:** Problem, design principles, and information architecture. Field lists are included only where a decision needed them. This document does not specify controls, copy, or visual layout.  
-**Last updated:** 19 October 2026
+**Last updated:** 27 October 2026  
+**Current prototype:** Version 3 (live under `prototype/`). Version 0 and Version 1 are frozen under `prototype/versions/`. Version switching is only on Workflow Setup landing; Workflow Agents and Workflow Templates use the shared V0 UI.
 
 This is a living document. Later inputs should be added as new sections or as resolutions in [Open inputs](#open-inputs). Do not rewrite settled decisions to fit a new screen.
 
@@ -67,7 +68,7 @@ The Admin does not start, snooze, or dismiss a recommended action. Those belong 
 2. **The Admin authors the workflow. Agents draft the blueprint.** The Admin supplies intent: industry, a process description (why it exists and how it should run), and optional context (files and links). Access to a link is checked when it is added. Agents produce the step-and-task tree. The Admin decides what gets published. Sources used when the workflow runs, the refresh recommendation, and use of a prior plan period belong to the Relationship Manager at runtime.
 3. **Generation is visible.** While the blueprint is being produced, the Admin can see progress, which context was used, which sources were permitted or withheld, and which agent failed. The Admin can stop generation. No Account Plan records are written or published during setup generation.
 4. **The blueprint is the runtime tree.** The steps and tasks an Admin reviews are the steps and tasks that later run for an account. The canonical tree is the four-step refresh workflow in [Blueprint](#blueprint), not the Figma example of Initiate, Build, Approve, and Execute.
-5. **Agents belong to tasks.** A step can contain several tasks, and those tasks can be done by different agents. Setup assigns the agent on the task. A step may also be owned by a person and have no tasks.
+5. **Agents belong to tasks.** A step can contain several tasks, and those tasks can be done by different agents or a person role. Setup assigns the performer on the task. Every step has at least one task, including person-owned review.
 6. **Roles, not named people.** Setup assigns roles: an agent, the Relationship Manager, a Treasury Specialist, a Credit Specialist, an Industry Specialist. Named people are resolved when the workflow runs.
 7. **Industry selects compliance.** The Admin chooses an industry. The compliance context for that industry is applied automatically. There is no separate compliance choice.
 8. **Publishing is a separate act.** A drafted or generated workflow is not available to bankers until the Admin publishes it. Archiving it removes it from runtime. Archived workflows stay until the Admin restores or deletes them. They are not removed after 30 days.
@@ -76,7 +77,7 @@ The Admin does not start, snooze, or dismiss a recommended action. Those belong 
 
 ## Information architecture
 
-Setup has three phases: **Describe → Generate → Review.** A wizard that says "step 1 of 5" is leftover chrome. The three phases stay visible in the page header while the Admin works. Only the brief (and later the generated tree) scrolls.
+Setup create uses three wizard steps in a **full-screen shell with a left step rail**: **Describe workflow → Generate Workflow blueprint → Review & Publish.** Version 0’s separate Generate activity page and Version 1’s modal create shell are frozen. The step rail stays visible while the Admin works. Only the active panel scrolls.
 
 Under Workflows in Setup, **Workflow Setup** holds the org’s workflow definitions. **Workflow Agents** is the org catalog of agents an Admin can inspect and customize — not Account Plan only. The same agent can be used on Account plan, KYC renewal, credit, onboarding, and other Relationship Manager runtime workflows. Agent names on the list show as tags with an icon. The Admin can turn an agent on or off on the list, add instructions, choose which source types it may read, and set what happens if it fails. Availability is not repeated in Customize. Used on shows the primary workflow plus how many others; opening it lists each workflow and how many times the agent is used there. Person roles (Relationship Manager, Treasury, Credit, Industry) are assigned on the task, not in that catalog. The Admin does not create new agents here. **Workflow Templates** is a thumbnail library of Account Plan blueprints: four starter templates, plus **Created by you** for blueprints the Admin saved. Cards show the creator as initials and a short name. A kebab on every card — starter and created — offers Modify and Delete. Using a template opens a new Ready draft on Review. Modify opens that blueprint for editing. The Admin still tests before publish. Saving a reviewed blueprint as a template adds or updates it under Created by you. **Workflow Settings** is not a page in this version: remaining org knobs live on Workflow Agents or as product rules (industry compliance, archive, publish).
 
@@ -85,9 +86,9 @@ flowchart TD
   understand[Understand Account Plan setup]
   inventory[See Account Plan workflows and their stage]
   manage[Manage a workflow]
-  describe[Describe the Account Plan]
-  generate[Generate the blueprint]
-  review[Review and adjust steps and tasks]
+  describe[Describe workflow]
+  blueprint[Generate Workflow blueprint]
+  review[Review and Publish]
   testrun[Test run]
   publish[Publish]
 
@@ -95,21 +96,21 @@ flowchart TD
   inventory --> describe
   inventory --> manage
   manage --> review
-  describe --> generate
-  generate --> review
+  describe --> blueprint
+  blueprint --> review
   review --> testrun
   testrun --> publish
   publish --> inventory
 ```
 
 1. **Understand.** Why an Account Plan workflow exists, what the Admin is about to create, and that publishing is separate from drafting.
-2. **Inventory.** The Account Plan workflows in the org. Each has a stage, whether it is available at runtime, and a created or last-updated date. The inventory does not list customer accounts. Which accounts currently have a run belongs outside Setup.
+2. **Inventory.** The Account Plan workflows in the org. Each has a stage, whether it is available at runtime, and a created or last-updated date. The inventory does not list customer accounts. Which accounts currently have a run belongs outside Setup. Landing timeline copy names the third create step **Review & Publish**.
 3. **Manage.** The workflow name opens the definition. Actions are continue setup or edit, then archive, restore, or delete. A live workflow that is available (active) must be deactivated before Archive or Delete. Turning Available on or off shows a confirmation toast. Inactive (published, Available off) and other (Draft, Generating, Ready) workflows can be archived or deleted. Archived workflows can be restored or deleted. Deleting requires typing the workflow name and cannot be undone. Only an Admin can edit. The Relationship Manager runs a live workflow.
-4. **Describe.** The brief: the industry, a process description (purpose and how the process should run, in one field), and optional context the generator may use. Context is files and links, each with its own field. Uploaded files and accepted links show as thumbnails. When the Admin adds a link, access is checked immediately. A link without access is not added. Required intent is separate from example material. Runtime sources, the refresh recommendation, and prior-plan handling are not part of this brief.
-5. **Generate.** The generator reads the Admin brief, checks context access, applies industry compliance, proposes steps, proposes tasks, assigns agents, and checks the draft. The Admin sees named tool calls as they run. Progress is compact: step names, task counts by step, and assigned-agent tags. Individual task rows belong on Review.
-6. **Review.** This is where the workflow blueprint is previewed. The page title is the setup phase. Breadcrumbs are Workflow Setup / New workflow. The page header also shows stage and task counts, setup progress, blueprint status, then Test run blueprint, Save as template, and Publish. The workflow name is not repeated as a second title. Stage reorder is a dedicated Reorder control (modal), not per-step arrows on the outline. Task reorder and task removal happen in the step editor, not on the outline. A passing test run is required before Save as template or Publish. The test run checks two things on sample account data (Northwind Logistics · 2026 Relationship Plan): that the blueprint executes, and that an Account Plan is generated (Relationship Strategy from 2.1, Objectives & Measures from 2.2). Editing the blueprint after a test run requires a new test. Publishing is a separate act.
-7. **Publish.** Publishing makes the workflow available as an Account Plan action. Saving a draft does not. A passing test run is required first. The test run does not publish and does not write a live customer plan. Publishing shows progress, then confirms success. Disabling or retiring takes it out of runtime without deleting the definition.
-8. **Templates.** A starter library of Account Plan blueprints with different shapes, shown as thumbnails. Starters include a full refresh, a first relationship plan, a mid-year update, a credit-intensive plan, a Treasury and cash-management plan, an at-risk plan, a healthcare plan, and a technology growth plan. They are not industry skins of one tree. The Admin picks a thumbnail to open a new draft on Review. Industry still selects compliance. Using a template does not publish and does not skip the test run. Save as template on Review adds an org template. This is not a generic workflow catalog.
+4. **Describe.** The brief: workflow name, industry, a process description (purpose and how the process should run, in one field), and optional context the generator may use. Context is files and links. When the Admin adds a link, access is checked immediately. A link without access is not added. **Build with agent** is an optional switch on this step (agent icon in the row). On: Next is **Next: Generate Workflow blueprint** and agents draft the tree. Off: Next is **Next: Create Workflow** and the Admin lands on a blank blueprint for manual authoring. Runtime sources, the refresh recommendation, and prior-plan handling are not part of this brief.
+5. **Generate Workflow blueprint.** The outline is the authoring surface. With Build with agent on, stages and tasks appear progressively under a loader sized to the outline. With it off, the Admin adds steps and tasks manually. Hover on a step exposes Reorder and Add task. Every workflow step must include at least one task (including person-owned steps such as Relationship Manager review). Stage reorder uses a dedicated Reorder modal. Step and task editors are modals (label left / control right; Delete is a text action on the left of the footer). Task fallback, Cc, and escalations use people search; retries are attempts or time. **Test run blueprint** lives in the create header on this step. A passing test on the current blueprint is required before Save as template or Publish. Editing the blueprint after a test requires a new test.
+6. **Review & Publish.** Confirms readiness and the connected blueprint. Layout is two columns: **Blueprint** (connected Start → numbered steps with all assignees → Publish) on one side; workflow facts (name, industry, context) and **Readiness** (tick marks for blueprint ready, test run, ready to publish) on the other. Header CTAs on this step are Save (leftmost among actions), Save as template, and Publish. Save as template opens a confirm modal with the template name prefilled. Publish shows a loader on the Publish button, then returns the Admin to Workflow Setup landing. A passing test run is still required. The test does not publish and does not write a live customer plan.
+7. **Publish.** Publishing makes the workflow available as an Account Plan action. Saving a draft does not. Disabling or retiring takes it out of runtime without deleting the definition.
+8. **Templates.** A starter library of Account Plan blueprints with different shapes, shown as thumbnails. Starters include a full refresh, a first relationship plan, a mid-year update, a credit-intensive plan, a Treasury and cash-management plan, an at-risk plan, a healthcare plan, and a technology growth plan. They are not industry skins of one tree. The Admin picks a thumbnail to open a new draft. Industry still selects compliance. Using a template does not publish and does not skip the test run. Save as template on Review & Publish adds an org template under Created by you. This is not a generic workflow catalog.
 
 ### Lifecycle
 
@@ -135,16 +136,13 @@ Setup must be able to define the following tree. The reference screenshots show 
 | 1. Gather Inputs | 1.1 Review client history | History Agent |
 | | 1.2 Pull financial data | Financials Agent |
 | | 1.3 Research market context | Market Research Agent |
-| | 1.4 Add risk signals | Risk Intelligence Agent |
-| | 1.5 Coverage and contacts | Coverage Strategy Agent |
-| | 1.6 Load prior objectives and measures | Starts after 1.1. Reads the prior plan. Does not write new objectives. |
 | 2. Create Plan | 2.1 Draft relationship strategy | Strategy Agent |
 | | 2.2 Define Objectives & Measures | Objectives Agent |
-| 3. Reach out to Treasury, Credit, and Industry specialists | 3.1 Gather specialist input | Outreach Agent. Specialist roles are Treasury, Credit, and Industry. People are resolved at runtime. |
+| 3. Reach out to Treasury Specialist, Credit Specialist and Industry Specialist | 3.1 Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen) | Outreach Agent. Named specialists are resolved at runtime for the account. |
 | | 3.2 Synthesize specialist feedback and update the account plan | Synthesis Agent |
-| 4. Route the account plan for Relationship Manager review | None | Relationship Manager |
+| 4. Route account plan for Relationship Manager review | 4.1 Review account plan | Relationship Manager |
 
-Tasks 1.1 through 1.5 start together when Gather Inputs starts. Task 1.6 waits for client history. Tasks 1.4 and 1.5 come from the step editor for Gather Inputs. The earlier runtime screenshot showed only 1.1 through 1.3. The step editor is the fuller definition.
+Tasks 1.1 through 1.3 start together when Gather Inputs starts. This tree matches the runtime cases / Start workflow outline. Every step, including person-owned review, must carry at least one task so the blueprint can be tested and published.
 
 ### Trigger
 
@@ -162,9 +160,6 @@ Task agents run the workflow. The five research agents write sections of the Acc
 | Performance indicators | Financials Agent, as part of Client Intelligence | 1.2 |
 | Vision, strategic priorities, challenges, industry trends | Client Intelligence Agent | 1.3 Market Research Agent |
 | Competitive strengths, weaknesses, competitors | Competitive Intelligence Agent | 1.3 Market Research Agent |
-| Risk rating and risk evidence | Risk Intelligence Agent | 1.4 |
-| Coverage contacts | Coverage Strategy Agent, contacts only | 1.5 |
-| Prior objectives | Read only | 1.6 |
 | Relationship summary, strengths, weaknesses, threats, opportunities | Relationship Health Agent | 2.1 Strategy Agent |
 | Calling strategy | Coverage Strategy Agent, the narrative | 2.1 Strategy Agent |
 | Objectives and measures | Objectives Agent | 2.2 |
@@ -173,7 +168,7 @@ Task agents run the workflow. The five research agents write sections of the Acc
 
 The Account Planning Agent coordinates the run and does not write a section.
 
-Sources follow the same split at runtime. History uses Salesforce activities, contacts, the account team, and opportunity history. Financials uses financial accounts and core-banking figures. Market research uses linked external sources for industry and competitors. Risk uses utilisation, covenants, and adverse media. Coverage uses the account team, historical cadence, and pipeline. Strategy reads finished gather outputs and writes only relationship health and calling strategy. The Relationship Manager selects runtime sources when they run the workflow. Setup generation uses the Admin’s process description and any context files or links that passed access.
+Sources follow the same split at runtime. History uses Salesforce activities, contacts, the account team, and opportunity history. Financials uses financial accounts and core-banking figures. Market research uses linked external sources for industry and competitors. Strategy reads finished gather outputs and writes relationship health and calling strategy. The Relationship Manager selects runtime sources when they run the workflow. Setup generation uses the Admin’s process description and any context files or links that passed access.
 
 Each drafted section records the writer, when that writer last refreshed it, and a confidence of high, medium, or low. The plan does not use one refresh time or one confidence for every agent.
 
@@ -209,7 +204,7 @@ The Figma blueprint example (Initiate, Build, Approve, Execute, with owners such
 
 Conceptually, not as a form:
 
-- A **step** has an order, a purpose, tasks, and may depend on earlier steps. It may be owned by a person and have no tasks, as in Relationship Manager review.
+- A **step** has an order, a purpose, tasks, and may depend on earlier steps. A person-owned step (for example Relationship Manager review) still has at least one task assigned to that role.
 - A **task** has an order inside its step, an instruction, and exactly one performing agent when an agent does the work. Tasks in the same step may use different agents.
 - A task may depend on other tasks. A step's tasks are removed with the step.
 - An approval, when the workflow uses one, is owned by a person.
@@ -227,19 +222,21 @@ Content groups on that page (Client Intelligence, Competitive Intelligence, Rela
 Persona for every story: Salesforce Admin.
 
 1. **See Account Plan setup and start a draft.** The Admin can tell what an Account Plan workflow is for, see the ones already in the org, open a workflow from its name to continue setup or edit it, and start one. Nothing is available to bankers until it is published.
-2. **Describe the Account Plan in plain language.** The Admin states the industry and a process description (why it exists and how it should run). Compliance for the selected industry is applied automatically. The Admin may add context as files or links. A link is checked for access when it is added.
-3. **Watch the blueprint get drafted.** The Admin sees progress and which linked sources were used. Generation can be stopped. No Account Plan records are updated or published.
-4. **Review the blueprint as the runtime tree.** The Admin sees the four steps and their tasks, including which agent performs each task and which step is the Relationship Manager's. Stages are reordered from a dedicated Reorder modal. Tasks are reordered or removed in the step editor. A draft can be saved. The Admin must test-run the blueprint from Review before Save as template or Publish.
-5. **Edit a step.** The Admin can change what the step is for, who owns it, what it depends on, and how it is considered done. Tasks belong to the step.
-6. **Edit a task.** The Admin can change the instruction, which agent performs it, when it starts, how long it may take, who is accountable, and which sources it may use. Two tasks in one step may name different agents. A task does not have to name an Account Plan objective.
-7. **Publish only after a passing test run.** Saving a draft and publishing are different. Publishing is what makes the workflow available. The Admin must test the blueprint on sample account data first. That test must show both that the steps run and that a sample Account Plan is generated. The Admin is not asked to confirm a customer's strategy or objectives.
-8. **Start from a template.** The Admin can pick a starter Account Plan blueprint, or one saved from Review, and open it as a new draft. Using a template does not publish. A passing test run is still required.
+2. **Describe the Account Plan in plain language.** The Admin states the workflow name, industry, and a process description (why it exists and how it should run). Compliance for the selected industry is applied automatically. The Admin may add context as files or links. A link is checked for access when it is added. The Admin chooses Build with agent on or off before continuing.
+3. **Author or watch the blueprint.** With Build with agent on, the Admin sees the outline fill progressively. With it off, the Admin creates steps and tasks manually. Generation does not write Account Plan records. Every step must have at least one task before test or publish.
+4. **Review & Publish.** The Admin sees a connected blueprint of the four steps and their assignees, plus readiness (blueprint ready, test run, ready to publish). Facts show workflow name, industry, and context. Stages are reordered from a dedicated Reorder modal. Tasks are reordered or removed in the step editor. A draft can be saved. The Admin must test-run the blueprint before Save as template or Publish.
+5. **Edit a step.** The Admin can change what the step is for, what it depends on, and how it is considered done. Tasks belong to the step.
+6. **Edit a task.** The Admin can change the instruction, which agent or person performs it, when it starts, how long it may take, fallback, Cc, escalations, retries, and which sources it may use. Two tasks in one step may name different agents. A task does not have to name an Account Plan objective.
+7. **Publish only after a passing test run.** Saving a draft and publishing are different. Publish shows progress on the Publish control, then returns to Workflow Setup. Save as template asks the Admin to confirm a template name. The Admin is not asked to confirm a customer's strategy or objectives.
+8. **Start from a template.** The Admin can pick a starter Account Plan blueprint, or one saved from Review & Publish, and open it as a new draft. Using a template does not publish. A passing test run is still required.
 
 ## Decisions
 
 - Technician and Salesforce Admin are the same persona.
-- Setup is three phases: Describe, Generate, Review.
-- The canonical workflow is the four-step tree in [Blueprint](#blueprint). Agents are assigned per task. Gather Inputs includes the six tasks on the step editor.
+- Setup create is three wizard steps in a full-screen shell: Describe workflow, Generate Workflow blueprint, Review & Publish. Version 0 (multi-page) and Version 1 (modal create) are frozen snapshots. Only Workflow Setup landing exposes the version switcher.
+- Build with agent on Describe chooses agent-drafted progressive blueprint versus manual blank blueprint. Next CTA copy follows that choice.
+- Every workflow step must include at least one task before test or publish, including person-owned review steps.
+- The canonical workflow is the four-step tree in [Blueprint](#blueprint). Agents (or a person role) are assigned per task. Gather Inputs includes the three tasks that match the runtime cases outline (history, financials, market).
 - Specialist roles in this workflow are Treasury, Credit, and Industry. Names are a runtime resolution.
 - Setup generation writes the blueprint only. Customer fields are drafted later, when the workflow runs, and become final only when the Account Plan owner confirms them.
 - The Admin's job ends at defining and publishing the workflow. Only an Admin edits the workflow. The Relationship Manager runs it.
@@ -250,9 +247,12 @@ Persona for every story: Salesforce Admin.
 - "Objectives" in this product are the goals on the Account Plan (step 2.2 and the Objectives & Measures content). They are not the three setup phases.
 - A setup task does not point at an Account Plan objective. Evidence tasks gather cited inputs. New objectives are written only by the Objectives Agent. Loading prior objectives reads them and does not create new ones. An action that later carries out a goal can point at that objective. That association belongs on the action, not on every task in the blueprint.
 - The Admin authors one reusable workflow definition. Setup inventory shows the health of that definition. It does not show which customer accounts currently have it active. A later eligible-plan count at publish time may be added without naming accounts.
-- A passing test run is required before publish. The test uses sample account Northwind Logistics · 2026 Relationship Plan. It checks that the blueprint executes and that a sample Account Plan is generated. It does not publish and does not write a live customer plan. Changing the blueprint after a test run requires a new test.
+- A passing test run is required before Save as template or Publish. The test uses sample account Northwind Logistics · 2026 Relationship Plan. It checks that the blueprint executes and that a sample Account Plan is generated. It does not publish and does not write a live customer plan. Changing the blueprint after a test run requires a new test.
+- Review & Publish shows a connected blueprint graph and a readiness checklist. Facts are workflow name, industry, and context (not test-run or availability tiles).
+- Save as template confirms a template name in a modal (prefilled from the workflow name), then stores under Created by you.
+- Publish shows a loader on the Publish control, then returns to Workflow Setup landing with the definition Live.
 - Workflow Settings is not a Setup page in this version. Industry compliance, archive, and publish are product rules. Agent availability, instructions, sources, and failure fallback live on Workflow Agents.
-- Workflow Templates shows four starter Account Plan blueprints and Created by you templates (two seeded examples), four cards to a row. Starter cards show author Salesforce; Created by you cards show the Admin who saved them (initials thumbnail and name). A kebab on starter and created cards offers Modify, Share, and Delete. Share opens a modal for Admin name and message, then a success toast (prototype). Using a template opens a new Ready draft on Review. Modify opens that blueprint on Review. Industry still selects compliance. A passing test run is still required. Review’s Save as template adds or updates a template under Created by you.
+- Workflow Templates shows four starter Account Plan blueprints and Created by you templates (two seeded examples), four cards to a row. Starter cards show author Salesforce; Created by you cards show the Admin who saved them (initials thumbnail and name). A kebab on starter and created cards offers Modify, Share, and Delete. Share opens a modal for Admin name and message, then a success toast (prototype). Using a template opens a new Ready draft. Modify opens that blueprint for editing. Industry still selects compliance. A passing test run is still required.
 
 ## Open inputs
 
@@ -260,20 +260,20 @@ The v0.1 list is closed.
 
 The missing measure fields called out in the agent-design note (wallet-share target, product-gap targets, profitability target, cross-line referral targets) are out of this version.
 
-Generate shows setup activity only. The workflow blueprint is previewed on Review. Checkpoint 1 (runtime-tree fill) is kept in `prototype/checkpoints/checkpoint-1-generate`. These Admin-helpful surfaces are still open, not committed:
+Version 3 folds blueprint authoring into **Generate Workflow blueprint** and confirmation into **Review & Publish**. Checkpoint 1 (older runtime-tree fill on a separate Generate page) remains in `prototype/checkpoints/checkpoint-1-generate` for history only. These Admin-helpful surfaces are still open, not committed:
 
 - A human-review flag during Check the draft, as in Figma activity (stale baseline, missing owner).
 - Named withheld sources per context item, not only a failed access check.
-- Writes-to, industry, compliance, and context in use were tried on Generate and removed. They may belong on Review instead.
 - Which linked sources were permitted, withheld, or timed out, named per task.
 - A skip-and-continue for a failed optional task, versus blocking the dependent step (this workflow blocks Create Plan when market research fails).
 - Confidence of the drafted tree, or which parts of the process description were ignored.
 - Cost or token use. Not needed for this version.
 - An eligible-plan count at Publish, still without naming accounts.
-- Setup generation currently plays tasks in order so the Admin can follow them. Runtime gather still starts 1.1–1.5 together.
+- Progressive generation currently reveals stages in sequence so the Admin can follow them. Runtime gather starts 1.1–1.3 together.
 - Whether an Admin can create agents. This version customizes the org catalog of RM runtime agents; it does not create new ones.
-- Whether using a template should land on Describe so the Admin can rename before Review.
+- Whether using a template should land on Describe so the Admin can rename before Review & Publish.
 - Whether Modify of a starter should copy into Created by you instead of changing the starter in place.
+- Whether Workflow Agents / Templates should gain their own versioned shells later (today they stay on the shared V0 UI while only Workflow Setup versions).
 
 ## Change log
 
@@ -326,3 +326,7 @@ Generate shows setup activity only. The workflow blueprint is previewed on Revie
 | 0.45 | 19 October 2026 | Version control moved to Setup bar (with Home / Object Manager); label is Version 0; quieter text-style control. |
 | 0.46 | 19 October 2026 | Version 1: Available in Actions menu; New workflow is a modal with vertical Describe → Blueprint steps (Generate skipped, progressive AI reveal); + Task / + Workflow insert under each stage. Version 0 frozen. |
 | 0.47 | 19 October 2026 | Version 1 Describe: optional Build with agent switch (USP on time saved); off opens a blank blueprint with manual step/task editors. |
+| 0.48 | 21 October 2026 | Version 3 (live): full-screen create with left step rail — Describe workflow → Generate Workflow blueprint → Review & Publish. V0/V1 frozen. Version switcher only on Workflow Setup landing; Agents/Templates stay shared V0 UI. |
+| 0.49 | 21 October 2026 | V3 Describe: Build with agent row with Einstein icon; Next is Generate Workflow blueprint or Create Workflow. Blueprint step: progressive gen loader, Notion-style hover Reorder/Add task, every step requires ≥1 task, people search for fallback/Cc/escalations, retry attempts or time. Test run stays on blueprint step and gates template/publish. |
+| 0.50 | 21 October 2026 | V3 Review & Publish: two-column layout (connected blueprint chain + facts/readiness ticks); facts are name, industry, context; Save as template confirm modal with prefilled name; Publish loader on CTA then return to Workflow Setup landing. Prototype published at Account-plan-Setup GitHub Pages. |
+| 0.51 | 27 October 2026 | Canonical blueprint content aligned to runtime cases / Start workflow: Gather Inputs 1.1–1.3 only; specialist step title and named specialists; synthesize + update plan; Route account plan (no “the”). Loader and Agents catalog copy updated. |

@@ -25,10 +25,7 @@
       tasks: [
         { id: "g1", name: "Review client history", who: "History Agent", kind: "agent", startWhen: "When the stage starts", fallback: "RM delegate after 1 retry", instructions: "" },
         { id: "g2", name: "Pull financial data", who: "Financials Agent", kind: "agent", startWhen: "When the stage starts", fallback: "Data Operations queue", instructions: "" },
-        { id: "g3", name: "Research market context", who: "Market Research Agent", kind: "agent", startWhen: "When the stage starts", fallback: "Research support queue", instructions: "" },
-        { id: "g4", name: "Add risk signals", who: "Risk Intelligence Agent", kind: "agent", startWhen: "When the stage starts", fallback: "Credit Risk desk", instructions: "" },
-        { id: "g5", name: "Coverage and contacts", who: "Coverage Strategy Agent", kind: "agent", startWhen: "When the stage starts", fallback: "RM manual entry", instructions: "" },
-        { id: "g6", name: "Load prior objectives and measures", who: "History Agent", kind: "agent", startWhen: "After another task", dependsOn: "g1", fallback: "Skip if no prior plan", instructions: "" }
+        { id: "g3", name: "Research market context", who: "Market Research Agent", kind: "agent", startWhen: "When the stage starts", fallback: "Research support queue", instructions: "" }
       ]
     },
     {
@@ -44,18 +41,35 @@
     },
     {
       id: "outreach",
-      name: "Reach out to Treasury, Credit, and Industry specialists",
+      name: "Reach out to Treasury Specialist, Credit Specialist and Industry Specialist",
       descriptor: "Request specialist input, then merge it into the plan",
       startKind: "previous",
       dependsOn: "plan",
       tasks: [
-        { id: "o1", name: "Gather specialist input", who: "Outreach Agent", kind: "agent", startWhen: "When the stage starts", fallback: "RM chase specialists", instructions: "" },
-        { id: "o2", name: "Synthesize specialist feedback", who: "Synthesis Agent", kind: "agent", startWhen: "After another task", dependsOn: "o1", fallback: "RM merge feedback", instructions: "" }
+        {
+          id: "o1",
+          name: "Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen)",
+          who: "Outreach Agent",
+          kind: "agent",
+          startWhen: "When the stage starts",
+          fallback: "RM chase specialists",
+          instructions: ""
+        },
+        {
+          id: "o2",
+          name: "Synthesize specialist feedback and update the account plan",
+          who: "Synthesis Agent",
+          kind: "agent",
+          startWhen: "After another task",
+          dependsOn: "o1",
+          fallback: "RM merge feedback",
+          instructions: ""
+        }
       ]
     },
     {
       id: "rm",
-      name: "Route the account plan for Relationship Manager review",
+      name: "Route account plan for Relationship Manager review",
       descriptor: "Person-owned review. No agent writes this step.",
       startKind: "previous",
       dependsOn: "outreach",
@@ -1228,7 +1242,7 @@
     industryInput.value = options.industry || "Commercial banking";
     processInput.value =
       options.process ||
-      "Recommended when a plan period is nearing its end.\n\n1. Gather inputs: client history, financials, market context, risk, coverage, and prior objectives.\n2. Create the plan: draft relationship strategy and define objectives and measures.\n3. Reach out to Treasury, Credit, and Industry specialists, then synthesize their feedback.\n4. Route the account plan to the Relationship Manager for review.";
+      "Recommended when a plan period is nearing its end.\n\n1. Gather inputs: client history, financials, and market context.\n2. Create the plan: draft relationship strategy and define objectives and measures.\n3. Reach out to Treasury Specialist, Credit Specialist and Industry Specialist, then synthesize their feedback and update the account plan.\n4. Route account plan for Relationship Manager review.";
     contextItems = [];
     (options.files || []).forEach((name) => contextItems.push({ type: "file", name: name }));
     (options.links || []).forEach((name) => contextItems.push({ type: "link", name: name }));

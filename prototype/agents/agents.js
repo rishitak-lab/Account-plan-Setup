@@ -49,10 +49,7 @@ const DEFAULTS = [
       { id: "cadence", label: "Historical cadence", on: true },
       { id: "pipeline", label: "Pipeline", on: true }
     ],
-    uses: [
-      { workflow: "Account plan", task: "1.5 Coverage and contacts" },
-      { workflow: "Account plan", task: "2.1 Draft relationship strategy" }
-    ]
+    uses: [{ workflow: "Credit application", task: "Map coverage contacts" }]
   },
   {
     id: "covenant",
@@ -117,7 +114,6 @@ const DEFAULTS = [
     ],
     uses: [
       { workflow: "Account plan", task: "1.1 Review client history" },
-      { workflow: "Account plan", task: "1.6 Load prior objectives and measures" },
       { workflow: "KYC renewal", task: "Review prior KYC file" }
     ]
   },
@@ -205,7 +201,12 @@ const DEFAULTS = [
       { id: "roles", label: "Treasury, Credit, and Industry roles", on: true },
       { id: "plan", label: "Draft plan sections", on: true }
     ],
-    uses: [{ workflow: "Account plan", task: "3.1 Gather specialist input" }]
+    uses: [
+      {
+        workflow: "Account plan",
+        task: "3.1 Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen)"
+      }
+    ]
   },
   {
     id: "risk",
@@ -220,7 +221,6 @@ const DEFAULTS = [
       { id: "internalRisk", label: "Internal risk rating", on: true }
     ],
     uses: [
-      { workflow: "Account plan", task: "1.4 Add risk signals" },
       { workflow: "KYC renewal", task: "Screen risk flags" },
       { workflow: "Credit application", task: "Assess credit risk" }
     ]
@@ -249,7 +249,7 @@ const DEFAULTS = [
       { id: "replies", label: "Specialist replies", on: true },
       { id: "plan", label: "Draft plan sections", on: true }
     ],
-    uses: [{ workflow: "Account plan", task: "3.2 Synthesize specialist feedback" }]
+    uses: [{ workflow: "Account plan", task: "3.2 Synthesize specialist feedback and update the account plan" }]
   }
 ];
 

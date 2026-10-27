@@ -17,10 +17,7 @@ const BLUEPRINT = [
     tasks: [
       { id: "g1", number: "1.1", name: "Review client history", who: "History Agent", kind: "agent", start: "With step · parallel" },
       { id: "g2", number: "1.2", name: "Pull financial data", who: "Financials Agent", kind: "agent", start: "With step · parallel" },
-      { id: "g3", number: "1.3", name: "Research market context", who: "Market Research Agent", kind: "agent", start: "With step · parallel" },
-      { id: "g4", number: "1.4", name: "Add risk signals", who: "Risk Intelligence Agent", kind: "agent", start: "With step · parallel" },
-      { id: "g5", number: "1.5", name: "Coverage and contacts", who: "Coverage Strategy Agent", kind: "agent", start: "With step · parallel" },
-      { id: "g6", number: "1.6", name: "Load prior objectives and measures", who: "History Agent", kind: "agent", start: "After Review client history" }
+      { id: "g3", number: "1.3", name: "Research market context", who: "Market Research Agent", kind: "agent", start: "With step · parallel" }
     ]
   },
   {
@@ -38,19 +35,33 @@ const BLUEPRINT = [
   {
     id: "outreach",
     number: "3",
-    name: "Reach out to Treasury, Credit, and Industry specialists",
+    name: "Reach out to Treasury Specialist, Credit Specialist and Industry Specialist",
     descriptor: "Request specialist input, then merge it into the plan",
     startRule: "Starts after Create Plan completes",
     parallel: false,
     tasks: [
-      { id: "o1", number: "3.1", name: "Gather specialist input", who: "Outreach Agent", kind: "agent", start: "After Create Plan" },
-      { id: "o2", number: "3.2", name: "Synthesize specialist feedback", who: "Synthesis Agent", kind: "agent", start: "After specialist input" }
+      {
+        id: "o1",
+        number: "3.1",
+        name: "Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen)",
+        who: "Outreach Agent",
+        kind: "agent",
+        start: "After Create Plan"
+      },
+      {
+        id: "o2",
+        number: "3.2",
+        name: "Synthesize specialist feedback and update the account plan",
+        who: "Synthesis Agent",
+        kind: "agent",
+        start: "After specialist input"
+      }
     ]
   },
   {
     id: "rm",
     number: "4",
-    name: "Route the account plan for Relationship Manager review",
+    name: "Route account plan for Relationship Manager review",
     descriptor: "Person-owned review. No agent writes this step.",
     startRule: "Starts after specialist outreach completes",
     parallel: false,
@@ -85,7 +96,7 @@ const stages = [
     name: "Understand the brief",
     duration: 0,
     working: "Reading the workflow name, industry, and process description.",
-    done: "Matched the brief to gather, create the plan, specialist outreach, and RM review.",
+    done: "Matched the brief to Gather Inputs, Create Plan, specialist outreach, and RM review.",
     meta: function () {
       return (draft.name || "Refresh expiring account plans") + " · " + industry;
     },
@@ -131,29 +142,43 @@ const stages = [
     name: "Propose steps",
     duration: 0,
     working: "Turning the process description into four workflow steps.",
-    done: "4 steps proposed.",
+    done: "4 steps proposed: Gather Inputs, Create Plan, specialist outreach, RM review.",
     meta: function () {
       return "4 steps";
     },
-    tools: [{ id: "propose_steps", name: "propose_workflow_steps", working: "Drafting Gather Inputs, Create Plan, outreach, and RM review.", done: "4 steps written." }]
+    tools: [
+      {
+        id: "propose_steps",
+        name: "propose_workflow_steps",
+        working: "Drafting Gather Inputs, Create Plan, specialist outreach, and RM review.",
+        done: "4 steps written."
+      }
+    ]
   },
   {
     id: "proposeTasks",
     name: "Propose tasks",
     duration: 0,
-    working: "Adding the work that belongs in each step.",
-    done: "10 agent tasks added. RM review has none.",
+    working: "Adding gather, plan, and specialist work to each step.",
+    done: "7 agent tasks added. RM review is person-owned.",
     meta: function () {
-      return "10 tasks";
+      return "7 agent tasks";
     },
-    tools: [{ id: "propose_tasks", name: "propose_step_tasks", working: "Adding agent work under each step.", done: "10 tasks written." }]
+    tools: [
+      {
+        id: "propose_tasks",
+        name: "propose_step_tasks",
+        working: "Adding agent work under Gather Inputs, Create Plan, and specialist outreach.",
+        done: "7 tasks written."
+      }
+    ]
   },
   {
     id: "assignAgents",
     name: "Assign agents",
     duration: 0,
     working: "Choosing which agent or person owns each task.",
-    done: "9 agents · 1 person",
+    done: "7 agents · Relationship Manager",
     meta: function () {
       return "Per task";
     },

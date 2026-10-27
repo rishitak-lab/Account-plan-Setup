@@ -15,13 +15,21 @@ const TASK_SEED = {
   g1: { instructions: "Review client history and cite account records and recent interactions.", sources: "Account documents · Recent interactions", tags: "client-history · evidence", startWhen: "When the stage starts", dueHelp: "Starts in parallel with the other evidence-gathering tasks." },
   g2: { instructions: "Pull financial data from permitted financial sources.", sources: "Financial accounts", tags: "financials", startWhen: "When the stage starts", dueHelp: "Starts in parallel with the other evidence-gathering tasks." },
   g3: { instructions: "Research market and competitor context from linked sources.", sources: "Linked market sources", tags: "market", startWhen: "When the stage starts", dueHelp: "Starts in parallel with the other evidence-gathering tasks." },
-  g4: { instructions: "Add risk signals from utilisation, covenants, and adverse media.", sources: "Risk and credit signals", tags: "risk", startWhen: "When the stage starts", dueHelp: "Starts in parallel with the other evidence-gathering tasks." },
-  g5: { instructions: "Map coverage contacts from the account team.", sources: "Account team", tags: "coverage", startWhen: "When the stage starts", dueHelp: "Starts in parallel with the other evidence-gathering tasks." },
-  g6: { instructions: "Load prior objectives and measures. Do not write new objectives.", sources: "Prior account plan", tags: "history", startWhen: "After another task", dependsOn: "g1", dueHelp: "Waits for Review client history." },
   p1: { instructions: "Draft relationship strategy from gathered evidence.", sources: "Gather outputs", tags: "strategy", startWhen: "When the stage starts" },
   p2: { instructions: "Define objectives and measures from the strategy.", sources: "Relationship strategy", tags: "objectives", startWhen: "After another task", dependsOn: "p1" },
-  o1: { instructions: "Request input from Treasury, Credit, and Industry specialists.", sources: "Specialist roles", tags: "outreach", startWhen: "When the stage starts" },
-  o2: { instructions: "Merge specialist feedback into the plan.", sources: "Specialist replies", tags: "synthesis", startWhen: "After another task", dependsOn: "o1" }
+  o1: {
+    instructions: "Request input from Treasury, Credit, and Industry specialists. Named people are resolved when the workflow runs.",
+    sources: "Specialist roles",
+    tags: "outreach",
+    startWhen: "When the stage starts"
+  },
+  o2: {
+    instructions: "Merge specialist feedback into the plan and update the account plan.",
+    sources: "Specialist replies",
+    tags: "synthesis",
+    startWhen: "After another task",
+    dependsOn: "o1"
+  }
 };
 
 const FALLBACK = [
@@ -36,10 +44,7 @@ const FALLBACK = [
     tasks: [
       { id: "g1", name: "Review client history", who: "History Agent", kind: "agent" },
       { id: "g2", name: "Pull financial data", who: "Financials Agent", kind: "agent" },
-      { id: "g3", name: "Research market context", who: "Market Research Agent", kind: "agent" },
-      { id: "g4", name: "Add risk signals", who: "Risk Intelligence Agent", kind: "agent" },
-      { id: "g5", name: "Coverage and contacts", who: "Coverage Strategy Agent", kind: "agent" },
-      { id: "g6", name: "Load prior objectives and measures", who: "History Agent", kind: "agent" }
+      { id: "g3", name: "Research market context", who: "Market Research Agent", kind: "agent" }
     ]
   },
   {
@@ -57,20 +62,30 @@ const FALLBACK = [
   },
   {
     id: "outreach",
-    name: "Reach out to Treasury, Credit, and Industry specialists",
+    name: "Reach out to Treasury Specialist, Credit Specialist and Industry Specialist",
     descriptor: "Request specialist input, then merge it into the plan",
     startKind: "previous",
     dependsOn: "plan",
     customRule: "",
     parallel: false,
     tasks: [
-      { id: "o1", name: "Gather specialist input", who: "Outreach Agent", kind: "agent" },
-      { id: "o2", name: "Synthesize specialist feedback", who: "Synthesis Agent", kind: "agent" }
+      {
+        id: "o1",
+        name: "Gather input from the specialists (Treasury Specialist · Priya Kapoor, Credit Specialist · Chris Nguyen, Industry Specialist · Maya Chen)",
+        who: "Outreach Agent",
+        kind: "agent"
+      },
+      {
+        id: "o2",
+        name: "Synthesize specialist feedback and update the account plan",
+        who: "Synthesis Agent",
+        kind: "agent"
+      }
     ]
   },
   {
     id: "rm",
-    name: "Route the account plan for Relationship Manager review",
+    name: "Route account plan for Relationship Manager review",
     descriptor: "Person-owned review. No agent writes this step.",
     startKind: "previous",
     dependsOn: "outreach",
