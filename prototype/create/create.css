@@ -1233,13 +1233,13 @@ body.ap-wizard-body {
 .ap-outline__ring-track {
   fill: none;
   stroke: var(--slds-g-color-neutral-base-80, #e5e5e5);
-  stroke-width: 3;
+  stroke-width: 1.75;
 }
 
 .ap-outline__ring-prog {
   fill: none;
   stroke: var(--slds-g-color-brand-base-50, #0b5cab);
-  stroke-width: 3;
+  stroke-width: 1.75;
   stroke-linecap: round;
 }
 
