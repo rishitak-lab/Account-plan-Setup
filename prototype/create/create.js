@@ -276,9 +276,8 @@ const testBtn = document.getElementById("wizard-test");
 const testOk = document.getElementById("wizard-test-ok");
 const testLabel = document.getElementById("wizard-test-label");
 const wizardForward = document.getElementById("wizard-forward");
-const wizardForwardHint = document.getElementById("wizard-forward-hint");
 const wizardForwardPath = document.getElementById("wizard-forward-path");
-const wizardForwardNodeNext = document.getElementById("wizard-forward-node-next");
+const wizardNextWrap = document.getElementById("wizard-next-wrap");
 const templateBtn = document.getElementById("wizard-template");
 const templateModal = document.getElementById("template-modal");
 const templateNameInput = document.getElementById("template-name");
@@ -888,22 +887,7 @@ function syncPublishGate() {
     wizardForward.hidden = onReview;
     wizardForward.classList.toggle("is-ready", onBlueprint && passed);
   }
-  if (wizardForwardHint) {
-    wizardForwardHint.hidden = !onBlueprint;
-    wizardForwardHint.textContent = passed
-      ? "Test passed — continue to Review & Publish"
-      : revealing
-        ? "Wait for generation to finish, then test"
-        : stages.length
-          ? "Test the blueprint to unlock Review"
-          : "Add steps, then test the blueprint";
-    wizardForwardHint.classList.toggle("is-ready", passed);
-  }
   if (wizardForwardPath) wizardForwardPath.hidden = !onBlueprint;
-  if (wizardForwardNodeNext) {
-    wizardForwardNodeNext.classList.toggle("is-ready", onBlueprint && passed);
-    wizardForwardNodeNext.classList.toggle("is-active", false);
-  }
 
   if (testBtn) testBtn.hidden = !onBlueprint;
   if (templateBtn) templateBtn.hidden = !onReview;
@@ -943,14 +927,18 @@ function syncPublishGate() {
     if (btnNext) btnNext.classList.remove("is-locked");
   } else if (onBlueprint) {
     const nextTitle = revealing
-      ? "Blueprint is still generating"
+      ? "Wait for generation to finish, then test"
       : !stages.length
-        ? "Add a blueprint before continuing"
+        ? "Add steps, then test the blueprint"
         : passed
-          ? ""
-          : "Test the blueprint before continuing";
+          ? "Continue to Review & Publish"
+          : "Test the blueprint to unlock Review";
     setGatedButton(btnNext, canContinue, canContinue ? null : "next-gate", nextTitle);
-    if (btnNext) btnNext.classList.toggle("is-locked", !canContinue);
+    if (btnNext) {
+      btnNext.classList.toggle("is-locked", !canContinue);
+      // Keep a hover tooltip even when the control is enabled after a pass.
+      if (passed) btnNext.title = nextTitle;
+    }
   }
 }
 
