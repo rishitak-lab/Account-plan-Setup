@@ -4,6 +4,7 @@
   --ap-wizard-header-bg: #f3f3f3;
   --ap-wizard-header-border: #c9c9c9;
   --ap-wizard-sidebar-bg: #fafaf9;
+  --ap-wizard-sidebar-width: 15.5rem;
   --ap-wizard-step-active: #eaf5fe;
   --ap-wizard-brand: #0176d3;
 }
@@ -84,7 +85,9 @@ body.ap-wizard-body {
 }
 
 .ap-wizard__sidebar {
-  flex: 0 0 15.5rem;
+  flex: 0 0 var(--ap-wizard-sidebar-width);
+  width: var(--ap-wizard-sidebar-width);
+  max-width: var(--ap-wizard-sidebar-width);
   padding: 1.25rem 0.75rem 1.5rem;
   border-right: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
   background: var(--ap-wizard-sidebar-bg);
@@ -717,10 +720,6 @@ body.ap-wizard-body {
   width: 100%;
   max-width: min(80rem, 100%);
   margin: 0 auto;
-}
-
-.ap-wizard__body:has(#panel-blueprint:not([hidden])) .ap-wizard__sidebar {
-  flex-basis: 13.5rem;
 }
 
 .ap-blueprint-status_generating {
@@ -2133,7 +2132,9 @@ body.ap-wizard-body {
   }
 
   .ap-wizard__sidebar {
-    flex-basis: 12.5rem;
+    flex: 0 0 var(--ap-wizard-sidebar-width);
+    width: var(--ap-wizard-sidebar-width);
+    max-width: var(--ap-wizard-sidebar-width);
   }
 
   .ap-wizard__grid {
