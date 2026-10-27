@@ -1424,15 +1424,22 @@ body.ap-wizard-body {
 
 .ap-outline__task-head {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: baseline;
   gap: 0.35rem 0.4rem;
+  min-width: 0;
+}
+
+.ap-outline__task-head .ap-outline__numcell {
+  flex: 0 0 auto;
 }
 
 .ap-outline__task {
-  display: inline;
+  flex: 1 1 auto;
+  min-width: 0;
   font-weight: 400;
   color: var(--slds-g-color-neutral-base-10, #181818);
+  overflow-wrap: anywhere;
 }
 
 .ap-outline__task-status {
