@@ -2552,7 +2552,20 @@ body.ap-wizard-body {
 }
 
 #step-modal.slds-modal_large .slds-modal__container,
-#task-modal.slds-modal_large .slds-modal__container,
+#task-modal.slds-modal_large .slds-modal__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* 20% narrower than the previous 75vw / 1200px shell */
+  width: min(60vw, 960px);
+  max-width: min(60vw, 960px);
+  height: 80vh;
+  max-height: 80vh;
+  min-width: 0;
+  margin: 10vh auto;
+  padding: 0;
+}
+
 #test-modal.slds-modal_large .slds-modal__container {
   position: relative;
   display: flex;
