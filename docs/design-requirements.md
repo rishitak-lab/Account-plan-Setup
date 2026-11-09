@@ -333,3 +333,4 @@ Version 3 folds blueprint authoring into **Generate Workflow blueprint** and con
 | 0.52 | 27 October 2026 | Admin Setup blueprints stay role-level only — no account/RM-specific named people (e.g. Priya Kapoor) in generated or template tasks; names resolve at runtime. |
 | 0.53 | 27 October 2026 | Blueprint outline: step progress ring + muted “X of Y tasks ready”; tasks show Needs setup until Admin saves instructions, then double tick + Ready to run. No paraphrasing task subtext on the step or task. |
 | 0.54 | 27 October 2026 | Blueprint step: header Save only; footer places Test run beside Next with a forward path; Next (and Review navigation) unlock only after a successful test. |
+| 0.55 | 9 November 2026 | Task status “Not reviewed”; step Edit is text CTA; task Review→text Edit after open; delete step/task asks for confirmation. |
