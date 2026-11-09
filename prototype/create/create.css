@@ -1485,6 +1485,10 @@ body.ap-wizard-body {
   text-align: right;
 }
 
+.ap-outline__task-edit {
+  font-size: 0.8125rem;
+}
+
 .ap-outline__table td:nth-child(1),
 .ap-outline__table td:nth-child(2),
 .ap-outline__table td:nth-child(3),

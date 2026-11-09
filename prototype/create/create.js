@@ -219,7 +219,8 @@ function normalizeTask(task) {
       instructions: "",
       sources: "",
       tags: "",
-      setupReady: false
+      setupReady: false,
+      reviewed: false
     },
     task || {}
   );
@@ -237,6 +238,7 @@ function normalizeTask(task) {
     }
   }
   merged.setupReady = Boolean(merged.setupReady && String(merged.instructions || "").trim());
+  merged.reviewed = Boolean(merged.reviewed);
   migrateLegacyFallback(merged);
   if (merged.escalation === "Team lead · escalate after SLA") merged.escalation = DEFAULT_ESCALATION;
   if (!merged.retryMode) merged.retryMode = DEFAULT_RETRY_MODE;
@@ -654,11 +656,15 @@ function displayFallback(task) {
 function renderTask(step, task) {
   const tr = document.createElement("tr");
   const ready = isTaskReady(task);
+  const reviewed = Boolean(task.reviewed);
   const statusHtml = ready
     ? '<p class="ap-outline__task-status ap-outline__task-status_ready">' +
       doubleTickHtml() +
       "Ready to run</p>"
     : '<p class="ap-outline__task-status ap-outline__task-status_need">Needs setup</p>';
+  const actionHtml = reviewed
+    ? '<button class="ap-text-cta ap-outline__task-edit" type="button" data-edit-task>Edit</button>'
+    : '<button class="slds-button slds-button_neutral" type="button" data-edit-task>Review</button>';
   tr.innerHTML =
     '<td><div class="ap-outline__task-cell">' +
     '<div class="ap-outline__task-head">' +
@@ -674,9 +680,22 @@ function renderTask(step, task) {
     displayTaskStart(step, task) +
     '</td><td><span class="ap-outline__fallback">' +
     escapeHtml(displayFallback(task)) +
-    '</span></td><td><button class="slds-button slds-button_neutral" type="button" data-edit-task>Edit</button></td>';
+    '</span></td><td>' +
+    actionHtml +
+    "</td>";
   tr.querySelector("[data-edit-task]").addEventListener("click", () => openTask(step, task));
   return tr;
+}
+
+function markTaskReviewed(step, task) {
+  if (!step || !task) return;
+  const liveStep = findStage(step.id) || step;
+  const live = ((liveStep && liveStep.tasks) || []).find((entry) => entry.id === task.id);
+  if (!live || live.reviewed) return;
+  live.reviewed = true;
+  task.reviewed = true;
+  persist();
+  if (outline && stages.length) renderOutline();
 }
 
 let dragStageId = "";
@@ -2635,6 +2654,7 @@ function openTask(step, task, options) {
   options = options || {};
   taskMode = "edit";
   taskParent = step;
+  markTaskReviewed(step, task);
   taskDraft = JSON.parse(JSON.stringify(normalizeTask(task)));
   const workflow = (nameInput && nameInput.value.trim()) || "Account Plan Blueprint";
   document.getElementById("task-modal-context").textContent =
