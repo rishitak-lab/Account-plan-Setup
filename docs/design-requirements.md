@@ -335,4 +335,4 @@ Version 3 folds blueprint authoring into **Generate Workflow blueprint** and con
 | 0.54 | 27 October 2026 | Blueprint step: header Save only; footer places Test run beside Next with a forward path; Next (and Review navigation) unlock only after a successful test. |
 | 0.55 | 9 November 2026 | Task status “Not reviewed”; step Edit is text CTA; task Review→text Edit after open; delete step/task asks for confirmation. |
 | 0.56 | 9 November 2026 | Task Review→text Edit only after Save changes in the task modal (Cancel/close leaves Review). |
-| 0.57 | 9 November 2026 | Task status label is “Review pending” (was “Not reviewed”). |
+| 0.57 | 9 November 2026 | Task status label is “Review Pending” (was “Not reviewed”). |
