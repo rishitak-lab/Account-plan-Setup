@@ -288,7 +288,12 @@ const testModal = document.getElementById("test-modal");
 const testList = document.getElementById("test-run-list");
 const testStage = document.getElementById("test-stage");
 const testClose = document.getElementById("test-close");
+const deleteConfirmModal = document.getElementById("delete-confirm-modal");
+const deleteConfirmTitle = document.getElementById("delete-confirm-title");
+const deleteConfirmBody = document.getElementById("delete-confirm-body");
+const deleteConfirmBtn = document.getElementById("delete-confirm-btn");
 const backdrop = document.getElementById("modal-back");
+let pendingDelete = null;
 const ICON = "../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg";
 const TEST_TICK = 220;
 const TEST_TASK_MS = 720;
@@ -661,7 +666,7 @@ function renderTask(step, task) {
     ? '<p class="ap-outline__task-status ap-outline__task-status_ready">' +
       doubleTickHtml() +
       "Ready to run</p>"
-    : '<p class="ap-outline__task-status ap-outline__task-status_need">Needs setup</p>';
+    : '<p class="ap-outline__task-status ap-outline__task-status_need">Not reviewed</p>';
   const actionHtml = reviewed
     ? '<button class="ap-text-cta ap-outline__task-edit" type="button" data-edit-task>Edit</button>'
     : '<button class="slds-button slds-button_neutral" type="button" data-edit-task>Review</button>';
@@ -811,7 +816,7 @@ function renderStage(step, options) {
     '">' +
     escapeHtml(displayStart(step)) +
     "</dd></dl>" +
-    '<button class="slds-button slds-button_neutral" type="button" data-edit-step>Edit</button></div></header>' +
+    '<button class="ap-text-cta" type="button" data-edit-step>Edit</button></div></header>' +
     (useTable
       ? '<div class="ap-outline__table-wrap"><table class="ap-outline__table"><thead><tr><th>Task</th><th>Assigned to</th><th>Start</th><th>Fallback</th><th></th></tr></thead><tbody></tbody></table></div>'
       : '<p class="ap-step__empty"><span class="ap-step__empty-note">Add at least one task — every workflow step requires a task.</span></p>') +
@@ -2309,6 +2314,25 @@ function removeContainedTask(taskId) {
   }
   stepDraft.tasks = stepDraft.tasks.filter((entry) => entry.id !== taskId);
   renderContainedTasks();
+  syncStepSaveGate();
+  announce("Task removed from this step.");
+}
+
+function requestRemoveContainedTask(taskId) {
+  if (!stepDraft) return;
+  if ((stepDraft.tasks || []).length <= 1) {
+    announce("Every workflow step needs at least one task. Add another task before removing this one.");
+    syncStepSaveGate();
+    return;
+  }
+  const task = (stepDraft.tasks || []).find((entry) => entry.id === taskId);
+  const name = (task && task.name) || "this task";
+  openDeleteConfirm({
+    kind: "contained",
+    taskId: taskId,
+    title: "Remove task?",
+    body: "Remove “" + name + "” from this workflow step? You can still cancel the step editor without saving."
+  });
 }
 
 function openContainedTask(taskId) {
@@ -2358,7 +2382,7 @@ function renderContainedTasks() {
     tr.querySelector("[data-remove-contained]").addEventListener("click", (event) => {
       event.preventDefault();
       event.stopPropagation();
-      removeContainedTask(task.id);
+      requestRemoveContainedTask(task.id);
     });
     tr.querySelector("[data-open-contained]").addEventListener("click", (event) => {
       event.preventDefault();
@@ -2754,7 +2778,21 @@ function saveTask() {
   else closeModals();
 }
 
-function deleteStep() {
+function requestDeleteStep() {
+  if (!stepDraft) return;
+  if (stages.length <= 1) {
+    announce("A workflow needs at least one step. You cannot delete the last step.");
+    return;
+  }
+  const name = stepDraft.name || "this workflow step";
+  openDeleteConfirm({
+    kind: "step",
+    title: "Delete workflow step?",
+    body: "Delete “" + name + "”? This removes the step and its tasks from the blueprint. This cannot be undone."
+  });
+}
+
+function performDeleteStep() {
   if (!stepDraft) return;
   const live = findStage(stepDraft.id);
   if (!live) return;
@@ -2772,7 +2810,31 @@ function deleteStep() {
   announce("Workflow step deleted.");
 }
 
-function deleteTask() {
+function requestDeleteTask() {
+  if (taskMode === "add") {
+    openDeleteConfirm({
+      kind: "task-discard",
+      title: "Discard new task?",
+      body: "Discard this new task without saving it?"
+    });
+    return;
+  }
+  if (!taskParent || !taskDraft) return;
+  const liveStep = findStage(taskParent.id);
+  if (!liveStep) return;
+  if ((liveStep.tasks || []).length <= 1) {
+    announce("Every workflow step needs at least one task. You cannot remove the last task.");
+    return;
+  }
+  const name = taskDraft.name || "this task";
+  openDeleteConfirm({
+    kind: "task",
+    title: "Delete task?",
+    body: "Delete “" + name + "”? This removes it from the blueprint. This cannot be undone."
+  });
+}
+
+function performDeleteTask() {
   if (taskMode === "add") {
     if (returnToStepId) returnToStepModal();
     else closeModals();
@@ -2797,11 +2859,51 @@ function deleteTask() {
   else closeModals();
 }
 
+function openDeleteConfirm(pending) {
+  pendingDelete = pending || null;
+  if (!deleteConfirmModal || !pendingDelete) return;
+  if (deleteConfirmTitle) deleteConfirmTitle.textContent = pendingDelete.title || "Delete?";
+  if (deleteConfirmBody) deleteConfirmBody.textContent = pendingDelete.body || "This cannot be undone.";
+  if (backdrop) {
+    backdrop.classList.remove("slds-hide");
+    backdrop.classList.add("slds-backdrop_open");
+  }
+  deleteConfirmModal.classList.remove("slds-hide");
+  deleteConfirmModal.classList.add("slds-fade-in-open");
+  document.body.classList.add("slds-modal-open");
+  if (deleteConfirmBtn) deleteConfirmBtn.focus();
+}
+
+function closeDeleteConfirm() {
+  pendingDelete = null;
+  if (!deleteConfirmModal) return;
+  deleteConfirmModal.classList.add("slds-hide");
+  deleteConfirmModal.classList.remove("slds-fade-in-open");
+}
+
+function confirmPendingDelete() {
+  const pending = pendingDelete;
+  closeDeleteConfirm();
+  if (!pending) return;
+  if (pending.kind === "step") {
+    performDeleteStep();
+    return;
+  }
+  if (pending.kind === "task" || pending.kind === "task-discard") {
+    performDeleteTask();
+    return;
+  }
+  if (pending.kind === "contained") {
+    removeContainedTask(pending.taskId);
+  }
+}
+
 let ignoreBackdropClick = false;
 
 function hideModals() {
   closeAllUserPicks();
-  [stepModal, taskModal, testModal, reorderModal, templateModal].forEach((node) => {
+  closeDeleteConfirm();
+  [stepModal, taskModal, testModal, reorderModal, templateModal, deleteConfirmModal].forEach((node) => {
     if (!node) return;
     node.classList.add("slds-hide");
     node.classList.remove("slds-fade-in-open");
@@ -3361,12 +3463,21 @@ document.querySelectorAll("[data-close-modals]").forEach((button) => button.addE
 if (backdrop) {
   backdrop.addEventListener("click", () => {
     if (ignoreBackdropClick) return;
+    if (deleteConfirmModal && !deleteConfirmModal.classList.contains("slds-hide")) {
+      closeDeleteConfirm();
+      return;
+    }
     closeModals();
   });
 }
 window.apStartTestRun = startTestRun;
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") closeModals();
+  if (event.key !== "Escape") return;
+  if (deleteConfirmModal && !deleteConfirmModal.classList.contains("slds-hide")) {
+    closeDeleteConfirm();
+    return;
+  }
+  closeModals();
 });
 document.querySelectorAll('input[name="step-start"]').forEach((input) => input.addEventListener("change", syncStepStartUi));
 const stepSave = document.getElementById("step-save");
@@ -3374,9 +3485,14 @@ if (stepSave) stepSave.addEventListener("click", saveStep);
 const taskSave = document.getElementById("task-save");
 if (taskSave) taskSave.addEventListener("click", saveTask);
 const stepDelete = document.getElementById("step-delete");
-if (stepDelete) stepDelete.addEventListener("click", deleteStep);
+if (stepDelete) stepDelete.addEventListener("click", requestDeleteStep);
 const taskDelete = document.getElementById("task-delete");
-if (taskDelete) taskDelete.addEventListener("click", deleteTask);
+if (taskDelete) taskDelete.addEventListener("click", requestDeleteTask);
+if (deleteConfirmBtn) deleteConfirmBtn.addEventListener("click", confirmPendingDelete);
+["delete-confirm-cancel", "delete-confirm-cancel-btn"].forEach((id) => {
+  const btn = document.getElementById(id);
+  if (btn) btn.addEventListener("click", closeDeleteConfirm);
+});
 const taskAttach = document.getElementById("task-attach");
 if (taskAttach) {
   taskAttach.addEventListener("click", () => announce("Attach checks access when a file or link is added. That flow is not built yet."));
