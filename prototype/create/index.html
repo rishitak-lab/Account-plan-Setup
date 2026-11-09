@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>New workflow</title>
     <link rel="stylesheet" href="../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
-    <link rel="stylesheet" href="create.css?v=1.43" />
+    <link rel="stylesheet" href="create.css?v=1.44" />
   </head>
   <body class="ap-wizard-body">
     <div class="ap-wizard" id="wizard">
@@ -302,17 +302,18 @@
       </div>
     </div>
 
-    <div class="slds-backdrop slds-hide" id="modal-back"></div>
+    <div class="slds-backdrop slds-hide" id="modal-back" role="presentation"></div>
+    <div class="slds-backdrop slds-hide" id="modal-nest-back" role="presentation"></div>
 
     <section class="slds-modal slds-modal_small slds-hide" id="template-modal" role="dialog" aria-modal="true" aria-labelledby="template-modal-title">
       <div class="slds-modal__container ap-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="template-modal-title">Save as template</h2>
           <p class="ap-modal__context">Confirm the template name. It will appear under Created by you on Workflow Setup.</p>
         </header>
@@ -335,13 +336,13 @@
 
     <section class="slds-modal slds-modal_small slds-hide" id="reorder-modal" role="dialog" aria-modal="true" aria-labelledby="reorder-modal-title">
       <div class="slds-modal__container ap-reorder-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="reorder-modal-title">Reorder workflow steps</h2>
           <p class="ap-modal__context">Use the arrows to change step order. Save applies the order to the blueprint.</p>
         </header>
@@ -357,13 +358,13 @@
 
     <section class="slds-modal slds-modal_large slds-hide" id="step-modal" role="dialog" aria-modal="true" aria-labelledby="step-modal-title">
       <div class="slds-modal__container ap-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="step-modal-title">Edit workflow step</h2>
           <p class="ap-modal__context" id="step-modal-context"></p>
         </header>
@@ -442,13 +443,13 @@
 
     <section class="slds-modal slds-modal_large slds-hide" id="task-modal" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
       <div class="slds-modal__container ap-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="task-modal-title">Edit task</h2>
           <p class="ap-modal__context" id="task-modal-context"></p>
         </header>
@@ -626,13 +627,13 @@
 
     <section class="slds-modal slds-modal_small slds-hide" id="delete-confirm-modal" role="dialog" aria-modal="true" aria-labelledby="delete-confirm-title">
       <div class="slds-modal__container ap-modal__container ap-delete-confirm__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="delete-confirm-cancel" title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" id="delete-confirm-cancel" title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="delete-confirm-title">Delete?</h2>
         </header>
         <div class="slds-modal__content slds-p-around_medium">
@@ -647,13 +648,13 @@
 
     <section class="slds-modal slds-modal_large slds-hide" id="test-modal" role="dialog" aria-modal="true" aria-labelledby="test-modal-title">
       <div class="slds-modal__container ap-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" data-close-modals title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="test-modal-title">Test run</h2>
           <p class="ap-modal__context">Checks that agents and steps are configured and run correctly. No account data is used.</p>
         </header>
@@ -683,6 +684,6 @@
     <script src="../shared/ap-paths.js?v=0.2"></script>
     <script src="../shared/versions.js?v=0.7"></script>
     <script src="../shared/version-switcher.js?v=0.7"></script>
-    <script src="create.js?v=1.40"></script>
+    <script src="create.js?v=1.41"></script>
   </body>
 </html>

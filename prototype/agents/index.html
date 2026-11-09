@@ -6,7 +6,7 @@
     <title>Workflow Agents</title>
     <link rel="stylesheet" href="../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
     <link rel="stylesheet" href="../landing/landing.css?v=0.41" />
-    <link rel="stylesheet" href="agents.css?v=0.31" />
+    <link rel="stylesheet" href="agents.css?v=0.32" />
   </head>
   <body>
     <div class="ap-app">
@@ -123,13 +123,13 @@
     <div class="slds-backdrop slds-hide" id="modal-back"></div>
     <section class="slds-modal slds-hide" id="agent-modal" role="dialog" aria-modal="true" aria-labelledby="agent-modal-title">
       <div class="slds-modal__container ap-agent-modal">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="agent-close" title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" id="agent-close" title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="agent-modal-title">Customize agent</h2>
           <p class="ap-modal__context" id="agent-modal-context"></p>
         </header>
@@ -166,13 +166,13 @@
     </section>
     <section class="slds-modal slds-hide" id="usage-modal" role="dialog" aria-modal="true" aria-labelledby="usage-title" aria-describedby="usage-lead" tabindex="-1">
       <div class="slds-modal__container ap-agent-modal">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="usage-close" title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" id="usage-close" title="Close">
             <svg class="slds-button__icon" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="usage-title">Where this agent is used</h2>
           <p class="ap-modal__context" id="usage-lead"></p>
         </header>

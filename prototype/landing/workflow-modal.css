@@ -38,29 +38,31 @@
 .ap-wf-modal .slds-modal__header {
   position: relative;
   flex: 0 0 auto;
-  padding-right: 3rem;
   border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
 }
 
-.ap-wf-modal .slds-modal__close,
-.ap-wf-nested .slds-modal__close {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 1;
-  color: var(--slds-g-color-neutral-base-30, #444);
-}
-
-.ap-wf-modal .slds-modal__close:hover,
-.ap-wf-modal .slds-modal__close:focus,
-.ap-wf-nested .slds-modal__close:hover,
-.ap-wf-nested .slds-modal__close:focus {
-  color: var(--slds-g-color-neutral-base-10, #181818);
-}
-
-.ap-wf-nested .slds-modal__header {
+.ap-wf-modal .slds-modal__container,
+.ap-wf-nested .slds-modal__container {
   position: relative;
-  padding-right: 3rem;
+}
+
+.ap-wf-modal .slds-modal__container > .slds-modal__close,
+.ap-wf-nested .slds-modal__container > .slds-modal__close {
+  position: absolute;
+  top: -2.25rem;
+  right: 0;
+  z-index: 1;
+  margin: 0;
+  bottom: auto;
+  color: var(--slds-g-color-neutral-base-30, #444);
+  background-color: var(--slds-g-color-neutral-base-100, #ffffff);
+}
+
+.ap-wf-modal .slds-modal__container > .slds-modal__close:hover,
+.ap-wf-modal .slds-modal__container > .slds-modal__close:focus,
+.ap-wf-nested .slds-modal__container > .slds-modal__close:hover,
+.ap-wf-nested .slds-modal__container > .slds-modal__close:focus {
+  color: var(--slds-g-color-neutral-base-10, #181818);
 }
 
 .ap-wf-modal .slds-modal__content {

@@ -509,13 +509,22 @@
   border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
 }
 
-#step-modal .slds-modal__close,
-#task-modal .slds-modal__close,
-#test-modal .slds-modal__close {
+#step-modal .slds-modal__container,
+#task-modal .slds-modal__container,
+#test-modal .slds-modal__container {
+  position: relative;
+}
+
+#step-modal .slds-modal__container > .slds-modal__close,
+#task-modal .slds-modal__container > .slds-modal__close,
+#test-modal .slds-modal__container > .slds-modal__close {
   position: absolute;
-  top: 0.85rem;
-  right: 0.85rem;
+  top: -2.25rem;
+  right: 0;
+  margin: 0;
+  bottom: auto;
   color: var(--slds-g-color-neutral-base-10, #181818);
+  background-color: var(--slds-g-color-neutral-base-100, #ffffff);
 }
 
 .slds-modal.slds-hide,

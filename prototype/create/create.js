@@ -293,7 +293,9 @@ const deleteConfirmTitle = document.getElementById("delete-confirm-title");
 const deleteConfirmBody = document.getElementById("delete-confirm-body");
 const deleteConfirmBtn = document.getElementById("delete-confirm-btn");
 const backdrop = document.getElementById("modal-back");
+const nestBackdrop = document.getElementById("modal-nest-back");
 let pendingDelete = null;
+let deleteConfirmParent = null;
 const ICON = "../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg";
 const TEST_TICK = 220;
 const TEST_TASK_MS = 720;
@@ -2859,15 +2861,43 @@ function performDeleteTask() {
   else closeModals();
 }
 
+function activeParentModal() {
+  return [stepModal, taskModal, testModal, reorderModal, templateModal].find(
+    (node) => node && !node.classList.contains("slds-hide")
+  ) || null;
+}
+
+function setModalInert(node, inert) {
+  if (!node) return;
+  if (inert) {
+    node.setAttribute("aria-hidden", "true");
+    node.setAttribute("inert", "");
+  } else {
+    node.removeAttribute("aria-hidden");
+    node.removeAttribute("inert");
+  }
+}
+
 function openDeleteConfirm(pending) {
   pendingDelete = pending || null;
   if (!deleteConfirmModal || !pendingDelete) return;
   if (deleteConfirmTitle) deleteConfirmTitle.textContent = pendingDelete.title || "Delete?";
   if (deleteConfirmBody) deleteConfirmBody.textContent = pendingDelete.body || "This cannot be undone.";
-  if (backdrop) {
+
+  deleteConfirmParent = activeParentModal();
+  if (deleteConfirmParent) {
+    setModalInert(deleteConfirmParent, true);
+    if (nestBackdrop) {
+      nestBackdrop.classList.remove("slds-hide");
+      nestBackdrop.classList.add("slds-backdrop_open");
+    }
+  } else if (backdrop) {
     backdrop.classList.remove("slds-hide");
     backdrop.classList.add("slds-backdrop_open");
   }
+
+  deleteConfirmModal.removeAttribute("aria-hidden");
+  deleteConfirmModal.removeAttribute("inert");
   deleteConfirmModal.classList.remove("slds-hide");
   deleteConfirmModal.classList.add("slds-fade-in-open");
   document.body.classList.add("slds-modal-open");
@@ -2879,6 +2909,25 @@ function closeDeleteConfirm() {
   if (!deleteConfirmModal) return;
   deleteConfirmModal.classList.add("slds-hide");
   deleteConfirmModal.classList.remove("slds-fade-in-open");
+  if (nestBackdrop) {
+    nestBackdrop.classList.add("slds-hide");
+    nestBackdrop.classList.remove("slds-backdrop_open");
+  }
+  if (deleteConfirmParent) {
+    setModalInert(deleteConfirmParent, false);
+    const restore = deleteConfirmParent;
+    deleteConfirmParent = null;
+    window.setTimeout(() => {
+      const focusEl =
+        restore.querySelector(".ap-text-cta_danger, .slds-button_brand, [data-close-modals]") ||
+        restore;
+      if (focusEl && typeof focusEl.focus === "function") focusEl.focus();
+    }, 0);
+  } else if (backdrop && !activeParentModal()) {
+    backdrop.classList.add("slds-hide");
+    backdrop.classList.remove("slds-backdrop_open");
+    document.body.classList.remove("slds-modal-open");
+  }
 }
 
 function confirmPendingDelete() {
@@ -2905,9 +2954,14 @@ function hideModals() {
   closeDeleteConfirm();
   [stepModal, taskModal, testModal, reorderModal, templateModal, deleteConfirmModal].forEach((node) => {
     if (!node) return;
+    setModalInert(node, false);
     node.classList.add("slds-hide");
     node.classList.remove("slds-fade-in-open");
   });
+  if (nestBackdrop) {
+    nestBackdrop.classList.add("slds-hide");
+    nestBackdrop.classList.remove("slds-backdrop_open");
+  }
   if (backdrop) {
     backdrop.classList.add("slds-hide");
     backdrop.classList.remove("slds-backdrop_open");
@@ -3460,16 +3514,16 @@ if (templateNameInput) {
   });
 }
 document.querySelectorAll("[data-close-modals]").forEach((button) => button.addEventListener("click", closeModals));
-if (backdrop) {
-  backdrop.addEventListener("click", () => {
-    if (ignoreBackdropClick) return;
-    if (deleteConfirmModal && !deleteConfirmModal.classList.contains("slds-hide")) {
-      closeDeleteConfirm();
-      return;
-    }
-    closeModals();
-  });
+function onBackdropDismiss() {
+  if (ignoreBackdropClick) return;
+  if (deleteConfirmModal && !deleteConfirmModal.classList.contains("slds-hide")) {
+    closeDeleteConfirm();
+    return;
+  }
+  closeModals();
 }
+if (backdrop) backdrop.addEventListener("click", onBackdropDismiss);
+if (nestBackdrop) nestBackdrop.addEventListener("click", onBackdropDismiss);
 window.apStartTestRun = startTestRun;
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;

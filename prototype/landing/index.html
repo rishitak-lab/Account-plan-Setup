@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Account Plan workflows</title>
     <link rel="stylesheet" href="../node_modules/@salesforce-ux/design-system/assets/styles/salesforce-lightning-design-system.min.css" />
-    <link rel="stylesheet" href="landing.css?v=0.52" />
-    <link rel="stylesheet" href="workflow-modal.css?v=0.17" />
+    <link rel="stylesheet" href="landing.css?v=0.53" />
+    <link rel="stylesheet" href="workflow-modal.css?v=0.18" />
     <link rel="stylesheet" href="../shared/version-switcher.css?v=0.5" />
   </head>
   <body>
@@ -169,13 +169,13 @@
 
     <section class="slds-modal slds-modal_small" role="dialog" aria-modal="true" aria-labelledby="delete-title" aria-describedby="delete-warning" hidden id="delete-dialog">
       <div class="slds-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="delete-close" title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" id="delete-close" title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 id="delete-title" class="slds-modal__title slds-hyphenate">Delete this workflow?</h2>
         </header>
         <div class="slds-modal__content slds-p-around_medium" id="delete-body">
@@ -199,13 +199,13 @@
 
     <section class="slds-modal slds-modal_large ap-wf-modal" role="dialog" aria-modal="true" aria-labelledby="wf-modal-title" tabindex="-1" hidden id="workflow-modal">
       <div class="slds-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-close" title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-close" title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 id="wf-modal-title" class="slds-modal__title slds-hyphenate">Describe the workflow</h2>
         </header>
         <div class="slds-modal__content">
@@ -349,13 +349,13 @@
 
     <section class="slds-modal slds-modal_large ap-wf-nested" role="dialog" aria-modal="true" aria-labelledby="wf-test-title" tabindex="-1" hidden id="wf-test-modal">
       <div class="slds-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-test-close" title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-test-close" title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="wf-test-title">Test run</h2>
           <p class="ap-modal__context">Checks that agents and steps are configured and run correctly. No account data is used.</p>
         </header>
@@ -373,13 +373,13 @@
 
     <section class="slds-modal slds-modal_small ap-wf-nested" role="dialog" aria-modal="true" aria-labelledby="wf-reorder-title" tabindex="-1" hidden id="wf-reorder-modal">
       <div class="slds-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-reorder-close" title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-reorder-close" title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="wf-reorder-title">Reorder workflow steps</h2>
           <p class="ap-modal__context">Drag a step or use the arrows. Save applies the order to the blueprint.</p>
         </header>
@@ -394,13 +394,13 @@
 
     <section class="slds-modal slds-modal_large ap-wf-nested" role="dialog" aria-modal="true" aria-labelledby="wf-step-edit-title" tabindex="-1" hidden id="wf-step-edit">
       <div class="slds-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-step-edit-close" title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-step-edit-close" title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="wf-step-edit-title">Edit workflow step</h2>
           <p class="ap-modal__context" id="wf-step-edit-context"></p>
         </header>
@@ -464,13 +464,13 @@
 
     <section class="slds-modal slds-modal_large ap-wf-nested" role="dialog" aria-modal="true" aria-labelledby="wf-task-edit-title" tabindex="-1" hidden id="wf-task-edit">
       <div class="slds-modal__container">
-        <header class="slds-modal__header">
-          <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-task-edit-close" title="Close">
+        <button class="slds-button slds-button_icon slds-modal__close" type="button" id="wf-task-edit-close" title="Close">
             <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
               <use href="../node_modules/@salesforce-ux/design-system/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
             </svg>
             <span class="slds-assistive-text">Close</span>
           </button>
+        <header class="slds-modal__header">
           <h2 class="slds-modal__title" id="wf-task-edit-title">Edit task</h2>
           <p class="ap-modal__context" id="wf-task-edit-context"></p>
         </header>

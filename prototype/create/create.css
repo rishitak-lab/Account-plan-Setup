@@ -1493,8 +1493,13 @@ body.ap-wizard-body {
   font-size: 0.8125rem;
 }
 
+/* Nested confirm sits above the parent modal with its own scrim (SLDS stacking). */
+#modal-nest-back {
+  z-index: 9050;
+}
+
 #delete-confirm-modal {
-  z-index: 10000;
+  z-index: 9100;
 }
 
 #delete-confirm-modal .ap-delete-confirm__container {
@@ -1506,6 +1511,27 @@ body.ap-wizard-body {
   color: var(--slds-g-color-neutral-base-10, #181818);
   font-size: 0.875rem;
   line-height: 1.45;
+}
+
+/* SLDS2: close control is a sibling before the header, not inside it. */
+.ap-wizard .slds-modal__container > .slds-modal__close,
+.ap-modal__container > .slds-modal__close,
+.ap-reorder-modal__container > .slds-modal__close,
+.ap-delete-confirm__container > .slds-modal__close {
+  position: absolute;
+  top: -2.25rem;
+  right: 0;
+  margin: 0;
+  bottom: auto;
+  color: var(--slds-g-color-neutral-base-10, #181818);
+  background-color: var(--slds-g-color-neutral-base-100, #ffffff);
+}
+
+.ap-wizard .slds-modal__container,
+.ap-modal__container,
+.ap-reorder-modal__container,
+.ap-delete-confirm__container {
+  position: relative;
 }
 
 .ap-outline__table td:nth-child(1),
@@ -2182,13 +2208,6 @@ body.ap-wizard-body {
   border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
 }
 
-#test-modal .slds-modal__close {
-  position: absolute;
-  top: 0.85rem;
-  right: 0.85rem;
-  color: var(--slds-g-color-neutral-base-10, #181818);
-}
-
 #test-modal .slds-modal__content {
   flex: 1 1 auto;
   min-height: 0;
@@ -2630,14 +2649,6 @@ body.ap-wizard-body {
   background: var(--slds-g-color-neutral-base-100, #ffffff);
   color: var(--slds-g-color-neutral-base-10, #181818);
   border-bottom: 1px solid var(--slds-g-color-border-base-1, #e5e5e5);
-}
-
-#step-modal .slds-modal__close,
-#task-modal .slds-modal__close {
-  position: absolute;
-  top: 0.85rem;
-  right: 0.85rem;
-  color: var(--slds-g-color-neutral-base-10, #181818);
 }
 
 /* Label left / control right (V0 modal form pattern). */
