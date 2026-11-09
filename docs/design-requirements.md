@@ -1,9 +1,9 @@
 # Agentic Account Plan Setup — Design Requirements
 
-**Status:** v0.55 — Version 3 implemented in prototype  
+**Status:** v0.56 — Version 3 implemented in prototype  
 **Persona:** Salesforce Admin  
 **Altitude:** Problem, design principles, and information architecture. Field lists are included only where a decision needed them. This document does not specify controls, copy, or visual layout.  
-**Last updated:** 27 October 2026  
+**Last updated:** 9 November 2026  
 **Current prototype:** Version 3 (live under `prototype/`). Version 0 and Version 1 are frozen under `prototype/versions/`. Version switching is only on Workflow Setup landing; Workflow Agents and Workflow Templates use the shared V0 UI.
 
 This is a living document. Later inputs should be added as new sections or as resolutions in [Open inputs](#open-inputs). Do not rewrite settled decisions to fit a new screen.
