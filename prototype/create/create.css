@@ -1494,12 +1494,29 @@ body.ap-wizard-body {
 }
 
 /* Nested confirm sits above the parent modal with its own scrim (SLDS stacking). */
-#modal-nest-back {
-  z-index: 9050;
+#modal-nest-back.slds-backdrop_open {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: 9050 !important;
+  background: rgba(8, 7, 7, 0.65) !important;
+  pointer-events: auto !important;
 }
 
 #delete-confirm-modal {
   z-index: 9100;
+}
+
+#delete-confirm-modal.slds-fade-in-open {
+  z-index: 9100 !important;
+}
+
+.slds-modal.ap-modal-covered .slds-modal__container {
+  filter: brightness(0.72);
 }
 
 #delete-confirm-modal .ap-delete-confirm__container {

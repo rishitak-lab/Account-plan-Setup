@@ -2887,6 +2887,7 @@ function openDeleteConfirm(pending) {
   deleteConfirmParent = activeParentModal();
   if (deleteConfirmParent) {
     setModalInert(deleteConfirmParent, true);
+    deleteConfirmParent.classList.add("ap-modal-covered");
     if (nestBackdrop) {
       nestBackdrop.classList.remove("slds-hide");
       nestBackdrop.classList.add("slds-backdrop_open");
@@ -2915,6 +2916,7 @@ function closeDeleteConfirm() {
   }
   if (deleteConfirmParent) {
     setModalInert(deleteConfirmParent, false);
+    deleteConfirmParent.classList.remove("ap-modal-covered");
     const restore = deleteConfirmParent;
     deleteConfirmParent = null;
     window.setTimeout(() => {
