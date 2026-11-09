@@ -694,15 +694,9 @@ function renderTask(step, task) {
   return tr;
 }
 
-function markTaskReviewed(step, task) {
-  if (!step || !task) return;
-  const liveStep = findStage(step.id) || step;
-  const live = ((liveStep && liveStep.tasks) || []).find((entry) => entry.id === task.id);
-  if (!live || live.reviewed) return;
-  live.reviewed = true;
+function markTaskReviewed(task) {
+  if (!task) return;
   task.reviewed = true;
-  persist();
-  if (outline && stages.length) renderOutline();
 }
 
 let dragStageId = "";
@@ -2680,7 +2674,6 @@ function openTask(step, task, options) {
   options = options || {};
   taskMode = "edit";
   taskParent = step;
-  markTaskReviewed(step, task);
   taskDraft = JSON.parse(JSON.stringify(normalizeTask(task)));
   const workflow = (nameInput && nameInput.value.trim()) || "Account Plan Blueprint";
   document.getElementById("task-modal-context").textContent =
@@ -2756,6 +2749,7 @@ function saveTask() {
 
   if (taskMode === "add") {
     const created = readTaskForm(normalizeTask(taskDraft));
+    markTaskReviewed(created);
     liveStep.tasks.push(created);
     if (liveStep.owner) delete liveStep.owner;
     testedKey = "";
@@ -2771,6 +2765,7 @@ function saveTask() {
   const live = liveStep.tasks.find((task) => task.id === taskDraft.id);
   if (!live) return;
   readTaskForm(live);
+  markTaskReviewed(live);
   testedKey = "";
   renumberStages();
   renderOutline();
