@@ -668,7 +668,7 @@ function renderTask(step, task) {
     ? '<p class="ap-outline__task-status ap-outline__task-status_ready">' +
       doubleTickHtml() +
       "Ready to run</p>"
-    : '<p class="ap-outline__task-status ap-outline__task-status_need">Not reviewed</p>';
+    : '<p class="ap-outline__task-status ap-outline__task-status_need">Review Pending</p>';
   const actionHtml = reviewed
     ? '<button class="ap-text-cta ap-outline__task-edit" type="button" data-edit-task>Edit</button>'
     : '<button class="slds-button slds-button_neutral" type="button" data-edit-task>Review</button>';
